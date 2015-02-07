@@ -75,7 +75,7 @@ Npc (
 )
 ```
 
-#syntax
+###syntax
 * no commas needed
 * strings and keys without quotes
 * but can use "" or '' (for strings with spaces, for example)
@@ -87,7 +87,7 @@ Npc (
 * carefully controlled comma use to aviod one level parentheses
 * like in (pos:10, 10 size:100, 200)
 
-#types
+###types
 * simple parsing or additionally - (de)serialization
 * key states field name
 * value is infered from field type
