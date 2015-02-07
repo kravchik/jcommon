@@ -1,0 +1,50 @@
+package yk.jcommon.collections;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: yuri
+ * Date: 8/12/14
+ * Time: 3:27 PM
+ */
+public interface YList<T> extends List<T> {
+
+    YList<T> filter(Predicate<? super T> predicate);
+
+    boolean any(Predicate<? super T> predicate);
+    boolean all(Predicate<? super T> predicate);
+
+    <R> YList<R> map(Function<? super T, ? extends R> mapper);
+    <R> YList<R> flatMap(Function<? super T, ? extends List<? extends R>> mapper);
+
+    <R> R foldLeft(R first, BiFunction<R, T, R> folder);
+
+    YList<T> sorted();
+    YList<T> sorted(Comparator<? super T> comparator);
+    T car();
+    YList<T> cdr();
+    T first();
+    T first(Predicate<? super T> predicate);
+    T last();
+
+    T max();
+    T min();
+
+    YSet<T> toSet();
+
+    YList<T> join(Collection<T> c);
+
+    YList<T> sub(T t);
+
+    String join(String separator);
+    String join(String prefix, String appender);
+
+    @Override
+    YList<T> subList(int fromIndex, int toIndex);
+}

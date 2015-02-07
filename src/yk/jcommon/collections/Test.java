@@ -1,0 +1,26 @@
+package yk.jcommon.collections;
+
+import java.io.File;
+
+import static yk.jcommon.collections.YArrayList.al;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: yuri
+ * Date: 8/13/14
+ * Time: 9:47 PM
+ */
+public class Test {
+
+    public static void main(String[] args) {
+        String names = YArrayList.al(new File("/home/yuri/").listFiles())
+                .filter(File::isDirectory)                  //only dirs
+                .map(File::getName)                         //get name
+                .filter(n -> n.startsWith("."))             //only invisible
+                .sorted()                                   //sorted
+                .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
+        System.out.println(names);
+
+    }
+
+}
