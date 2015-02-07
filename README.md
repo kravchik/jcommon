@@ -42,11 +42,63 @@ A normal IO for Java. (because java.nio is not for human beings)
 
 ```
 * callbacks on connect, callbacks on data
-* node.js style (in the good sense)
+* node.js style (in a good sense)
 * replaceable serialization engine
 
 
 ##YADS
-yet another data syntax (the perfect one actually)
+Yet Another Data Syntax (the perfect one actually).
+How would UI markup would look like:
+
+```
+import:ui
+HBox (
+  pos:100, 200
+  VBox (
+    Input (text:'input here')
+    Button (text:'hello world')
+  )
+)
+```
+How would some game config look lie:
+```
+import:my.game
+Npc (
+  name:'Grumble Fingur'
+  type:Goblin
+  model:(type:AngryBastard colorScheme:red)
+  items:(
+    items.Hat(name:'Hat of sun')
+    random(type:ring)
+  )
+)
+```
+
+#syntax
+* no commas needed
+* strings and keys without quotes
+* but can use "" or '' (for strings with spaces, for example)
+* multiline strings (TODO)
+* colons for key:value
+* numbers, booleans
+* utf8, no restriction on keys or strings
+* comments (one line // and multiline /**/)
+* carefully controlled comma use to aviod one level parentheses
+* like in (pos:10, 10 size:100, 200)
+
+#types
+* simple parsing or additionally - (de)serialization
+* key states field name
+* value is infered from field type
+* class could be stated explicitly
+* arrays are also supported
+* if type is unknown - array, map, or special class is constructed
+* all pares are initilizing fields, and other items are given to init method
+* if value is string, but type is not, then Type.parse with that string is called
+* you can specify imports, or fully qualified class name
+* or do nothing, and get YADClass with name explicitly specified
+
+
+
 
 
