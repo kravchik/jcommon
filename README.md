@@ -48,6 +48,7 @@ A normal IO for Java. (because java.nio is not for human beings)
 
 ##YADS
 Yet Another Data Syntax (the perfect one actually).
+
 How would UI markup would look like:
 
 ```
