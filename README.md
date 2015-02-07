@@ -94,7 +94,7 @@ Npc (
 * carefully controlled comma use to aviod one level parentheses
 * like in (pos:10, 10 size:100, 200)
 
-###serialization
+###serialization (work in progress)
 * simple parsing or additionally - deserialization
 * serialization of any data structure to string
 * key states field name
