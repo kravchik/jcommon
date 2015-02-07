@@ -3,7 +3,10 @@ jcommon
 Common utils, abstractions and tools that I use in my projects. They make Java pleasant.
 
 ##YCollections
+**yk.jcommon.collections**
+
 Collections as they should be.
+
 ```java
     String names = al(new File("/home/user/").listFiles())
             .filter(File::isDirectory)                  //only dirs
@@ -22,6 +25,8 @@ Collections as they should be.
 
 
 ##ANIO
+**yk.jcommon.net.anio**
+
 A normal IO for Java. (because java.nio is not for human beings)
 
 ```java
@@ -47,6 +52,8 @@ A normal IO for Java. (because java.nio is not for human beings)
 
 
 ##YADS
+**yk.lang.yads**
+
 Yet Another Data Syntax (the perfect one actually).
 
 How would UI markup look like:
