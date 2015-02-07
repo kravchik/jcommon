@@ -81,9 +81,11 @@ Npc (
 ```
 
 ###syntax
-* no commas or semicolons needed
-* strings and keys without quotes
+* no commas or semicolons needed, so noise level is very low
+* strings and keys without quotes (that is also reduces noise)
 * but can use "" or '' (for strings with spaces, for example)
+* '' for strings - so you can include YADS in java strings without escaping
+* spaces and tabs don't have special meaning (like in yaml or python), so you can arrange data-text as you wish, even in one line
 * multiline strings (TODO)
 * colons for key:value
 * numbers, booleans
