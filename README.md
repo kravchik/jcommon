@@ -89,7 +89,7 @@ Npc (
 
 ###serialization
 * simple parsing or additionally - deserialization
-* serialization of any data structure
+* serialization of any data structure to string
 * key states field name
 * value type is inferred from field type
 * value type could be stated explicitly
