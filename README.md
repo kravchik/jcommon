@@ -4,7 +4,7 @@ Common utils, abstractions and tools that I use in my projects. They make Java p
 
 ##YCollections
 Collections as they should be.
-'''java
+```java
     String names = al(new File("/home/user/").listFiles())
             .filter(File::isDirectory)                  //only dirs
             .map(File::getName)                         //get name
@@ -12,7 +12,7 @@ Collections as they should be.
             .sorted()                                   //sorted
             .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
     System.out.println(names);
-'''
+```
 
 ##ANIO
 A normal IO for Java
