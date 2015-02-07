@@ -76,7 +76,7 @@ Npc (
 ```
 
 ###syntax
-* no commas needed
+* no commas semicolons needed
 * strings and keys without quotes
 * but can use "" or '' (for strings with spaces, for example)
 * multiline strings (TODO)
