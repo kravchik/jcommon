@@ -87,8 +87,9 @@ Npc (
 * carefully controlled comma use to aviod one level parentheses
 * like in (pos:10, 10 size:100, 200)
 
-###types
-* simple parsing or additionally - (de)serialization
+###serializtion
+* simple parsing or additionally - deserialization
+* serialization of any data structure
 * key states field name
 * value type is inferred from field type
 * value type could be stated explicitly
