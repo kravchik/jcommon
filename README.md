@@ -90,14 +90,15 @@ Npc (
 ###types
 * simple parsing or additionally - (de)serialization
 * key states field name
-* value is infered from field type
-* class could be stated explicitly
+* value type is inferred from field type
+* value type could be stated explicitly
 * arrays are also supported
 * if type is unknown - array, map, or special class is constructed
-* all pares are initilizing fields, and other items are given to init method
-* if value is string, but type is not, then Type.parse with that string is called
+* all pares are initilizing into fields (or key:value for map)
+* other elements are given to init(elements) method
+* if value is string but type is not, then Type.parse with that string is called
 * you can specify imports, or fully qualified class name
-* or do nothing, and get YADClass with name explicitly specified
+* or do nothing, and get map, array, or YADClass with name explicitly specified
 
 
 
