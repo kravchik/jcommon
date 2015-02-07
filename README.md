@@ -91,8 +91,7 @@ Npc (
 * numbers, booleans
 * utf8, no restriction on keys or strings
 * comments (one line // and multiline /**/)
-* carefully controlled comma use to aviod one level parentheses
-* like in (pos:10, 10 size:100, 200)
+* carefully controlled comma use to aviod one level parentheses like in (pos:10, 10 size:100, 200)
 
 ###serialization (work in progress)
 * simple parsing or additionally - deserialization
