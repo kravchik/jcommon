@@ -14,8 +14,33 @@ Collections as they should be.
     System.out.println(names);
 ```
 
+* each collection extends standard java collection, so you can use it whenever standard collection would else be used
+* just add some useful methods (java8's .stream() I consider not usable)
+* all added methods are not modifying collection
+* yes, there are copies everywhere, but hey! Optimize it when your profiler say you so!
+* very convinient
+
+
 ##ANIO
-A normal IO for Java
+A normal IO for Java. (because java.nio is not for human beings)
+
+```java
+    ASocket server = new ASocket(8000, socket -> {
+        socket.send("hello!");
+        int a = 3;
+        socket.onData = data -> {
+            System.out.println(a);
+        };
+    });
+
+    client1 = new ASocket("localhost", 8000, socket -> {
+        socket.send("hello1b");
+        socket.onData = data -> {
+            client1.clientSocket.send("hello1b");
+        };
+    });
+
+```
 
 ##YADS
 yet another data syntax (the perfect one actually)
