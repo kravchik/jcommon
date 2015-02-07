@@ -75,9 +75,7 @@ Npc (
   name:'Grumble Fingur'
   type:Goblin
   model:(type:AngryBastard colorScheme:red)
-  items:(
-    items.Hat(name:'Hat of sun')
-    random(type:ring)
+  items: items.Hat(name:'Hat of sun'), random(type:ring)
   )
 )
 ```
