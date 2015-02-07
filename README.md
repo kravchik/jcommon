@@ -41,6 +41,10 @@ A normal IO for Java. (because java.nio is not for human beings)
     });
 
 ```
+* callbacks on connect, callbacks on data
+* node.js style (in the good sense)
+* replaceable serialization engine
+
 
 ##YADS
 yet another data syntax (the perfect one actually)
