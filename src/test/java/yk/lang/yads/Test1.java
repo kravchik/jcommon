@@ -2,7 +2,6 @@ package yk.lang.yads;
 
 import org.junit.Test;
 import yk.jcommon.collections.Tuple;
-import yk.jcommon.collections.YList;
 import yk.jcommon.fastgeom.Vec2f;
 
 import static junit.framework.Assert.assertEquals;
@@ -25,7 +24,7 @@ public class Test1 {
     }
 
     @Test
-    public void reflector() {
+    public void deserializer() {
         assertEquals(al("hello", "world"), YADSSerializer.deserialize("hello world"));
         assertEquals(al(al("hello", "world"), al("hello2", "world2")), YADSSerializer.deserialize("(hello world) (hello2 world2)"));
         assertEquals(hm("hello", "world"), YADSSerializer.deserialize("hello:world"));
@@ -36,10 +35,17 @@ public class Test1 {
     }
 
     @Test
-    public void reflectorImports() {
+    public void deserializerImports() {
         assertEquals(al(new YADClass("XY", al(1, 2))), YADSSerializer.deserialize("XY(1 2)"));
         assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("yk.jcommon.fastgeom.Vec2f(x:1 y:2)"));
         assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("import:yk.jcommon.fastgeom \n Vec2f(x:1 y:2)"));
+    }
+
+    @Test
+    public void serializer() {
+        assertEquals("import: yk.jcommon.fastgeom\nVec2f (\n  x: 1.0\n  y: 2.0\n\n)\n", YADSSerializer.serialize(new Vec2f(1, 2)));
+        assertEquals("(\n  'hello'\n  'world'\n)\n", YADSSerializer.serialize(al("hello", "world")));
+        assertEquals("(\n  'k': 'v'\n)\n", YADSSerializer.serialize(hm("k", "v")));
     }
 
     @Test
@@ -48,9 +54,9 @@ public class Test1 {
         System.out.println(YADSParser.parseClass("XY(10 20)"));
         System.out.println(YADSParser.parseClass("HBox(pos : 10, 20 VBox(size: 50, 50))"));
         System.out.println(HBox.class.getName());
-        System.out.println(YADSSerializer.parseClass(null, YADSParser.parseClass("HBox(pos : 10, 20)")).toString());
+        System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox(pos : 10, 20)")).toString());
 
-        System.out.println(YADSSerializer.parseList(YADSParser.parseList("import: yk.lang.yads HBox(pos : 10, 20)")).toString());
+        System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import: yk.lang.yads HBox(pos : 10, 20)")).toString());
 
         //TODO convert with respect to method call arguments types!
         //TODO map or YAD if class not defined and unknown

@@ -1,0 +1,13 @@
+
+
+
+TODO
+
+-import scopes
+? '=' instead of ':'?
+? '{}' instead of '()'?
+-serialize 'short' data in one line (either one step of hierarchy, or just little data)
+?support complex keys?
+
+-optimize not earlier then requested
+?don't use quotes in serializer if string is without spaces or parentheses?
