@@ -16,7 +16,7 @@ import static yk.jcommon.utils.Util.sqr;
  */
 public class Vec2f implements Serializable {
     public static final Vec2f ZERO = new Vec2f();
-    public float x, y;
+    public float x, y;//TODO final
 
     public Vec2f() {}
 

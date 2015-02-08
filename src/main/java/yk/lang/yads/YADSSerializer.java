@@ -2,6 +2,7 @@ package yk.lang.yads;
 
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
+import yk.jcommon.collections.YMap;
 import yk.jcommon.collections.YSet;
 import yk.jcommon.utils.BadException;
 import yk.jcommon.utils.Reflector;
@@ -12,6 +13,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashMap.hm;
 import static yk.jcommon.collections.YHashSet.hs;
 
 /**
@@ -40,7 +42,7 @@ public class YADSSerializer {
                 result += "(\n";
                 tab.inc();
                 int length = Array.getLength(o);
-                for (int i = 0; i < length; i ++) result += tab + toMidaObject(namespaces, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += tab + toMidaObject(namespaces, Array.get(o, i));
                 tab.dec();
                 result += tab + ")\n";
                 return result;
@@ -50,7 +52,7 @@ public class YADSSerializer {
                 result += "(";
                 int length = Array.getLength(o);
                 tab.inc();//just in case there will be complex structures
-                for (int i = 0; i < length; i ++) result += (i > 0 ? " " : "") + toMidaObject(namespaces, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + toMidaObject(namespaces, Array.get(o, i));
                 tab.dec();
                 result += ")\n";
                 return result;
@@ -84,17 +86,25 @@ public class YADSSerializer {
         return result;
     }
 
+    public static Object deserialize(String s) {
+        return parseList(YADSParser.parseList(s));
+    }
+
     public static Object parseList(YList l) {
         return parseClass(null, new YADClass(null, l));
+    }
+
+    public static Object parseClass(Object yad) {
+        return parseClass(null, yad);
     }
 
     public static Object parseClass(Class clazz, Object yad) {
         //System.out.println("called 2 with class " + clazz + " yad:  " + yad);
         if (clazz != null && clazz.isArray()) return parseArray(clazz, (YADClass) yad);
-        if (clazz == Integer.class || clazz == int.class) return ((Number)yad).intValue();
-        if (clazz == Float.class || clazz == float.class) return ((Number)yad).floatValue();
-        if (clazz == Long.class || clazz == long.class) return ((Number)yad).longValue();
-        if (clazz == Double.class || clazz == double.class) return ((Number)yad).doubleValue();
+        if (clazz == Integer.class || clazz == int.class) return ((Number) yad).intValue();
+        if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
+        if (clazz == Long.class || clazz == long.class) return ((Number) yad).longValue();
+        if (clazz == Double.class || clazz == double.class) return ((Number) yad).doubleValue();
         if (yad instanceof YADClass) return parseClassImpl(clazz, (YADClass) yad);
         else return yad;
     }
@@ -106,42 +116,50 @@ public class YADSSerializer {
     }
 
     private static Object parseClassImpl(Class clazz, YADClass yad) {
-            //System.out.println("called with class " + clazz + " yad:  " + yad);
-            if (yad.name != null) {
-                clazz = null;
-                for (String p : namespaces) {
-                    try {
-                        clazz = Class.forName((p.length() > 0 ? p + "." : "") + yad.name);
-                        break;
-                    } catch (ClassNotFoundException ignore) {
-                    }
+        //System.out.println("called with class " + clazz + " yad:  " + yad);
+        if (yad.name != null) {
+            clazz = null;
+            for (String p : namespaces) {
+                try {
+                    clazz = Class.forName((p.length() > 0 ? p + "." : "") + yad.name);
+                    break;
+                } catch (ClassNotFoundException ignore) {
                 }
-                if (clazz == null) throw new RuntimeException("class not found " + yad.name + " with imports: " + namespaces);
             }
-            //TODO assert found class by class name, extends field?
-            Object instance = clazz == null ? null : Reflector.newInstanceArgless(clazz);
-            YList array = al();
-            for (Object element : yad.body) {
-                if (element instanceof Tuple) {
-                    Tuple<String, Object> t = (Tuple<String, Object>) element;
-                    Object value = parseClass(clazz == null ? null : Reflector.getField(clazz, t.a).getType(), t.b);
-                    if (t.a.equals("import")) {
-                        System.out.println("import " + value);
-                        if (value instanceof String) namespaces.add((String) value);
-                        else if (value instanceof YList) namespaces.addAll((YList<String>) value);
-                        else BadException.die("unknown data " + value + " for import");
-                    } else {
-                        Reflector.set(instance, t.a, value);
-                    }
+            //if (clazz == null) throw new RuntimeException("class not found " + yad.name + " with imports: " + namespaces);
+        }
+        //TODO assert found class by class name, extends field?
+        Object instance = clazz == null ? null : Reflector.newInstanceArgless(clazz);
+        YList array = al();
+        YList<Tuple> tuples = al();
+        for (Object element : yad.body) {
+            if (element instanceof Tuple) {
+                Tuple<String, Object> t = (Tuple<String, Object>) element;
+                Object value = parseClass(clazz == null ? null : Reflector.getField(clazz, t.a).getType(), t.b);
+                if (t.a.equals("import")) {
+                    if (value instanceof String) namespaces.add((String) value);
+                    else if (value instanceof YList) namespaces.addAll((YList<String>) value);
+                    else BadException.die("unknown data " + value + " for import");
                 } else {
-                    array.add(parseClass(null, element));
+                    tuples.add(new Tuple(t.a, value));
                 }
+            } else {
+                array.add(parseClass(null, element));
             }
-            if (clazz == null) return array;
-            //TODO reflector call
-            //clazz.getDeclaredMethod("init", YList.class).invoke(instance, array);
-            //instance.init(array);
+        }
+        if (instance != null) {
+            for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
+            if (!array.isEmpty()) Reflector.invokeMethod(instance, "init", array);
             return instance;
-
+        }
+        if (yad.name != null || (!array.isEmpty() && !tuples.isEmpty())) {
+            return new YADClass(yad.name, tuples.join(array));
+        }
+        if (array.isEmpty()) {
+            YMap result = hm();
+            for (Tuple t : tuples) result.put(t.a, t.b);
+            return result;
+        }
+        return array;
     }
 }
