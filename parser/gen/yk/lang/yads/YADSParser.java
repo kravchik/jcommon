@@ -93,19 +93,19 @@ public class YADSParser implements YADSParserConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEGER_LITERAL:
         s = jj_consume_token(INTEGER_LITERAL).image;
-                                 o = Long.parseLong(s);
+                                 if (s.toLowerCase().endsWith("l")) o = Long.parseLong(s.substring(0, s.length()-1)); else o = Integer.parseInt(s);
         break;
       case FLOATING_POINT_LITERAL:
         s = jj_consume_token(FLOATING_POINT_LITERAL).image;
-                                        o = Double.parseDouble(s);
+                                        if (s.toLowerCase().endsWith("d")) o = Double.parseDouble(s.substring(0, s.length()-1)); else o = Float.parseFloat(s);
         break;
       case STRING_LITERAL:
         s = jj_consume_token(STRING_LITERAL).image;
-                                o = s;
+                                o = s.substring(1, s.length() - 1);
         break;
       case STRING_LITERAL_2:
         s = jj_consume_token(STRING_LITERAL_2).image;
-                                  o = s;
+                                  o = s.substring(1, s.length() - 1);
         break;
       case IDENTIFIER:
         s = jj_consume_token(IDENTIFIER).image;

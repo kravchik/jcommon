@@ -209,13 +209,13 @@ Object yadElement():
     (
     LOOKAHEAD(2) o = yadClass()
     |
-    s = <INTEGER_LITERAL>.image {o = Long.parseLong(s);}//TODO depends on type!
+    s = <INTEGER_LITERAL>.image {if (s.toLowerCase().endsWith("l")) o = Long.parseLong(s.substring(0, s.length()-1)); else o = Integer.parseInt(s);}//TODO depends on type!
     |
-    s = <FLOATING_POINT_LITERAL>.image {o = Double.parseDouble(s);}//TODO depends on type!
+    s = <FLOATING_POINT_LITERAL>.image {if (s.toLowerCase().endsWith("d")) o = Double.parseDouble(s.substring(0, s.length()-1)); else o = Float.parseFloat(s);}//TODO depends on type!
     |
-    s = <STRING_LITERAL>.image {o = s;}
+    s = <STRING_LITERAL>.image {o = s.substring(1, s.length() - 1);}
     |
-    s = <STRING_LITERAL_2>.image {o = s;}
+    s = <STRING_LITERAL_2>.image {o = s.substring(1, s.length() - 1);}
     |
     s = <IDENTIFIER>.image {o = s;}
     |
