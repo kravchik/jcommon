@@ -8,6 +8,7 @@ PARSER_BEGIN(YADSParser)
 package yk.lang.yads;
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
+import yk.jcommon.utils.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -119,7 +120,7 @@ TOKEN : /* LITERALS */
 |
   < STRING_LITERAL_2:
       "'"
-      (   (~["\"","\\","\n","\r"])
+      (   (~["'","\\","\n","\r"])
         | ("\\"
             ( ["n","t","b","r","f","\\","'","\""]
             | ["0"-"7"] ( ["0"-"7"] )?
@@ -213,9 +214,9 @@ Object yadElement():
     |
     s = <FLOATING_POINT_LITERAL>.image {if (s.toLowerCase().endsWith("d")) o = Double.parseDouble(s.substring(0, s.length()-1)); else o = Float.parseFloat(s);}//TODO depends on type!
     |
-    s = <STRING_LITERAL>.image {o = s.substring(1, s.length() - 1);}
+    s = <STRING_LITERAL>.image {o = Util.workdYadsString(s);}
     |
-    s = <STRING_LITERAL_2>.image {o = s.substring(1, s.length() - 1);}
+    s = <STRING_LITERAL_2>.image {o = Util.workdYadsString(s);}
     |
     s = <IDENTIFIER>.image {if ("null".equals(s)) o = null; else o = s;}
     |

@@ -376,4 +376,16 @@ public class Util {
     public static <T> T last(List<T> c) {
         return c.get(c.size() - 1);
     }
+
+    public static Object workdYadsString(String s) {
+        String result = s.substring(1, s.length() - 1)
+                         .replace("\\n", "\n")
+                         .replace("\\t", "\t")
+                         .replace("\\\"", "\"")
+                         .replace("\\'", "'")
+                         .replace("\\\\", "\\")
+         ;
+        return result;
+    }
+
 }

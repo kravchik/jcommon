@@ -2,6 +2,7 @@
 package yk.lang.yads;
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
+import yk.jcommon.utils.Util;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import static yk.jcommon.collections.YArrayList.al;
@@ -315,7 +316,7 @@ private int jjMoveNfa_0(int startState, int curPos)
                      jjCheckNAddStates(10, 12);
                   break;
                case 19:
-                  if ((0xfffffffbffffdbffL & l) != 0L)
+                  if ((0xffffff7fffffdbffL & l) != 0L)
                      jjCheckNAddStates(10, 12);
                   break;
                case 21:

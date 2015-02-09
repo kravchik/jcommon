@@ -19,6 +19,8 @@ public class Test1 {
     @Test
     public void parsePrimitives() {
         assertEquals(al("hello", "hello", "hello", "", ""), YADSParser.parseList("hello 'hello' \"hello\" '' \"\""));
+        assertEquals(al("\"hello\"", "'hello'"), YADSParser.parseList(" '\\\"hello\\\"'  '\\'hello\\''"));
+        assertEquals(al("hello\nworld", "hello\tworld"), YADSParser.parseList(" 'hello\\nworld'  'hello\\tworld'"));
         assertEquals(al(10, 10l, 10L, 10f, 10d, 10D, 10.1d, 10.1f, 10.1f), YADSParser.parseList("10 10l 10L 10f 10d 10D 10.1d 10.1f 10.1"));
         assertEquals(al(true, false), YADSParser.parseList("true false"));
     }
@@ -60,6 +62,8 @@ public class Test1 {
 
     @Test
     public void test() {
+        System.out.println("'\u005cn'");
+
         System.out.println(YADSParser.parseList("hello world"));
         System.out.println(YADSParser.parseClass("XY(10 20)"));
         System.out.println(YADSParser.parseClass("HBox(pos : 10, 20 VBox(size: 50, 50))"));

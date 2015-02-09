@@ -1,6 +1,7 @@
 
 +null
 +enums
++escape \' \" \n \t in strings!
 
 TODO
 
@@ -12,5 +13,11 @@ TODO
 
 -optimize not earlier then requested
 ?don't use quotes in serializer if string is without spaces or parentheses?
-
 -compare with gson (gson cannot do many things in contrast because of json constraints)
+
+-code-generate optimized (de)serializer for custom classes
+
+
+-write about using YADS instead of XML/YAML/JSON
+-write about using YADS as syntax and AST back-end for custom language (which is better then simple lisp-like syntaxes)
+-write about using YADS instead of .properties (multi-lines, comments, serialization, functions, etc...)

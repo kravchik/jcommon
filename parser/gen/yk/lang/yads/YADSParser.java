@@ -2,6 +2,7 @@
 package yk.lang.yads;
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
+import yk.jcommon.utils.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -101,11 +102,11 @@ public class YADSParser implements YADSParserConstants {
         break;
       case STRING_LITERAL:
         s = jj_consume_token(STRING_LITERAL).image;
-                                o = s.substring(1, s.length() - 1);
+                                o = Util.workdYadsString(s);
         break;
       case STRING_LITERAL_2:
         s = jj_consume_token(STRING_LITERAL_2).image;
-                                  o = s.substring(1, s.length() - 1);
+                                  o = Util.workdYadsString(s);
         break;
       case IDENTIFIER:
         s = jj_consume_token(IDENTIFIER).image;
@@ -180,11 +181,6 @@ public class YADSParser implements YADSParserConstants {
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
-  }
-
-  private boolean jj_3R_16() {
-    if (jj_scan_token(FALSE)) return true;
-    return false;
   }
 
   private boolean jj_3R_15() {
@@ -297,6 +293,11 @@ public class YADSParser implements YADSParserConstants {
       xsp = jj_scanpos;
       if (jj_3R_5()) { jj_scanpos = xsp; break; }
     }
+    return false;
+  }
+
+  private boolean jj_3R_16() {
+    if (jj_scan_token(FALSE)) return true;
     return false;
   }
 
