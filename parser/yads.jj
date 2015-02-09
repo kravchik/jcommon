@@ -214,9 +214,9 @@ Object yadElement():
     |
     s = <FLOATING_POINT_LITERAL>.image {if (s.toLowerCase().endsWith("d")) o = Double.parseDouble(s.substring(0, s.length()-1)); else o = Float.parseFloat(s);}//TODO depends on type!
     |
-    s = <STRING_LITERAL>.image {o = Util.workdYadsString(s);}
+    s = <STRING_LITERAL>.image {o = Util.unescapeYadsString(s.substring(1, s.length() - 1));}
     |
-    s = <STRING_LITERAL_2>.image {o = Util.workdYadsString(s);}
+    s = <STRING_LITERAL_2>.image {o = Util.unescapeYadsString(s.substring(1, s.length() - 1));}
     |
     s = <IDENTIFIER>.image {if ("null".equals(s)) o = null; else o = s;}
     |

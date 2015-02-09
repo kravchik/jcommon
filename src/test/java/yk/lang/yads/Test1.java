@@ -58,6 +58,8 @@ public class Test1 {
         assertEquals("import: yk.lang.yads\nTestEnumClass (\n\n)\n", YADSSerializer.serialize(new TestEnumClass(null)));
 
         assertEquals("(\n  'hello'\n  null\n)\n", YADSSerializer.serialize(al("hello", null)));
+
+        assertEquals("(\n  'h\\\"e\\'l\\nl\\to'\n)\n", YADSSerializer.serialize(al("h\"e'l\nl\to")));
     }
 
     @Test

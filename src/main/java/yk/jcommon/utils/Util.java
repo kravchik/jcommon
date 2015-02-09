@@ -1,5 +1,9 @@
 package yk.jcommon.utils;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.text.translate.AggregateTranslator;
+import org.apache.commons.lang3.text.translate.EntityArrays;
+import org.apache.commons.lang3.text.translate.LookupTranslator;
 import yk.jcommon.fastgeom.Vec2f;
 
 import java.io.InputStream;
@@ -377,15 +381,12 @@ public class Util {
         return c.get(c.size() - 1);
     }
 
-    public static Object workdYadsString(String s) {
-        String result = s.substring(1, s.length() - 1)
-                         .replace("\\n", "\n")
-                         .replace("\\t", "\t")
-                         .replace("\\\"", "\"")
-                         .replace("\\'", "'")
-                         .replace("\\\\", "\\")
-         ;
-        return result;
+    public static Object unescapeYadsString(String s) {
+        return StringEscapeUtils.unescapeJava(s);
     }
 
+    private static final AggregateTranslator ESCAPE_YADS = new AggregateTranslator(new LookupTranslator(new String[][]{{"'", "\\'"}, {"\"", "\\\""}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
+    public static Object escapeYadsString(String s) {
+        return ESCAPE_YADS.translate(s);
+    }
 }
