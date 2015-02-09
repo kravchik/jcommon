@@ -85,7 +85,7 @@ public interface YADSParserConstants {
     "<IDENTIFIER>",
     "<LETTER>",
     "<DIGIT>",
-    "\":\"",
+    "\"=\"",
   };
 
 }

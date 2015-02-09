@@ -182,7 +182,7 @@ YList yadList():
 {
     (LOOKAHEAD(2)
     key = <IDENTIFIER>.image
-    ":"
+    "="
     value = yadElement1()      {result.add(new Tuple(key, value));}
     |
     value = yadElement1()          {result.add(value);}
@@ -244,9 +244,9 @@ YADClass yadClass():
 {String s = null;YList l;}
 {
     (s = <IDENTIFIER>.image)?
-    "("
+    "{"
     l = yadList()
-    ")"
+    "}"
     {return new YADClass(s, l);}
 }
 

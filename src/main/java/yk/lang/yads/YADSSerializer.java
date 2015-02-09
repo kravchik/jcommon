@@ -31,7 +31,7 @@ public class YADSSerializer {
     public static String serialize(Object o) {
         YSet<String> namespaces = hs();
         String result = serialize(namespaces, o);
-        return (namespaces.isEmpty() ? "" : "import: " + Util.join(namespaces, ", ") + "\n") + result;
+        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
     }
 
     private static String serialize(YSet<String> namespaces, Object o) {
@@ -45,22 +45,22 @@ public class YADSSerializer {
         if (o.getClass().isArray()) {
             if (o.getClass().getComponentType().isArray()) {
                 String result = "";
-                result += "(\n";
+                result += "{\n";
                 tab.inc();
                 int length = Array.getLength(o);
                 for (int i = 0; i < length; i++) result += tab + serialize(namespaces, Array.get(o, i));
                 tab.dec();
-                result += tab + ")\n";
+                result += tab + "}\n";
                 return result;
 
             } else {
                 String result = "";
-                result += "(";
+                result += "{";
                 int length = Array.getLength(o);
                 tab.inc();//just in case there will be complex structures
                 for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + serialize(namespaces, Array.get(o, i));
                 tab.dec();
-                result += ")\n";
+                result += "}\n";
                 return result;
             }
         }
@@ -69,21 +69,21 @@ public class YADSSerializer {
 
     private static String serializeMap(YSet<String> namespaces, Map o) {//TODO add specific Map type if not just HashMap or YHashMap
         String result = "";
-        result += tab + "(\n";
+        result += tab + "{\n";
         tab.inc();
-        for (Object key : o.keySet()) result += tab + serialize(namespaces, key) + ": " + serialize(namespaces, o.get(key)) + "\n";
+        for (Object key : o.keySet()) result += tab + serialize(namespaces, key) + "= " + serialize(namespaces, o.get(key)) + "\n";
         tab.dec();
-        result += tab + ")\n";
+        result += tab + "}\n";
         return result;
     }
 
     private static String serializeList(YSet<String> namespaces, List o) {//TODO add specific List type if not just ArrayList or YArrayList
         String result = "";
-        result += tab + "(\n";
+        result += tab + "{\n";
         tab.inc();
         for (Object el : o) result += tab + serialize(namespaces, el) + "\n";
         tab.dec();
-        result += tab + ")\n";
+        result += tab + "}\n";
         return result;
     }
 
@@ -95,19 +95,19 @@ public class YADSSerializer {
             namespaces.add(name.substring(0, lastPointIndex));
             name = name.substring(lastPointIndex + 1);
         }
-        result += tab + name + " (\n";
+        result += tab + name + " {\n";
         tab.inc();
 
         for (Field field : Reflector.getAllNonStaticFieldsReversed(o.getClass()).values()) {
             Object value = Reflector.get(o, field);
             if (value == null) continue;
             //TODO other default
-            result += tab + field.getName() + ": " + serialize(namespaces, value) + "\n";
+            result += tab + field.getName() + "= " + serialize(namespaces, value) + "\n";
         }
 
 
         tab.dec();
-        result += "\n" + tab + ")\n";
+        result += "\n" + tab + "}\n";
         return result;
     }
 

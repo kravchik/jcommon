@@ -35,7 +35,7 @@ public class YADSParser implements YADSParserConstants {
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case LPAREN:
+      case LBRACE:
       case TRUE:
       case FALSE:
       case INTEGER_LITERAL:
@@ -56,7 +56,7 @@ public class YADSParser implements YADSParserConstants {
                                 result.add(new Tuple(key, value));
       } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LPAREN:
+        case LBRACE:
         case TRUE:
         case FALSE:
         case INTEGER_LITERAL:
@@ -162,9 +162,9 @@ public class YADSParser implements YADSParserConstants {
       jj_la1[4] = jj_gen;
       ;
     }
-    jj_consume_token(LPAREN);
+    jj_consume_token(LBRACE);
     l = yadList();
-    jj_consume_token(RPAREN);
+    jj_consume_token(RBRACE);
      {if (true) return new YADClass(s, l);}
     throw new Error("Missing return statement in function");
   }
@@ -192,9 +192,9 @@ public class YADSParser implements YADSParserConstants {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_scan_token(24)) jj_scanpos = xsp;
-    if (jj_scan_token(LPAREN)) return true;
+    if (jj_scan_token(LBRACE)) return true;
     if (jj_3R_4()) return true;
-    if (jj_scan_token(RPAREN)) return true;
+    if (jj_scan_token(RBRACE)) return true;
     return false;
   }
 
@@ -318,7 +318,7 @@ public class YADSParser implements YADSParserConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1d1c200,0x1d1c200,0x1d1c000,0x2000,0x1000000,};
+      jj_la1_0 = new int[] {0x1d1c800,0x1d1c800,0x1d1c000,0x2000,0x1000000,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[2];
   private boolean jj_rescan = false;

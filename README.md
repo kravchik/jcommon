@@ -59,25 +59,25 @@ Yet Another Data Syntax (the perfect one actually).
 How would UI markup look like:
 
 ```
-import:ui
-HBox (
-  pos:100, 200
-  VBox (
-    Input (text:'input here')
-    Button (text:'hello world')
-  )
-)
+import=ui
+HBox {
+  pos=100, 200
+  VBox {
+    Input {text='input here'}
+    Button {text='hello world'}
+  }
+}
 ```
 How would some game config look lie:
 ```
-import:my.game
-Npc (
-  name:'Grumble Fingur'
-  type:Goblin
-  model:(type:AngryBastard colorScheme:red)
-  items: items.Hat(name:'Hat of sun'), random(type:ring)
-  )
-)
+import=my.game
+Npc {
+  name='Grumble Fingur'
+  type=Goblin
+  model={type=AngryBastard colorScheme=red}
+  items= items.Hat{name='Hat of sun'}, random{type=ring}
+  }
+}
 ```
 
 ###syntax
@@ -87,11 +87,11 @@ Npc (
 * ' ' for strings - so you can include YADS in java strings without escaping
 * spaces and tabs don't have special meaning (like in yaml or python), so you can arrange data-text as you wish, even in one line
 * multiline strings (with both "" and '' quotes)
-* colons for key:value
+* equal for key=value
 * numbers, booleans
 * utf8, no restriction on keys or strings
 * comments (one line // and multiline /**/)
-* carefully controlled comma use to aviod one level parentheses like in (pos:10, 10 size:100, 200)
+* carefully controlled comma use to aviod one level parentheses like in {pos=10, 10 size=100, 200}
 
 ###serialization (work in progress)
 * simple parsing or additionally - deserialization

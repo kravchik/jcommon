@@ -35,38 +35,38 @@ public class Test1 {
     @Test
     public void deserializer() {
         assertEquals(al("hello", "world"), YADSSerializer.deserialize("hello world"));
-        assertEquals(al(al("hello", "world"), al("hello2", "world2")), YADSSerializer.deserialize("(hello world) (hello2 world2)"));
-        assertEquals(hm("hello", "world"), YADSSerializer.deserialize("hello:world"));
+        assertEquals(al(al("hello", "world"), al("hello2", "world2")), YADSSerializer.deserialize("{hello world} {hello2 world2}"));
+        assertEquals(hm("hello", "world"), YADSSerializer.deserialize("hello=world"));
 
-        assertEquals(new YADClass(null, al(new Tuple("a", "b"), "c")), YADSSerializer.deserialize("a:b c"));
-        assertEquals(al(new YADClass(null, al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("(a:b c)"));
-        assertEquals(al(new YADClass("name", al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("name(a:b c)"));
+        assertEquals(new YADClass(null, al(new Tuple("a", "b"), "c")), YADSSerializer.deserialize("a=b c"));
+        assertEquals(al(new YADClass(null, al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("{a=b c}"));
+        assertEquals(al(new YADClass("name", al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("name{a=b c}"));
 
-        assertEquals(al(new TestEnumClass(TestEnum.ENUM1)), YADSSerializer.deserialize("TestEnumClass(enumField:ENUM1)"));
-        assertEquals(al(TestEnum.ENUM1), YADSSerializer.deserialize("TestEnum(ENUM1)"));
+        assertEquals(al(new TestEnumClass(TestEnum.ENUM1)), YADSSerializer.deserialize("TestEnumClass{enumField=ENUM1}"));
+        assertEquals(al(TestEnum.ENUM1), YADSSerializer.deserialize("TestEnum{ENUM1}"));
 
-        assertEquals(al(new TestEnumClass(null)), YADSSerializer.deserialize("TestEnumClass(enumField:null)"));
+        assertEquals(al(new TestEnumClass(null)), YADSSerializer.deserialize("TestEnumClass{enumField=null}"));
     }
 
     @Test
     public void deserializerImports() {
-        assertEquals(al(new YADClass("XY", al(1, 2))), YADSSerializer.deserialize("XY(1 2)"));
-        assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("yk.jcommon.fastgeom.Vec2f(x:1 y:2)"));
-        assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("import:yk.jcommon.fastgeom \n Vec2f(x:1 y:2)"));
+        assertEquals(al(new YADClass("XY", al(1, 2))), YADSSerializer.deserialize("XY{1 2}"));
+        assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("yk.jcommon.fastgeom.Vec2f{x=1 y=2}"));
+        assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("import=yk.jcommon.fastgeom \n Vec2f{x=1 y=2}"));
     }
 
     @Test
     public void serializer() {
-        assertEquals("import: yk.jcommon.fastgeom\nVec2f (\n  x: 1.0\n  y: 2.0\n\n)\n", YADSSerializer.serialize(new Vec2f(1, 2)));
-        assertEquals("(\n  'hello'\n  'world'\n)\n", YADSSerializer.serialize(al("hello", "world")));
-        assertEquals("(\n  'k': 'v'\n)\n", YADSSerializer.serialize(hm("k", "v")));
+        assertEquals("import= yk.jcommon.fastgeom\nVec2f {\n  x= 1.0\n  y= 2.0\n\n}\n", YADSSerializer.serialize(new Vec2f(1, 2)));
+        assertEquals("{\n  'hello'\n  'world'\n}\n", YADSSerializer.serialize(al("hello", "world")));
+        assertEquals("{\n  'k'= 'v'\n}\n", YADSSerializer.serialize(hm("k", "v")));
 
-        assertEquals("import: yk.lang.yads\nTestEnumClass (\n  enumField: ENUM1\n\n)\n", YADSSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
-        assertEquals("import: yk.lang.yads\nTestEnumClass (\n\n)\n", YADSSerializer.serialize(new TestEnumClass(null)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass {\n  enumField= ENUM1\n\n}\n", YADSSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass {\n\n}\n", YADSSerializer.serialize(new TestEnumClass(null)));
 
-        assertEquals("(\n  'hello'\n  null\n)\n", YADSSerializer.serialize(al("hello", null)));
+        assertEquals("{\n  'hello'\n  null\n}\n", YADSSerializer.serialize(al("hello", null)));
 
-        assertEquals("(\n  'h\\\"e\\'l\\nl\\to'\n)\n", YADSSerializer.serialize(al("h\"e'l\nl\to")));
+        assertEquals("{\n  'h\"e\\'l\\nl\\to'\n}\n", YADSSerializer.serialize(al("h\"e'l\nl\to")));
     }
 
     @Test
@@ -74,12 +74,12 @@ public class Test1 {
         System.out.println("'\u005cn'");
 
         System.out.println(YADSParser.parseList("hello world"));
-        System.out.println(YADSParser.parseClass("XY(10 20)"));
-        System.out.println(YADSParser.parseClass("HBox(pos : 10, 20 VBox(size: 50, 50))"));
+        System.out.println(YADSParser.parseClass("XY{10 20}"));
+        System.out.println(YADSParser.parseClass("HBox{pos = 10, 20 VBox{size= 50, 50}}"));
         System.out.println(HBox.class.getName());
-        System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox(pos : 10, 20)")).toString());
+        System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox{pos = 10, 20}")).toString());
 
-        System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import: yk.lang.yads HBox(pos : 10, 20)")).toString());
+        System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import= yk.lang.yads HBox{pos = 10, 20}")).toString());
 
         //TODO convert with respect to method call arguments types!
         //TODO map or YAD if class not defined and unknown
