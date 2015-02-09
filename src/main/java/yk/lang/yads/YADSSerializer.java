@@ -35,11 +35,13 @@ public class YADSSerializer {
     }
 
     private static String serialize(YSet<String> namespaces, Object o) {
+        if (o == null) return "null";
         if (o instanceof Number) return o + "";
         if (o instanceof String) return "'" + o + "'";
         if (o instanceof Boolean) return o + "";
         if (o instanceof List) return serializeList(namespaces, (List) o);
         if (o instanceof Map) return serializeMap(namespaces, (Map) o);
+        if (o.getClass().isEnum()) return "" + o;
         if (o.getClass().isArray()) {
             if (o.getClass().getComponentType().isArray()) {
                 String result = "";
@@ -122,7 +124,9 @@ public class YADSSerializer {
     }
 
     public static Object deserializeClass(Class clazz, Object yad) {
+        if (yad == null) return null;
         if (clazz != null && clazz.isArray()) return parseArray(clazz, (YADClass) yad);
+        if (clazz != null && clazz.isEnum()) return Enum.valueOf(clazz, (String)yad);
         if (clazz == Integer.class || clazz == int.class) return ((Number) yad).intValue();
         if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
         if (clazz == Long.class || clazz == long.class) return ((Number) yad).longValue();
@@ -166,6 +170,11 @@ public class YADSSerializer {
             } else {
                 array.add(deserializeClass(null, element));
             }
+        }
+        if (clazz != null && clazz.isEnum()) {
+            if (!tuples.isEmpty()) BadException.die("enum can't contain tuples");
+            if (array.size() != 1) BadException.die("enum must be stated by one element");
+            return Enum.valueOf(clazz, (String)array.get(0));
         }
         if (instance != null) {
             for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);

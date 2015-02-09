@@ -32,6 +32,11 @@ public class Test1 {
         assertEquals(new YADClass(null, al(new Tuple("a", "b"), "c")), YADSSerializer.deserialize("a:b c"));
         assertEquals(al(new YADClass(null, al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("(a:b c)"));
         assertEquals(al(new YADClass("name", al(new Tuple("a", "b"), "c"))), YADSSerializer.deserialize("name(a:b c)"));
+
+        assertEquals(al(new TestEnumClass(TestEnum.ENUM1)), YADSSerializer.deserialize("TestEnumClass(enumField:ENUM1)"));
+        assertEquals(al(TestEnum.ENUM1), YADSSerializer.deserialize("TestEnum(ENUM1)"));
+
+        assertEquals(al(new TestEnumClass(null)), YADSSerializer.deserialize("TestEnumClass(enumField:null)"));
     }
 
     @Test
@@ -46,6 +51,11 @@ public class Test1 {
         assertEquals("import: yk.jcommon.fastgeom\nVec2f (\n  x: 1.0\n  y: 2.0\n\n)\n", YADSSerializer.serialize(new Vec2f(1, 2)));
         assertEquals("(\n  'hello'\n  'world'\n)\n", YADSSerializer.serialize(al("hello", "world")));
         assertEquals("(\n  'k': 'v'\n)\n", YADSSerializer.serialize(hm("k", "v")));
+
+        assertEquals("import: yk.lang.yads\nTestEnumClass (\n  enumField: ENUM1\n\n)\n", YADSSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
+        assertEquals("import: yk.lang.yads\nTestEnumClass (\n\n)\n", YADSSerializer.serialize(new TestEnumClass(null)));
+
+        assertEquals("(\n  'hello'\n  null\n)\n", YADSSerializer.serialize(al("hello", null)));
     }
 
     @Test

@@ -109,7 +109,7 @@ public class YADSParser implements YADSParserConstants {
         break;
       case IDENTIFIER:
         s = jj_consume_token(IDENTIFIER).image;
-                            o = s;
+                            if ("null".equals(s)) o = null; else o = s;
         break;
       case TRUE:
         jj_consume_token(TRUE);
@@ -125,7 +125,7 @@ public class YADSParser implements YADSParserConstants {
         throw new ParseException();
       }
     }
-     {if (true) return o;}
+     {if (true) return "null".equals(o) ? null : o;}
     throw new Error("Missing return statement in function");
   }
 

@@ -217,13 +217,13 @@ Object yadElement():
     |
     s = <STRING_LITERAL_2>.image {o = s.substring(1, s.length() - 1);}
     |
-    s = <IDENTIFIER>.image {o = s;}
+    s = <IDENTIFIER>.image {if ("null".equals(s)) o = null; else o = s;}
     |
     <TRUE> {o = true;}
     |
     <FALSE> {o = false;}
     )
-    {return o;}
+    {return "null".equals(o) ? null : o;}
 }
 
 Object commedClass() :

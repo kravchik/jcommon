@@ -1,5 +1,6 @@
 
-
++null
++enums
 
 TODO
 
@@ -11,3 +12,5 @@ TODO
 
 -optimize not earlier then requested
 ?don't use quotes in serializer if string is without spaces or parentheses?
+
+-compare with gson (gson cannot do many things in contrast because of json constraints)
