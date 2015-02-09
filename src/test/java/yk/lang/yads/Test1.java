@@ -21,6 +21,13 @@ public class Test1 {
         assertEquals(al("hello", "hello", "hello", "", ""), YADSParser.parseList("hello 'hello' \"hello\" '' \"\""));
         assertEquals(al("\"hello\"", "'hello'"), YADSParser.parseList(" '\\\"hello\\\"'  '\\'hello\\''"));
         assertEquals(al("hello\nworld", "hello\tworld"), YADSParser.parseList(" 'hello\\nworld'  'hello\\tworld'"));
+
+        assertEquals(al("hello\nworld", "hello\tworld"), YADSParser.parseList(" 'hello\nworld'  'hello\tworld'"));
+
+        assertEquals(al("\"'hello world'\"", "\"'hello world'\""), YADSParser.parseList(" \"\\\"'hello world'\\\"\"  '\"\\'hello world\\'\"'"));
+        assertEquals(al("\\'"), YADSParser.parseList(" \"\\\\'\" "));
+        assertEquals(al("\\\""), YADSParser.parseList(" '\\\\\"' "));
+
         assertEquals(al(10, 10l, 10L, 10f, 10d, 10D, 10.1d, 10.1f, 10.1f), YADSParser.parseList("10 10l 10L 10f 10d 10D 10.1d 10.1f 10.1"));
         assertEquals(al(true, false), YADSParser.parseList("true false"));
     }

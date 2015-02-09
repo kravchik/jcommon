@@ -102,11 +102,11 @@ public class YADSParser implements YADSParserConstants {
         break;
       case STRING_LITERAL:
         s = jj_consume_token(STRING_LITERAL).image;
-                                o = Util.unescapeYadsString(s.substring(1, s.length() - 1));
+                                o = Util.UNESCAPE_YADS_DOUBLE_QUOTES.translate(s.substring(1, s.length() - 1));
         break;
       case STRING_LITERAL_2:
         s = jj_consume_token(STRING_LITERAL_2).image;
-                                  o = Util.unescapeYadsString(s.substring(1, s.length() - 1));
+                                  o = Util.UNESCAPE_YADS_SINGLE_QUOTES.translate(s.substring(1, s.length() - 1));
         break;
       case IDENTIFIER:
         s = jj_consume_token(IDENTIFIER).image;

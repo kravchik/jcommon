@@ -37,7 +37,7 @@ public class YADSSerializer {
     private static String serialize(YSet<String> namespaces, Object o) {
         if (o == null) return "null";
         if (o instanceof Number) return o + "";
-        if (o instanceof String) return "'" + Util.escapeYadsString((String) o) + "'";//TODO don't escape ' for " and vice versa?
+        if (o instanceof String) return "'" + Util.ESCAPE_YADS_SINGLE_QUOTES.translate((String) o) + "'";//TODO don't escape ' for " and vice versa?
         if (o instanceof Boolean) return o + "";
         if (o instanceof List) return serializeList(namespaces, (List) o);
         if (o instanceof Map) return serializeMap(namespaces, (Map) o);

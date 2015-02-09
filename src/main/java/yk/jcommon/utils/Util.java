@@ -1,9 +1,7 @@
 package yk.jcommon.utils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.text.translate.AggregateTranslator;
-import org.apache.commons.lang3.text.translate.EntityArrays;
-import org.apache.commons.lang3.text.translate.LookupTranslator;
+import org.apache.commons.lang3.text.translate.*;
 import yk.jcommon.fastgeom.Vec2f;
 
 import java.io.InputStream;
@@ -381,12 +379,32 @@ public class Util {
         return c.get(c.size() - 1);
     }
 
-    public static Object unescapeYadsString(String s) {
-        return StringEscapeUtils.unescapeJava(s);
-    }
+    public static final CharSequenceTranslator UNESCAPE_YADS_SINGLE_QUOTES =
+     new AggregateTranslator(
+                             new OctalUnescaper(),     // .between('\1', '\377'),
+                             new UnicodeUnescaper(),
+                             new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
+                             new LookupTranslator(
+                                                  new String[][] {
+                                                                  {"\\\\", "\\"},
+                                                                  {"\\'", "'"},
+                                                                  {"\\", ""}
+                                                  })
+     );
 
-    private static final AggregateTranslator ESCAPE_YADS = new AggregateTranslator(new LookupTranslator(new String[][]{{"'", "\\'"}, {"\"", "\\\""}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
-    public static Object escapeYadsString(String s) {
-        return ESCAPE_YADS.translate(s);
-    }
+    public static final CharSequenceTranslator UNESCAPE_YADS_DOUBLE_QUOTES =
+     new AggregateTranslator(
+                             new OctalUnescaper(),     // .between('\1', '\377'),
+                             new UnicodeUnescaper(),
+                             new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
+                             new LookupTranslator(
+                                                  new String[][] {
+                                                                  {"\\\\", "\\"},
+                                                                  {"\\\"", "\""},
+                                                                  {"\\", ""}
+                                                  })
+     );
+
+    public static final AggregateTranslator ESCAPE_YADS_SINGLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"'", "\\'"}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
+    public static final AggregateTranslator ESCAPE_YADS_DOUBLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"\"", "\\\""}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
 }

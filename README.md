@@ -86,7 +86,7 @@ Npc (
 * but can use "" or '' (for strings with spaces, for example)
 * ' ' for strings - so you can include YADS in java strings without escaping
 * spaces and tabs don't have special meaning (like in yaml or python), so you can arrange data-text as you wish, even in one line
-* multiline strings (TODO)
+* multiline strings (with both "" and '' quotes)
 * colons for key:value
 * numbers, booleans
 * utf8, no restriction on keys or strings
