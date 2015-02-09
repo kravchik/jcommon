@@ -93,7 +93,7 @@ Npc {
 * comments (one line // and multiline /**/)
 * carefully controlled comma use to aviod one level parentheses like in {pos=10, 10 size=100, 200}
 
-###serialization (work in progress)
+###serialization
 * simple parsing or additionally - deserialization
 * serialization of any data structure to string
 * key states field name
@@ -101,9 +101,9 @@ Npc {
 * value type could be stated explicitly
 * arrays are also supported
 * if type is unknown - array, map, or special class is constructed
-* all pares are initilizing into fields (or key:value for map)
+* all pares are initilizing into fields (or key=value for map)
 * other elements are given to init(elements) method
-* if value is string but type is not, then Type.parse with that string is called
+* if value is string but type is not, then Type.parse with that string is called (TODO)
 * you can specify imports, or fully qualified class name
 * or do nothing, and get map, array, or YADClass with name explicitly specified
 
