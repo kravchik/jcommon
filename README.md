@@ -108,7 +108,7 @@ Npc {
 * or do nothing, and get map, array, or YADClass with name explicitly specified
 
 ##mvn artifact
-'''xml
+```xml
 <repository>
    <id>yk.jcommon</id>
    <url>https://github.com/kravchik/mvn-repo.git</url>
@@ -119,6 +119,6 @@ Npc {
     <artifactId>yk.jcommon</artifactId>
     <version>0.1</version>
 </dependency>
-'''
+```
 
 
