@@ -4,29 +4,32 @@
 +escape \' \" \n \t in strings!
 +don't escape ' in "" and vice versa
 +multi line strings with '' and ""
++ '=' instead of ':'?
++ '{}' instead of '()'?
++mvn
+ apache commons
+ junit
++deploy as public maven artifact
+
 
 TODO
 
--mvn
- apache commons
- junit
- deploy artifacts
+
+-symbols like +-*/, etc - are valid identifiers
+-parser generates simple lists only, not maps or YASClasses
+-map {key=value} and YASClass is just one of many possible post-processings
 
 -import scopes
-? '=' instead of ':'?
-? '{}' instead of '()'?
 -serialize 'short' data in one line (either one  step of hierarchy, or just little data)
-?support complex keys?
-
--optimize not earlier then requested
 ?don't use quotes in serializer if string is without spaces or parentheses?
--compare with gson (gson cannot do many things in contrast because of json constraints)
+?support complex keys?
 
 -code-generate optimized (de)serializer for custom classes
 
-
+-compare with gson (gson cannot do many things in contrast because of json constraints)
 -write about using YADS instead of XML/YAML/JSON
 -write about using YADS as syntax and AST back-end for custom language (which is better then simple lisp-like syntaxes)
 -write about using YADS instead of .properties (multi-lines, comments, serialization, functions, etc...)
 
 ? why do we need escape \t also?
+-optimize not earlier then requested

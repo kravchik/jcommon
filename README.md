@@ -107,7 +107,18 @@ Npc {
 * you can specify imports, or fully qualified class name
 * or do nothing, and get map, array, or YADClass with name explicitly specified
 
+##mvn artifact
+'''xml
+<repository>
+   <id>yk.jcommon</id>
+   <url>https://github.com/kravchik/mvn-repo.git</url>
+</repository>
 
-
+<dependency>
+    <groupId>yk.jcommon</groupId>
+    <artifactId>yk.jcommon</artifactId>
+    <version>0.1</version>
+</dependency>
+'''
 
 

@@ -1,13 +1,9 @@
 package yk.jcommon.match;
 
-import org.junit.Test;
-import yk.jcommon.utils.Util;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
 import static yk.jcommon.utils.Util.*;
 
 /**
@@ -96,23 +92,4 @@ public class Match2 {
         return o != null && o instanceof String && Character.isUpperCase(((String) o).charAt(0));
     }
 
-    @Test
-    public void test() {
-        assertEquals(set(map("X", "hello", "Y", "world")), match(list("hello", "world"), list("X", "Y")));
-        assertEquals(set(map("Y", "hello", "X", "world")), match(list("hello", "X"), list("Y", "world")));
-        assertEquals(set(map("Y", list("l", "ll"))), match(list(list("l", "ll"), "w"), list("Y", "w")));
-
-        assertEquals(set(map("X", "a"), map("X", "c")), match(set(list("a", "b"), list("c", "b")), set(list("X", "b"))));
-
-        //TODO fix problem of meta-rule
-        System.out.println(match(                           //???
-                set(list("print", "multi"), list("print", "wrong"), Util.<Object>list(list("calc", "X"), "then", list("print", "X"))),
-                set(Util.<Object>list("A", "then", list("print", "Y")), list("print", "Y"))// B:
-        ));
-        System.out.println(match(                           //???
-                set(list("print", "multi"), list("print", "wrong"), Util.<Object>list(list("calc", "X"), "then", list("print", "X"))),
-                set((List)list("A", "then", list("print", "multi")))// B:
-        ));
-
-    }
 }
