@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>yk.jcommon</groupId>
-    <artifactId>yk.jcommon</artifactId>
+    <groupId>yk</groupId>
+    <artifactId>jcommon</artifactId>
     <version>0.1</version>
 
     <packaging>jar</packaging>
@@ -126,7 +126,7 @@
     </dependencies>
 
     <distributionManagement>
-        <downloadUrl>https://github.com/kravchik/mvn-repo.git</downloadUrl>
+        <downloadUrl>https://github.com/kravchik/mvn-repo/raw/master</downloadUrl>
 
         <repository>
             <id>snapshot</id>

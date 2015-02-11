@@ -111,12 +111,12 @@ Npc {
 ```xml
 <repository>
    <id>yk.jcommon</id>
-   <url>https://github.com/kravchik/mvn-repo.git</url>
+   <url>https://github.com/kravchik/mvn-repo/raw/master</url>
 </repository>
 
 <dependency>
-    <groupId>yk.jcommon</groupId>
-    <artifactId>yk.jcommon</artifactId>
+    <groupId>yk</groupId>
+    <artifactId>jcommon</artifactId>
     <version>0.1</version>
 </dependency>
 ```
