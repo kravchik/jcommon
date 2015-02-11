@@ -16,6 +16,8 @@ import java.util.function.Predicate;
 public interface YList<T> extends List<T> {
 
     YList<T> filter(Predicate<? super T> predicate);
+    int count(Predicate<? super T> predicate);
+    <R extends T> YList<R> filterByClass(Class<R> clazz);
 
     boolean any(Predicate<? super T> predicate);
     boolean all(Predicate<? super T> predicate);
@@ -34,7 +36,10 @@ public interface YList<T> extends List<T> {
     T last();
 
     T max();
+    T max(Comparator<? super T> comparator);
     T min();
+    T min(Comparator<? super T> comparator);
+    YList<T> allMin(Comparator<? super T> comparator);
 
     YSet<T> toSet();
 
@@ -47,4 +52,5 @@ public interface YList<T> extends List<T> {
 
     @Override
     YList<T> subList(int fromIndex, int toIndex);
+    YList<T> take(int count);
 }

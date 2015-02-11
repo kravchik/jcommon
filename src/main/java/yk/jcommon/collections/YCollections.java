@@ -91,6 +91,28 @@ public class YCollections {
         return result;
     }
 
+    static <T> T maxFromList(List<T> source, Comparator<? super T> comparator) {
+        if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T result = null;
+        for (int i = 0, sourceSize = source.size(); i < sourceSize; i++) {
+            T t = source.get(i);
+            if (result == null || comparator.compare(t, result) > 0) result = t;
+        }
+
+        return result;
+    }
+
+    static <T> T minFromList(List<T> source, Comparator<? super T> comparator) {
+        if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T result = null;
+        for (int i = 0, sourceSize = source.size(); i < sourceSize; i++) {
+            T t = source.get(i);
+            if (result == null || comparator.compare(t, result) < 0) result = t;
+        }
+
+        return result;
+    }
+
     static <T> T maxFromCollection(Collection<T> source) {
         if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
         T result = null;
@@ -116,7 +138,7 @@ public class YCollections {
         return result;
     }
 
-    public static <T> YList<T> cdr(List<T> source) {
+    public static <T> YArrayList<T> cdr(List<T> source) {
         YArrayList<T> result = new YArrayList();
         for (int i = 1, sourceSize = source.size(); i < sourceSize; i++) {
             result.add(source.get(i));
