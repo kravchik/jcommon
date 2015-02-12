@@ -70,6 +70,11 @@ public class Test1 {
     }
 
     @Test
+    public void testClass() {
+        assertEquals(new TestClass(al(1, 2), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someInt=3"));
+    }
+
+    @Test
     public void test() {
         System.out.println("'\u005cn'");
 
@@ -77,9 +82,9 @@ public class Test1 {
         System.out.println(YADSParser.parseClass("XY{10 20}"));
         System.out.println(YADSParser.parseClass("HBox{pos = 10, 20 VBox{size= 50, 50}}"));
         System.out.println(HBox.class.getName());
-        System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox{pos = 10, 20}")).toString());
+        //System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox{pos = 10, 20}")).toString());
 
-        System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import= yk.lang.yads HBox{pos = 10, 20}")).toString());
+        //System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import= yk.lang.yads HBox{pos = 10, 20}")).toString());
 
         //TODO convert with respect to method call arguments types!
         //TODO map or YAD if class not defined and unknown

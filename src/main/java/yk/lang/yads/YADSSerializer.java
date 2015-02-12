@@ -25,7 +25,7 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Time: 23:22
  */
 public class YADSSerializer {
-    public static YList<String> namespaces = al("", "test", "yk.lang.yads");
+    private static YList<String> namespaces = al("", "test", "yk.lang.yads");
     private static Tab tab = new Tab("  ");
 
     public static String serialize(Object o) {
@@ -115,18 +115,22 @@ public class YADSSerializer {
         return deserializeList(YADSParser.parseList(s));
     }
 
-    public static Object deserializeList(YList l) {
+    public static <T> T deserialize(Class<? extends T> clazz, String s) {
+        return (T) deserializeClass(clazz, new YADClass(null, YADSParser.parseList(s)));
+    }
+
+    private static Object deserializeList(YList l) {
         return deserializeClass(null, new YADClass(null, l));
     }
 
-    public static Object deserializeClass(Object yad) {
+    private static Object deserializeClass(Object yad) {
         return deserializeClass(null, yad);
     }
 
-    public static Object deserializeClass(Class clazz, Object yad) {
+    private static Object deserializeClass(Class clazz, Object yad) {
         if (yad == null) return null;
         if (clazz != null && clazz.isArray()) return parseArray(clazz, (YADClass) yad);
-        if (clazz != null && clazz.isEnum()) return Enum.valueOf(clazz, (String)yad);
+        if (clazz != null && clazz.isEnum()) return Enum.valueOf(clazz, (String) yad);
         if (clazz == Integer.class || clazz == int.class) return ((Number) yad).intValue();
         if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
         if (clazz == Long.class || clazz == long.class) return ((Number) yad).longValue();
@@ -178,7 +182,8 @@ public class YADSSerializer {
         }
         if (instance != null) {
             for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
-            if (!array.isEmpty()) Reflector.invokeMethod(instance, "init", array);
+            if (instance instanceof List) ((List) instance).addAll(array);
+            else if (!array.isEmpty()) Reflector.invokeMethod(instance, "init", array);
             return instance;
         }
         if (yad.name != null || (!array.isEmpty() && !tuples.isEmpty())) {
