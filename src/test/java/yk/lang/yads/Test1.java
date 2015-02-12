@@ -71,7 +71,7 @@ public class Test1 {
 
     @Test
     public void testClass() {
-        assertEquals(new TestClass(al(1, 2), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someInt=3"));
+        assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someMap={key1=value1 'key2'=value2} someInt=3"));
     }
 
     @Test

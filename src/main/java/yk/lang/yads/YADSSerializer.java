@@ -163,7 +163,7 @@ public class YADSSerializer {
         for (Object element : yad.body) {
             if (element instanceof Tuple) {
                 Tuple<String, Object> t = (Tuple<String, Object>) element;
-                Object value = deserializeClass(clazz == null ? null : Reflector.getField(clazz, t.a).getType(), t.b);
+                Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : Reflector.getField(clazz, t.a).getType(), t.b);
                 if (t.a.equals("import")) {
                     if (value instanceof String) namespaces.add((String) value);
                     else if (value instanceof YList) namespaces.addAll((YList<String>) value);
@@ -181,7 +181,8 @@ public class YADSSerializer {
             return Enum.valueOf(clazz, (String)array.get(0));
         }
         if (instance != null) {
-            for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
+            if (instance instanceof Map) for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
+            else for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
             if (instance instanceof List) ((List) instance).addAll(array);
             else if (!array.isEmpty()) Reflector.invokeMethod(instance, "init", array);
             return instance;

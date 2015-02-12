@@ -181,7 +181,11 @@ YList yadList():
 {YList result = al();String key; Object value;}
 {
     (LOOKAHEAD(2)
+    (
     key = <IDENTIFIER>.image
+    |
+    key = string()
+    )
     "="
     value = yadElement1()      {result.add(new Tuple(key, value));}
     |
@@ -214,9 +218,7 @@ Object yadElement():
     |
     s = <FLOATING_POINT_LITERAL>.image {if (s.toLowerCase().endsWith("d")) o = Double.parseDouble(s.substring(0, s.length()-1)); else o = Float.parseFloat(s);}//TODO depends on type!
     |
-    s = <STRING_LITERAL>.image {o = Util.UNESCAPE_YADS_DOUBLE_QUOTES.translate(s.substring(1, s.length() - 1));}
-    |
-    s = <STRING_LITERAL_2>.image {o = Util.UNESCAPE_YADS_SINGLE_QUOTES.translate(s.substring(1, s.length() - 1));}
+    o = string()
     |
     s = <IDENTIFIER>.image {if ("null".equals(s)) o = null; else o = s;}
     |
@@ -225,6 +227,17 @@ Object yadElement():
     <FALSE> {o = false;}
     )
     {return "null".equals(o) ? null : o;}
+}
+
+String string():
+{Object o;String s;}
+{
+    (
+    s = <STRING_LITERAL>.image {s = Util.UNESCAPE_YADS_DOUBLE_QUOTES.translate(s.substring(1, s.length() - 1));}
+    |
+    s = <STRING_LITERAL_2>.image {s = Util.UNESCAPE_YADS_SINGLE_QUOTES.translate(s.substring(1, s.length() - 1));}
+    )
+    {return s;}
 }
 
 Object commedClass() :
