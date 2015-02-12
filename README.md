@@ -117,7 +117,7 @@ Npc {
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.1</version>
+    <version>0.101</version>
 </dependency>
 ```
 
