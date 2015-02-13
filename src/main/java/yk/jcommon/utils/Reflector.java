@@ -248,7 +248,7 @@ public class Reflector {
         Constructor constructor = getApropriateConstructor(clazz, params);
         if (constructor == null) {
             throw new RuntimeException("Couldn't instantiate object of class: " + clazz +
-                                        " : no appropriate constructor has been found");
+                                        " : no appropriate constructor has been found for params: " + params);
         }
         try {
             return (T) constructor.newInstance(params);

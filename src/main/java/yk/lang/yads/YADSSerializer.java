@@ -2,7 +2,6 @@ package yk.lang.yads;
 
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
-import yk.jcommon.collections.YMap;
 import yk.jcommon.collections.YSet;
 import yk.jcommon.utils.BadException;
 import yk.jcommon.utils.Reflector;
@@ -157,18 +156,18 @@ public class YADSSerializer {
             }
         }
         //TODO assert found class by class name, extends field?
-        Object instance = clazz == null ? null : Reflector.newInstanceArgless(clazz);
         YList array = al();
         YList<Tuple> tuples = al();
         for (Object element : yad.body) {
             if (element instanceof Tuple) {
                 Tuple<String, Object> t = (Tuple<String, Object>) element;
-                Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : Reflector.getField(clazz, t.a).getType(), t.b);
-                if (t.a.equals("import")) {
+                if ("import".equals(t.a)) {
+                    Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : String.class, t.b);
                     if (value instanceof String) namespaces.add((String) value);
                     else if (value instanceof YList) namespaces.addAll((YList<String>) value);
                     else BadException.die("unknown data " + value + " for import");
                 } else {
+                    Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : Reflector.getField(clazz, t.a).getType(), t.b);
                     tuples.add(new Tuple(t.a, value));
                 }
             } else {
@@ -180,21 +179,33 @@ public class YADSSerializer {
             if (array.size() != 1) BadException.die("enum must be stated by one element");
             return Enum.valueOf(clazz, (String)array.get(0));
         }
-        if (instance != null) {
-            if (instance instanceof Map) for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
-            else for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
-            if (instance instanceof List) ((List) instance).addAll(array);
-            else if (!array.isEmpty()) Reflector.invokeMethod(instance, "init", array);
-            return instance;
+        Object instance;
+
+        if (clazz == null) {
+            if (yad.name != null) clazz = YADClass.class;
+            else if (!array.isEmpty() && !tuples.isEmpty()) clazz = YADClass.class;
+            else if (!tuples.isEmpty()) clazz = Map.class;
+            else if (!array.isEmpty()) clazz = List.class;
+            else clazz = YADClass.class;//default is yadsclass?
         }
-        if (yad.name != null || (!array.isEmpty() && !tuples.isEmpty())) {
-            return new YADClass(yad.name, tuples.join(array));
+
+        if (List.class.isAssignableFrom(clazz)) {
+            if (!tuples.isEmpty()) BadException.die("list class '" + clazz + "' cannot be instantiated with tuples");//TODO line number
+            if (clazz == List.class) instance = al();
+            else instance = Reflector.newInstance(clazz);
+            ((List) instance).addAll(array);
+        } else if (Map.class.isAssignableFrom(clazz)) {
+            if (!array.isEmpty()) BadException.die("map class '" + clazz + "' cannot be instantiated with list");//TODO line number
+            if (clazz == Map.class) instance = hm();
+            else instance = Reflector.newInstance(clazz);
+            for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
+        } else if (clazz == YADClass.class) {
+            instance = new YADClass(yad.name, tuples.join(array));
+        } else {
+            if (!array.isEmpty()) instance = Reflector.newInstance(clazz, array.toArray());
+            else instance = Reflector.newInstanceArgless(clazz);
+            for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
         }
-        if (array.isEmpty()) {
-            YMap result = hm();
-            for (Tuple t : tuples) result.put(t.a, t.b);
-            return result;
-        }
-        return array;
+        return instance;
     }
 }

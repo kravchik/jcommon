@@ -14,6 +14,7 @@
 
 TODO
 
+? in 'a = b' - use 'constructor(b)' if available for type? Also 'a = b, c' is 'constructor(a, b)'
 
 -symbols like +-*/, etc - are valid identifiers
 -parser generates simple lists only, not maps or YASClasses
@@ -30,3 +31,5 @@ TODO
 -optimize not earlier then requested
 
 -javacc-less simple parser (to simplify creation for other languages)
+
+?unary minus is regexp of number or grammar rule? Consider method calls and other operators

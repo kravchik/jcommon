@@ -78,32 +78,33 @@ TOKEN : /* OPERATORS */
  |< COMMA: "," >
  |< TRUE: "true" >
  |< FALSE: "false" >
+ |< MINUS: "-" >
 // |< DECIMAL_LITERAL: ["0"-"9"] (["0"-"9"])* >
 }
 
 
 TOKEN : /* LITERALS */
 {
-  < INTEGER_LITERAL:
+  < INTEGER_LITERAL:("-")?(
         <DECIMAL_LITERAL> (["l","L"])?
       | <HEX_LITERAL> (["l","L"])?
       | <OCTAL_LITERAL> (["l","L"])?
-  >
+  )>
 |
-  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+  < #DECIMAL_LITERAL: ("-")?(["1"-"9"] (["0"-"9"])* )>
 |
-  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+  < #HEX_LITERAL: ("-")?("0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ )>
 |
-  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+  < #OCTAL_LITERAL: ("-")?("0" (["0"-"7"])* )>
 |
-  < FLOATING_POINT_LITERAL:
+  < FLOATING_POINT_LITERAL:("-")?(
         (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
-  >
+)  >
 |
-  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+  < #EXPONENT: ("-")?(["e","E"] (["+","-"])? (["0"-"9"])+) >
 |
   < STRING_LITERAL:
       "\""
