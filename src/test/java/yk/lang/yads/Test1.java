@@ -3,8 +3,10 @@ package yk.lang.yads;
 import org.junit.Test;
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.fastgeom.Vec2f;
+import yk.jcommon.utils.BadException;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YHashMap.hm;
 
@@ -29,8 +31,14 @@ public class Test1 {
         assertEquals(al("\\\""), YADSParser.parseList(" '\\\\\"' "));
 
         assertEquals(al(10, 10l, 10L, 10f, 10d, 10D, 10.1d, 10.1f, 10.1f), YADSParser.parseList("10 10l 10L 10f 10d 10D 10.1d 10.1f 10.1"));
+        assertEquals(al(1424083792130l), YADSParser.parseList("1424083792130l"));
         assertEquals(al(-10), YADSParser.parseList("-10"));
         assertEquals(al(true, false), YADSParser.parseList("true false"));
+    }
+
+    @Test
+    public void serializePrimitives() {
+        assertEquals("10l", YADSSerializer.serialize(10l));
     }
 
     @Test
@@ -54,7 +62,7 @@ public class Test1 {
         assertEquals(al(new YADClass("XY", al(1, 2))), YADSSerializer.deserialize("XY{1 2}"));
         assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("yk.jcommon.fastgeom.Vec2f{x=1 y=2}"));
         assertEquals(al(new Vec2f(1, 2)), YADSSerializer.deserialize("import=yk.jcommon.fastgeom \n Vec2f{x=1 y=2}"));
-        assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "import=yk.jcommon.fastgeom someList=1, 2 someMap={key1=value1 'key2'=value2} someInt=3"));
+        assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "import=yk.jcommon.fastgeom, yk.jcommon.fastgeom someList=1, 2 someMap={key1=value1 'key2'=value2} someInt=3"));
     }
 
     @Test
@@ -69,12 +77,23 @@ public class Test1 {
         assertEquals("{\n  'hello'\n  null\n}\n", YADSSerializer.serialize(al("hello", null)));
 
         assertEquals("{\n  'h\"e\\'l\\nl\\to'\n}\n", YADSSerializer.serialize(al("h\"e'l\nl\to")));
+
+        assertEquals("enumField= ENUM1\n", YADSSerializer.serializeInner(new TestEnumClass(TestEnum.ENUM1)));
     }
 
     @Test
     public void testClass() {
         assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someMap={key1=value1 'key2'=value2} someInt=3"));
+
         assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "1, 2 {key1=value1 'key2'=value2} 3"));
+
+        try {
+            assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someMap=hello someInt=3"));
+            fail();
+        } catch (BadException ignore) {
+            assertEquals("found instance hello of class class java.lang.String but expexted object of class yk.jcommon.collections.YHashMap", ignore.getMessage());
+        }
+
     }
 
     @Test

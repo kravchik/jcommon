@@ -33,3 +33,7 @@ TODO
 -javacc-less simple parser (to simplify creation for other languages)
 
 ?unary minus is regexp of number or grammar rule? Consider method calls and other operators
+
+-serializeClass (ie without ClassName{...}, only inner part)
+
+-line numbers in errors

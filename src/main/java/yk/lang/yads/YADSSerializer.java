@@ -33,8 +33,16 @@ public class YADSSerializer {
         return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
     }
 
+    public static String serializeInner(Object o) {
+        YSet<String> namespaces = hs();
+        String result = serializeInner(namespaces, o);
+        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
+    }
+
     private static String serialize(YSet<String> namespaces, Object o) {
         if (o == null) return "null";
+        if (o instanceof Long) return o + "l";
+        if (o instanceof Double) return o + "d";
         if (o instanceof Number) return o + "";
         if (o instanceof String) return "'" + Util.ESCAPE_YADS_SINGLE_QUOTES.translate((String) o) + "'";//TODO don't escape ' for " and vice versa?
         if (o instanceof Boolean) return o + "";
@@ -96,17 +104,20 @@ public class YADSSerializer {
         }
         result += tab + name + " {\n";
         tab.inc();
+        result += serializeInner(namespaces, o);
+        tab.dec();
+        result += "\n" + tab + "}\n";
+        return result;
+    }
 
+    private static String serializeInner(YSet<String> namespaces, Object o) {
+        String result = "";
         for (Field field : Reflector.getAllNonStaticFieldsReversed(o.getClass()).values()) {
             Object value = Reflector.get(o, field);
             if (value == null) continue;
             //TODO other default
             result += tab + field.getName() + "= " + serialize(namespaces, value) + "\n";
         }
-
-
-        tab.dec();
-        result += "\n" + tab + "}\n";
         return result;
     }
 
@@ -134,8 +145,17 @@ public class YADSSerializer {
         if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
         if (clazz == Long.class || clazz == long.class) return ((Number) yad).longValue();
         if (clazz == Double.class || clazz == double.class) return ((Number) yad).doubleValue();
-        if (yad instanceof YADClass) return deserializeClassImpl(clazz, (YADClass) yad);
-        else return yad;
+        if (yad instanceof YADClass) return returnWithAssert(clazz, deserializeClassImpl(clazz, (YADClass) yad));
+        else return returnWithAssert(clazz, yad);
+    }
+
+    private static Object returnWithAssert(Class clazz, Object instance) {
+        if (clazz != null && instance != null) {
+            if (!clazz.isAssignableFrom(instance.getClass())) {
+                BadException.die("found instance " + instance + " of class " + instance.getClass() + " but expexted object of " + clazz);
+            }
+        }
+        return instance;
     }
 
     private static Object parseArray(Class clazz, YADClass yad) {
@@ -162,7 +182,7 @@ public class YADSSerializer {
             if (element instanceof Tuple) {
                 Tuple<String, Object> t = (Tuple<String, Object>) element;
                 if ("import".equals(t.a)) {
-                    Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : String.class, t.b);
+                    Object value = deserializeClass(null, t.b);
                     if (value instanceof String) namespaces.add((String) value);
                     else if (value instanceof YList) namespaces.addAll((YList<String>) value);
                     else BadException.die("unknown data " + value + " for import");
