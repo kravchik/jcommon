@@ -2,16 +2,30 @@ package yk.lang.yads;
 
 import yk.jcommon.collections.YArrayList;
 import yk.jcommon.collections.YHashMap;
+import yk.jcommon.collections.YList;
+
+import java.util.List;
 
 public class TestClass {
     public YArrayList someList;
+    public YList someList2;
+    public List someList3;
     public YHashMap someMap;
     public int someInt;
+
+    public boolean someBoolean;
 
     public TestClass(YArrayList someList, YHashMap someMap, int someInt) {
         this.someList = someList;
         this.someMap = someMap;
         this.someInt = someInt;
+    }
+
+    public TestClass(boolean someBoolean) {
+        this.someBoolean = someBoolean;
+    }
+
+    public TestClass() {
     }
 
     @Override

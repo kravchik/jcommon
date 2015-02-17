@@ -2,6 +2,7 @@ package yk.lang.yads;
 
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.collections.YList;
+import yk.jcommon.collections.YMap;
 import yk.jcommon.collections.YSet;
 import yk.jcommon.utils.BadException;
 import yk.jcommon.utils.Reflector;
@@ -145,14 +146,20 @@ public class YADSSerializer {
         if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
         if (clazz == Long.class || clazz == long.class) return ((Number) yad).longValue();
         if (clazz == Double.class || clazz == double.class) return ((Number) yad).doubleValue();
+        if (clazz == Boolean.class || clazz == boolean.class) {
+                //noinspection UnnecessaryUnboxing
+                return ((Boolean) yad).booleanValue();
+        }
         if (yad instanceof YADClass) return returnWithAssert(clazz, deserializeClassImpl(clazz, (YADClass) yad));
         else return returnWithAssert(clazz, yad);
     }
 
     private static Object returnWithAssert(Class clazz, Object instance) {
-        if (clazz != null && instance != null) {
+        if (instance == null) return null;
+        if (clazz == boolean.class && instance.getClass() == Boolean.class) return instance;
+        if (clazz != null) {
             if (!clazz.isAssignableFrom(instance.getClass())) {
-                BadException.die("found instance " + instance + " of class " + instance.getClass() + " but expexted object of " + clazz);
+                BadException.die("found instance " + instance + " of class " + instance.getClass() + " but expected object of " + clazz);
             }
         }
         return instance;
@@ -212,11 +219,13 @@ public class YADSSerializer {
         if (List.class.isAssignableFrom(clazz)) {
             if (!tuples.isEmpty()) BadException.die("list class '" + clazz + "' cannot be instantiated with tuples");//TODO line number
             if (clazz == List.class) instance = al();
+            else if (clazz == YList.class) instance = al();
             else instance = Reflector.newInstance(clazz);
             ((List) instance).addAll(array);
         } else if (Map.class.isAssignableFrom(clazz)) {
             if (!array.isEmpty()) BadException.die("map class '" + clazz + "' cannot be instantiated with list");//TODO line number
             if (clazz == Map.class) instance = hm();
+            else if (clazz == YMap.class) instance = hm();
             else instance = Reflector.newInstance(clazz);
             for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
         } else if (clazz == YADClass.class) {

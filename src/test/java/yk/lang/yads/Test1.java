@@ -85,13 +85,20 @@ public class Test1 {
     public void testClass() {
         assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someMap={key1=value1 'key2'=value2} someInt=3"));
 
+        TestClass test1 = new TestClass();
+        test1.someList2 = al(1, 2);
+        test1.someList3 = al(3, 4);
+        assertEquals(test1, YADSSerializer.deserialize(TestClass.class, "someList2=1, 2 someList3=3,4"));
+
         assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "1, 2 {key1=value1 'key2'=value2} 3"));
+
+        assertEquals(new TestClass(false), YADSSerializer.deserialize(TestClass.class, "someBoolean=false"));
 
         try {
             assertEquals(new TestClass(al(1, 2), hm("key1", "value1", "key2", "value2"), 3), YADSSerializer.deserialize(TestClass.class, "someList=1, 2 someMap=hello someInt=3"));
             fail();
         } catch (BadException ignore) {
-            assertEquals("found instance hello of class class java.lang.String but expexted object of class yk.jcommon.collections.YHashMap", ignore.getMessage());
+            assertEquals("found instance hello of class class java.lang.String but expected object of class yk.jcommon.collections.YHashMap", ignore.getMessage());
         }
 
     }
