@@ -21,12 +21,20 @@ Collections as they should be.
     YList<String> all = al("shift", "ctrl", "alt", "super");
     System.out.println(all.shuffle(all)
             .map(p -> p.toSet().toList().sorted().toString())
-            .toSet().toList().sorted());
-
+            .toSet().toList().sorted().join("", "\n"));
 ```
 Gives result:
 ```
-    [[alt, ctrl], [alt, shift], [alt, super], [alt], [ctrl, shift], [ctrl, super], [ctrl], [shift, super], [shift], [super]]
+[alt, ctrl]
+[alt, shift]
+[alt, super]
+[alt]
+[ctrl, shift]
+[ctrl, super]
+[ctrl]
+[shift, super]
+[shift]
+[super]
 ```
 
 * each collection extends standard java collection, so you can use it whenever standard collection would else be used
