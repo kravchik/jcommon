@@ -17,6 +17,18 @@ Collections as they should be.
     System.out.println(names);
 ```
 
+```java
+    YList<String> all = al("shift", "ctrl", "alt", "super");
+    System.out.println(all.shuffle(all)
+            .map(p -> p.toSet().toList().sorted().toString())
+            .toSet().toList().sorted());
+
+```
+Gives result:
+```
+    [[alt, ctrl], [alt, shift], [alt, super], [alt], [ctrl, shift], [ctrl, super], [ctrl], [shift, super], [shift], [super]]
+```
+
 * each collection extends standard java collection, so you can use it whenever standard collection would else be used
 * just add some useful methods (java8's .stream() I consider not usable)
 * all added methods are not modifying collection
