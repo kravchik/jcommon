@@ -24,13 +24,13 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Date: 05/02/15
  * Time: 23:22
  */
-public class YADSSerializer {
-    private static YList<String> namespaces = al("", "test", "yk.lang.yads");
+public class YadsSerializer {
+    //private static YList<String> namespaces = al("", "test", "yk.lang.yads");
     private static Tab tab = new Tab("  ");
 
     public static String serialize(Object o) {
         YSet<String> namespaces = hs();
-        String result = serialize(namespaces, o);
+        String result = serialize(namespaces, false, o);
         return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
     }
 
@@ -40,7 +40,7 @@ public class YADSSerializer {
         return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
     }
 
-    private static String serialize(YSet<String> namespaces, Object o) {
+    private static String serialize(YSet<String> namespaces, boolean typeIsKnown, Object o) {
         if (o == null) return "null";
         if (o instanceof Long) return o + "l";
         if (o instanceof Double) return o + "d";
@@ -49,6 +49,18 @@ public class YADSSerializer {
         if (o instanceof Boolean) return o + "";
         if (o instanceof List) return serializeList(namespaces, (List) o);
         if (o instanceof Map) return serializeMap(namespaces, (Map) o);
+        if (o instanceof YadsAware) {
+            String result = "";
+            List serialized = ((YadsAware) o).yadsSerialize(typeIsKnown);
+            if (serialized == null) return serializeClass(namespaces, o);
+            //result += tab + "{\n";
+            result += "\n";
+            tab.inc();
+            for (Object el : serialized) result += tab + serialize(namespaces, false, el) + "\n";
+            tab.dec();
+            //result += tab + "}\n";
+            return result;
+        }
         if (o.getClass().isEnum()) return "" + o;
         if (o.getClass().isArray()) {
             if (o.getClass().getComponentType().isArray()) {
@@ -56,7 +68,7 @@ public class YADSSerializer {
                 result += "{\n";
                 tab.inc();
                 int length = Array.getLength(o);
-                for (int i = 0; i < length; i++) result += tab + serialize(namespaces, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += tab + serialize(namespaces, false, Array.get(o, i));
                 tab.dec();
                 result += tab + "}\n";
                 return result;
@@ -66,7 +78,7 @@ public class YADSSerializer {
                 result += "{";
                 int length = Array.getLength(o);
                 tab.inc();//just in case there will be complex structures
-                for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + serialize(namespaces, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + serialize(namespaces, false, Array.get(o, i));
                 tab.dec();
                 result += "}\n";
                 return result;
@@ -77,9 +89,9 @@ public class YADSSerializer {
 
     private static String serializeMap(YSet<String> namespaces, Map o) {//TODO add specific Map type if not just HashMap or YHashMap
         String result = "";
-        result += tab + "{\n";
+        result += "{\n";
         tab.inc();
-        for (Object key : o.keySet()) result += tab + serialize(namespaces, key) + "= " + serialize(namespaces, o.get(key)) + "\n";
+        for (Object key : o.keySet()) result += tab + serialize(namespaces, false, key) + "= " + serialize(namespaces, false, o.get(key)) + "\n";
         tab.dec();
         result += tab + "}\n";
         return result;
@@ -87,9 +99,9 @@ public class YADSSerializer {
 
     private static String serializeList(YSet<String> namespaces, List o) {//TODO add specific List type if not just ArrayList or YArrayList
         String result = "";
-        result += tab + "{\n";
+        result += "{\n";
         tab.inc();
-        for (Object el : o) result += tab + serialize(namespaces, el) + "\n";
+        for (Object el : o) result += tab + serialize(namespaces, false, el) + "\n";
         tab.dec();
         result += tab + "}\n";
         return result;
@@ -99,11 +111,10 @@ public class YADSSerializer {
         String result = "";
         String name = o.getClass().getName();
         if (name.contains(".")) {
-            int lastPointIndex = name.lastIndexOf(".");
-            namespaces.add(name.substring(0, lastPointIndex));
-            name = name.substring(lastPointIndex + 1);
+            namespaces.add(getPackageName(name));
+            name = name.substring(name.lastIndexOf(".") + 1);
         }
-        result += tab + name + " {\n";
+        result += name + " {\n";
         tab.inc();
         result += serializeInner(namespaces, o);
         tab.dec();
@@ -111,36 +122,56 @@ public class YADSSerializer {
         return result;
     }
 
+    private static String getPackageName(String name) {
+        return name.substring(0, name.lastIndexOf("."));
+    }
+
     private static String serializeInner(YSet<String> namespaces, Object o) {
         String result = "";
         for (Field field : Reflector.getAllNonStaticFieldsReversed(o.getClass()).values()) {
             Object value = Reflector.get(o, field);
-            if (value == null) continue;
-            //TODO other default
-            result += tab + field.getName() + "= " + serialize(namespaces, value) + "\n";
+            if (value == null) continue;//TODO other defaults
+            String sValue = serialize(namespaces, field.getType() == value.getClass(), value);
+            if (sValue.length() < 100) sValue = compact(sValue);
+            result += tab + field.getName() + "= " + sValue + "\n";
         }
         return result;
     }
 
     public static Object deserialize(String s) {
-        return deserializeList(YADSParser.parseList(s));
+        Namespaces namespaces = new Namespaces();
+        namespaces.enterScope();
+        namespaces.addPackage("");
+        return deserialize(namespaces, s);
     }
 
-    public static <T> T deserialize(Class<? extends T> clazz, String s) {
-        return (T) deserializeClass(clazz, new YADClass(null, YADSParser.parseList(s)));
+    public static Object deserialize(Namespaces namespaces, String s) {
+        return deserializeList(namespaces, YADSParser.parseList(s));
     }
 
-    private static Object deserializeList(YList l) {
-        return deserializeClass(null, new YADClass(null, l));
+    public static <T> T deserializeClass(Class<? extends T> clazz, String s) {
+        Namespaces namespaces = new Namespaces();
+        namespaces.enterScope();
+        namespaces.addPackage("");
+        namespaces.addPackage(getPackageName(clazz.getName()));
+        return (T) deserializeClass(namespaces, clazz, s);
     }
 
-    private static Object deserializeClass(Object yad) {
-        return deserializeClass(null, yad);
+    public static <T> T deserializeClass(Namespaces namespaces, Class<? extends T> clazz, String s) {
+        return (T) deserializeClass(namespaces, clazz, new YadsClass(null, YADSParser.parseList(s)));
     }
 
-    private static Object deserializeClass(Class clazz, Object yad) {
+    private static Object deserializeList(Namespaces namespaces, YList l) {
+        return deserializeClass(namespaces, null, new YadsClass(null, l));
+    }
+
+    private static Object deserializeClass(Namespaces namespaces, Object yad) {
+        return deserializeClass(namespaces, null, yad);
+    }
+
+    private static Object deserializeClass(Namespaces namespaces, Class clazz, Object yad) {
         if (yad == null) return null;
-        if (clazz != null && clazz.isArray()) return parseArray(clazz, (YADClass) yad);
+        if (clazz != null && clazz.isArray()) return parseArray(namespaces, clazz, (YadsClass) yad);
         if (clazz != null && clazz.isEnum()) return Enum.valueOf(clazz, (String) yad);
         if (clazz == Integer.class || clazz == int.class) return ((Number) yad).intValue();
         if (clazz == Float.class || clazz == float.class) return ((Number) yad).floatValue();
@@ -150,7 +181,10 @@ public class YADSSerializer {
                 //noinspection UnnecessaryUnboxing
                 return ((Boolean) yad).booleanValue();
         }
-        if (yad instanceof YADClass) return returnWithAssert(clazz, deserializeClassImpl(clazz, (YADClass) yad));
+        if (yad instanceof YadsClass) return returnWithAssert(clazz, deserializeClassImpl(namespaces, clazz, (YadsClass) yad));
+        else if (clazz != null && !(Map.class.isAssignableFrom(clazz))) {
+            return returnWithAssert(clazz, deserializeClassImpl(namespaces, clazz, new YadsClass(null, al(yad))));
+        }
         else return returnWithAssert(clazz, yad);
     }
 
@@ -165,55 +199,58 @@ public class YADSSerializer {
         return instance;
     }
 
-    private static Object parseArray(Class clazz, YADClass yad) {
+    private static Object parseArray(Namespaces namespaces, Class clazz, YadsClass yad) {
         Object result = Array.newInstance(clazz.getComponentType(), yad.body.size());
-        for (int i = 0; i < yad.body.size(); i++) Array.set(result, i, deserializeClass(clazz.getComponentType(), yad.body.get(i)));
+        for (int i = 0; i < yad.body.size(); i++) Array.set(result, i, deserializeClass(namespaces, clazz.getComponentType(), yad.body.get(i)));
         return result;
     }
 
-    private static Object deserializeClassImpl(Class clazz, YADClass yad) {
-        if (yad.name != null) {
-            clazz = null;
-            for (String p : namespaces) {
-                try {
-                    clazz = Class.forName((p.length() > 0 ? p + "." : "") + yad.name);
-                    break;
-                } catch (ClassNotFoundException ignore) {
-                }
-            }
-        }
+    private static Object deserializeClassImpl(Namespaces namespaces, Class clazz, YadsClass yad) {
+        if (yad.name != null) clazz = namespaces.findClass(yad.name);
         //TODO assert found class by class name, extends field?
         YList array = al();
         YList<Tuple> tuples = al();
+        namespaces.enterScope();
+        if (clazz != null) {
+
+        }
         for (Object element : yad.body) {
             if (element instanceof Tuple) {
                 Tuple<String, Object> t = (Tuple<String, Object>) element;
                 if ("import".equals(t.a)) {
-                    Object value = deserializeClass(null, t.b);
-                    if (value instanceof String) namespaces.add((String) value);
-                    else if (value instanceof YList) namespaces.addAll((YList<String>) value);
+                    Object value = deserializeClass(namespaces, null, t.b);
+                    if (value instanceof String) namespaces.addPackage((String) value);
+                    else if (value instanceof YList) for (Object o : (YList) value) namespaces.addPackage((String) o);
                     else BadException.die("unknown data " + value + " for import");
                 } else {
-                    Object value = deserializeClass(clazz == null || Map.class.isAssignableFrom(clazz) ? null : Reflector.getField(clazz, t.a).getType(), t.b);
+                    Object value;
+                    if (clazz == null || Map.class.isAssignableFrom(clazz)) {
+                        value = deserializeClass(namespaces, null, t.b);
+                    } else {
+                        Field field = Reflector.getField(clazz, t.a);
+                        if (field == null) throw BadException.die("can't find field " + t.a + " for " + clazz);
+                        value = deserializeClass(namespaces, field.getType(), t.b);
+                    }
                     tuples.add(new Tuple(t.a, value));
                 }
             } else {
-                array.add(deserializeClass(null, element));
+                array.add(deserializeClass(namespaces, null, element));
             }
         }
         if (clazz != null && clazz.isEnum()) {
             if (!tuples.isEmpty()) BadException.die("enum can't contain tuples");
             if (array.size() != 1) BadException.die("enum must be stated by one element");
+            namespaces.exitScope();
             return Enum.valueOf(clazz, (String)array.get(0));
         }
         Object instance;
 
         if (clazz == null) {
-            if (yad.name != null) clazz = YADClass.class;
-            else if (!array.isEmpty() && !tuples.isEmpty()) clazz = YADClass.class;
+            if (yad.name != null) clazz = YadsClass.class;
+            else if (!array.isEmpty() && !tuples.isEmpty()) clazz = YadsClass.class;
             else if (!tuples.isEmpty()) clazz = Map.class;
             else if (!array.isEmpty()) clazz = List.class;
-            else clazz = YADClass.class;//default is yadsclass?
+            else clazz = YadsClass.class;//default is yadsclass?
         }
 
         if (List.class.isAssignableFrom(clazz)) {
@@ -228,13 +265,28 @@ public class YADSSerializer {
             else if (clazz == YMap.class) instance = hm();
             else instance = Reflector.newInstance(clazz);
             for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
-        } else if (clazz == YADClass.class) {
-            instance = new YADClass(yad.name, tuples.join(array));
+        } else if (clazz == YadsClass.class) {
+            instance = new YadsClass(yad.name, tuples.join(array));
         } else {
             if (!array.isEmpty()) instance = Reflector.newInstance(clazz, array.toArray());
             else instance = Reflector.newInstanceArgless(clazz);
             for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
         }
+        namespaces.exitScope();
         return instance;
+    }
+
+    public static String compact(String s) {
+        String oldS = "";
+        while (s.length() != oldS.length()) {
+            oldS = s;
+            s = s.replace("\n", " ");
+            s = s.replace("  ", " ");
+            s = s.replaceAll("\\} (.)", "}$1");
+            s = s.replaceAll("\\{ (.)", "{$1");
+            s = s.replaceAll("(.) \\}", "$1}");
+            s = s.replaceAll("(.) \\{", "$1{");
+        }
+        return s.trim();
     }
 }

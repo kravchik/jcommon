@@ -8,11 +8,11 @@ import yk.jcommon.collections.YList;
  * Date: 05/02/15
  * Time: 08:56
  */
-public class YADClass {
+public class YadsClass {
     public String name;
     public YList body;
 
-    public YADClass(String s, YList l) {
+    public YadsClass(String s, YList l) {
         name = s;
         body = l;
     }
@@ -30,7 +30,7 @@ public class YADClass {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        YADClass yadClass = (YADClass) o;
+        YadsClass yadClass = (YadsClass) o;
 
         if (!body.equals(yadClass.body)) return false;
         if (name != null ? !name.equals(yadClass.name) : yadClass.name != null) return false;

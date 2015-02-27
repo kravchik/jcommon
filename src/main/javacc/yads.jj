@@ -3,7 +3,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
 }
 
-PARSER_BEGIN(YADSParser)
+PARSER_BEGIN(YadsParser)
 
 package yk.lang.yads;
 import yk.jcommon.collections.Tuple;
@@ -15,10 +15,10 @@ import java.io.UnsupportedEncodingException;
 
 import static yk.jcommon.collections.YArrayList.al;
 
-public class YADSParser {
+public class YadsParser {
     public static YList parseList(String s) {
         try {
-            return new YADSParser(new ByteArrayInputStream(s.getBytes("UTF-8"))).yadList();
+            return new YadsParser(new ByteArrayInputStream(s.getBytes("UTF-8"))).yadList();
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         } catch (ParseException e) {
@@ -28,7 +28,7 @@ public class YADSParser {
 
     public static Object parseClass(String s) {
         try {
-            return new YADSParser(new ByteArrayInputStream(s.getBytes("UTF-8"))).yadClass();
+            return new YadsParser(new ByteArrayInputStream(s.getBytes("UTF-8"))).yadsClass();
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         } catch (ParseException e) {
@@ -50,7 +50,7 @@ public class YADSParser {
 
 }
 
-PARSER_END(YADSParser)
+PARSER_END(YadsParser)
 
 
 SKIP : /* WHITE SPACE */
@@ -213,7 +213,7 @@ Object yadElement():
 {Object o;String s;}
 {
     (
-    LOOKAHEAD(2) o = yadClass()
+    LOOKAHEAD(2) o = yadsClass()
     |
     s = <INTEGER_LITERAL>.image {if (s.toLowerCase().endsWith("l")) o = Long.parseLong(s.substring(0, s.length()-1)); else o = Integer.parseInt(s);}//TODO depends on type!
     |
@@ -249,19 +249,19 @@ Object commedClass() :
     ","
     o = yadElement()  {values.add(o);}
     )*
-    {return values.size() > 1 ? new YADClass(null, values) : values.get(0);}
+    {return values.size() > 1 ? new YadsClass(null, values) : values.get(0);}
 }
 
 
 
-YADClass yadClass():
+YadsClass yadsClass():
 {String s = null;YList l;}
 {
     (s = <IDENTIFIER>.image)?
     "{"
     l = yadList()
     "}"
-    {return new YADClass(s, l);}
+    {return new YadsClass(s, l);}
 }
 
 

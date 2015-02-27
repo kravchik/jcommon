@@ -7,6 +7,7 @@ Common utils, abstractions and tools that I use in my projects. They make Java p
 
 Collections as they should be.
 
+Example 1
 ```java
     String names = al(new File("/home/user/").listFiles())
             .filter(File::isDirectory)                  //only dirs
@@ -16,7 +17,7 @@ Collections as they should be.
             .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
     System.out.println(names);
 ```
-
+Example 2
 ```java
     YList<String> all = al("shift", "ctrl", "alt", "super");
     System.out.println(all.shuffle(all)
@@ -137,7 +138,7 @@ Npc {
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.101</version>
+    <version>0.104</version>
 </dependency>
 ```
 

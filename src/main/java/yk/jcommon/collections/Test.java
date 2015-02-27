@@ -2,8 +2,6 @@ package yk.jcommon.collections;
 
 import java.io.File;
 
-import static yk.jcommon.collections.YArrayList.al;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -21,6 +19,7 @@ public class Test {
                 .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
         System.out.println(names);
 
+        //File("/home/yuri")listFiles()f(_.isDirectory)m(_.getName)f(n.startsWith(".")sfl("" _1+", "+_2)
     }
 
 }

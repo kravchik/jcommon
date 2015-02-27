@@ -13,6 +13,8 @@ public class TestClass {
     public YHashMap someMap;
     public int someInt;
 
+    public TestClass2 tc2;
+
     public boolean someBoolean;
 
     public TestClass(YArrayList someList, YHashMap someMap, int someInt) {

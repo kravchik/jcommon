@@ -29,6 +29,7 @@ public interface YList<T> extends List<T> {
 
     YList<T> sorted();
     YList<T> sorted(Comparator<? super T> comparator);
+    YList<T> sorted(Function<T, Float> evaluator);
     T car();
     YList<T> cdr();
     T first();
@@ -53,4 +54,7 @@ public interface YList<T> extends List<T> {
     @Override
     YList<T> subList(int fromIndex, int toIndex);
     YList<T> take(int count);
+
+    YList<YList<T>> shuffle(YList<T> other);
+
 }

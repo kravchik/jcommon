@@ -10,18 +10,28 @@
  apache commons
  junit
 +deploy as public maven artifact
-
++serializeClass (ie without ClassName{...}, only inner part)
++rename all YADS... -> Yads...
++YadsAware for yadsSerialize, yadsSerializeKnownType
++range = 2 //without {} if constructor needs one argument
++in 'a = b' - use 'constructor(b)' if available for type? Also 'a = b, c' is 'constructor(a, b)'
++don't serialize type name if known
++short lines without \n s
++namespaces in deserialization
 
 TODO
-
-? in 'a = b' - use 'constructor(b)' if available for type? Also 'a = b, c' is 'constructor(a, b)'
+-Range{0} - doesn't work if not imported (though its don't needs to because of field type)
+-serializer - don't generate import for field types (if field type == value type)
+-line numbers in errors
+-reflector can't find constructor when casting is needed (int->float for ex.)
+-namespaces in serialization
+serialize without {} when needed
+? forbid range={2} and range={1,2} ? (to force range=2 and range=1,2)
 
 -symbols like +-*/, etc - are valid identifiers
 -parser generates simple lists only, not maps or YASClasses
--map {key=value} and YASClass is just one of many possible post-processings
+-map {key=value} and YadsClass is just one of many possible post-processings
 
--import scopes
--serialize 'short' data in one line (either one  step of hierarchy, or just little data)
 ?don't use quotes in serializer if string is without spaces or parentheses?
 ?support complex keys?
 
@@ -30,10 +40,8 @@ TODO
 ? why do we need escape \t also?
 -optimize not earlier then requested
 
--javacc-less simple parser (to simplify creation for other languages)
+-javaccless simple parser (to simplify creation for other languages)
 
 ?unary minus is regexp of number or grammar rule? Consider method calls and other operators
 
--serializeClass (ie without ClassName{...}, only inner part)
-
--line numbers in errors
+-serialize package OR package.class (when needed)
