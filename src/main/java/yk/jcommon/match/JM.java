@@ -36,8 +36,9 @@ import static yk.jcommon.utils.Util.*;
  */
 //TODO match variables in data too?
 public class JM {
+    //TODO use YCollections
 
-    public static final Set emptyList = Collections.emptySet();
+    public static final Set emptyList = Collections.emptySet();//TODO rename in emptySet
 
     public static Set<Map<String, Object>> match(Object data, Object pattern) {
         Set<Map<Object, Object>> match = (Set)match(data, pattern, map());
@@ -176,7 +177,7 @@ public class JM {
     }
 
     public static interface Specific<T> {
-        Set<Map> match(T data, Map current);
+        Set<Map> match(T data, Map current);//TODO automatically check T (somehow)
         //TODO implement class matcher
     }
 }

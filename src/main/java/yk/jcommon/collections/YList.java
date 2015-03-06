@@ -44,17 +44,19 @@ public interface YList<T> extends List<T> {
 
     YSet<T> toSet();
 
-    YList<T> join(Collection<T> c);
+    YList<T> join(Collection<T> c);//TODO rename append?
 
     YList<T> sub(T t);
 
-    String join(String separator);
-    String join(String prefix, String appender);
+    String join(String separator);//TODO toString?
+    String join(String prefix, String appender);//TODO toString?
 
     @Override
     YList<T> subList(int fromIndex, int toIndex);
     YList<T> take(int count);
 
     YList<YList<T>> shuffle(YList<T> other);
+
+    //TODO join(T) or append(T)
 
 }

@@ -36,6 +36,6 @@ public interface YSet<T> extends Set<T> {
 
     YSet<T> append(T t);
 
-
-
+    //TODO join
+    //TODO first(predicate)
 }
