@@ -104,17 +104,22 @@ public class TestYads {
         TestClass tc = new TestClass();
         tc.tc2 = new TestClass2(1);
         assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2=1f, 1f"));
-        assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2={1f, 1f}"));
-        assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2=TestClass2{1f, 1f}"));
+        //assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2={1f, 1f}"));
+        //assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2=TestClass2{1f, 1f}"));
         assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2=1f"));
         assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2={1f}"));
         assertEquals(tc, YadsSerializer.deserializeClass(TestClass.class, "tc2=TestClass2{1f}"));
+
+        tc.tc2 = new TestClass2(al("hello", "world"));
+        tc.tc2.a = 4;
+        TestClass des = YadsSerializer.deserializeClass(TestClass.class, "tc2={a=4 hello world}");
+        assertEquals(tc, des);
     }
 
     @Test
     public void testYadsAware() {
-        assertEquals("\n  'TestClass2'\n  {\n    1.0\n  }\n\n", YadsSerializer.serialize(new TestClass2(1)));
-        assertEquals("\n  'TestClass2'\n  {\n    1.0\n    2.0\n  }\n\n", YadsSerializer.serialize(new TestClass2(1, 2)));
+        assertEquals("\n  'TestClass2'\n  {1.0}\n", YadsSerializer.serialize(new TestClass2(1)));
+        assertEquals("\n  'TestClass2'\n  {1.0 2.0}\n", YadsSerializer.serialize(new TestClass2(1, 2)));
 
         TestClass tc = new TestClass();
         tc.tc2 = new TestClass2(1);

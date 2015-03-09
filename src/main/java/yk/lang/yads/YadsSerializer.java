@@ -10,6 +10,7 @@ import yk.jcommon.utils.Tab;
 import yk.jcommon.utils.Util;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class YadsSerializer {
             //result += tab + "{\n";
             result += "\n";
             tab.inc();
-            for (Object el : serialized) result += tab + serialize(namespaces, false, el) + "\n";
+            for (Object el : serialized) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";
             tab.dec();
             //result += tab + "}\n";
             return result;
@@ -68,7 +69,7 @@ public class YadsSerializer {
                 result += "{\n";
                 tab.inc();
                 int length = Array.getLength(o);
-                for (int i = 0; i < length; i++) result += tab + serialize(namespaces, false, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += tab + possiblyCompact(serialize(namespaces, false, Array.get(o, i)));
                 tab.dec();
                 result += tab + "}\n";
                 return result;
@@ -78,7 +79,7 @@ public class YadsSerializer {
                 result += "{";
                 int length = Array.getLength(o);
                 tab.inc();//just in case there will be complex structures
-                for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + serialize(namespaces, false, Array.get(o, i));
+                for (int i = 0; i < length; i++) result += (i > 0 ? " " : "") + possiblyCompact(serialize(namespaces, false, Array.get(o, i)));
                 tab.dec();
                 result += "}\n";
                 return result;
@@ -91,7 +92,7 @@ public class YadsSerializer {
         String result = "";
         result += "{\n";
         tab.inc();
-        for (Object key : o.keySet()) result += tab + serialize(namespaces, false, key) + "= " + serialize(namespaces, false, o.get(key)) + "\n";
+        for (Object key : o.keySet()) result += tab + serialize(namespaces, false, key) + "= " + possiblyCompact(serialize(namespaces, false, o.get(key))) + "\n";
         tab.dec();
         result += tab + "}\n";
         return result;
@@ -101,10 +102,15 @@ public class YadsSerializer {
         String result = "";
         result += "{\n";
         tab.inc();
-        for (Object el : o) result += tab + serialize(namespaces, false, el) + "\n";
+        for (Object el : o) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";
         tab.dec();
         result += tab + "}\n";
         return result;
+    }
+
+    private static String possiblyCompact(String s) {
+        if (s.length() < 100) s = compact(s);
+        return s;
     }
 
     private static String serializeClass(YSet<String> namespaces, Object o) {
@@ -131,9 +137,7 @@ public class YadsSerializer {
         for (Field field : Reflector.getAllNonStaticFieldsReversed(o.getClass()).values()) {
             Object value = Reflector.get(o, field);
             if (value == null) continue;//TODO other defaults
-            String sValue = serialize(namespaces, field.getType() == value.getClass(), value);
-            if (sValue.length() < 100) sValue = compact(sValue);
-            result += tab + field.getName() + "= " + sValue + "\n";
+            result += tab + field.getName() + "= " + possiblyCompact(serialize(namespaces, field.getType() == value.getClass(), value)) + "\n";
         }
         return result;
     }
@@ -268,7 +272,11 @@ public class YadsSerializer {
         } else if (clazz == YadsClass.class) {
             instance = new YadsClass(yad.name, tuples.join(array));
         } else {
-            if (!array.isEmpty()) instance = Reflector.newInstance(clazz, array.toArray());
+            if (!array.isEmpty()) {
+                Constructor constructor = Reflector.getApropriateConstructor(clazz, array.toArray());
+                if (constructor != null) instance = Reflector.newInstance(clazz, array.toArray());
+                else instance = Reflector.newInstance(clazz, array);
+            }
             else instance = Reflector.newInstanceArgless(clazz);
             for (Tuple t : tuples) Reflector.set(instance, (String) t.a, t.b);
         }

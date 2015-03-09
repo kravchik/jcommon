@@ -18,8 +18,14 @@
 +don't serialize type name if known
 +short lines without \n s
 +namespaces in deserialization
++shorten lines by Array element (not only by key value)
 
 TODO
+-define line width for short lines (so I can consider text input width when generating configs)
+-serialize Set
+-serialize properties + constructor for YadsAware
+-YadsAware must not be forced serialize to List only
+
 -Range{0} - doesn't work if not imported (though its don't needs to because of field type)
 -serializer - don't generate import for field types (if field type == value type)
 -line numbers in errors
