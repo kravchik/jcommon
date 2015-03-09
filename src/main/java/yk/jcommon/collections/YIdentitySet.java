@@ -168,4 +168,14 @@ public class YIdentitySet<T> implements YSet<T> {
     public YSet<T> join(T t) {
         throw BadException.notImplemented();
     }
+
+    @Override
+    public T first(Predicate<? super T> predicate) {
+        throw BadException.notImplemented();
+    }
+
+    @Override
+    public YSet<T> join(Collection<T> c) {
+        throw BadException.notImplemented();
+    }
 }
