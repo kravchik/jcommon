@@ -67,12 +67,12 @@ public class TestYads {
 
     @Test
     public void serializer() {
-        assertEquals("import= yk.jcommon.fastgeom\nVec2f {\n  x= 1.0\n  y= 2.0\n\n}\n", YadsSerializer.serialize(new Vec2f(1, 2)));
+        assertEquals("import= yk.jcommon.fastgeom\nVec2f {\n  x= 1.0\n  y= 2.0\n}\n", YadsSerializer.serialize(new Vec2f(1, 2)));
         assertEquals("{\n  'hello'\n  'world'\n}\n", YadsSerializer.serialize(al("hello", "world")));
         assertEquals("{\n  'k'= 'v'\n}\n", YadsSerializer.serialize(hm("k", "v")));
 
-        assertEquals("import= yk.lang.yads\nTestEnumClass {\n  enumField= ENUM1\n\n}\n", YadsSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
-        assertEquals("import= yk.lang.yads\nTestEnumClass {\n\n}\n", YadsSerializer.serialize(new TestEnumClass(null)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass {\n  enumField= ENUM1\n}\n", YadsSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass {\n}\n", YadsSerializer.serialize(new TestEnumClass(null)));
 
         assertEquals("{\n  'hello'\n  null\n}\n", YadsSerializer.serialize(al("hello", null)));
 
@@ -123,7 +123,7 @@ public class TestYads {
 
         TestClass tc = new TestClass();
         tc.tc2 = new TestClass2(1);
-        assertEquals("import= yk.lang.yads\nTestClass {\n  someInt= 0\n  tc2= {1.0}\n  someBoolean= false\n\n}\n", YadsSerializer.serialize(tc));
+        assertEquals("import= yk.lang.yads\nTestClass {\n  someInt= 0\n  tc2= {1.0}\n  someBoolean= false\n}\n", YadsSerializer.serialize(tc));
 
     }
 

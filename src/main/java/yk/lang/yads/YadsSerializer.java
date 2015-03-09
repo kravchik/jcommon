@@ -41,12 +41,33 @@ public class YadsSerializer {
         return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
     }
 
+    private static boolean between(char x ,char min, char max) {
+        return x >= min && x <= max;
+    }
+
     private static String serialize(YSet<String> namespaces, boolean typeIsKnown, Object o) {
         if (o == null) return "null";
         if (o instanceof Long) return o + "l";
         if (o instanceof Double) return o + "d";
         if (o instanceof Number) return o + "";
-        if (o instanceof String) return "'" + Util.ESCAPE_YADS_SINGLE_QUOTES.translate((String) o) + "'";//TODO don't escape ' for " and vice versa?
+        if (o instanceof String) {
+            String s = (String) o;
+            boolean withoutQuotes = true;
+            if (s.length() > 0) {
+                for (int i = 0; i < s.length(); i++) {
+                    char c = s.charAt(i);
+                    if (!between(c, '0', '9')) withoutQuotes = false;
+                    if (!between(c, 'A', 'Z')) withoutQuotes = false;
+                    if (!between(c, 'a', 'z')) withoutQuotes = false;
+                    if (!between(c, '_', '_')) withoutQuotes = false;
+                }
+                if (between(s.charAt(0), '0', '9')) withoutQuotes = false;
+            } else {
+                withoutQuotes = false;
+            }
+            if (withoutQuotes) return s;
+            return "'" + Util.ESCAPE_YADS_SINGLE_QUOTES.translate((String) o) + "'";//TODO don't escape ' for " and vice versa?
+        }
         if (o instanceof Boolean) return o + "";
         if (o instanceof List) return serializeList(namespaces, (List) o);
         if (o instanceof Map) return serializeMap(namespaces, (Map) o);
@@ -124,7 +145,7 @@ public class YadsSerializer {
         tab.inc();
         result += serializeInner(namespaces, o);
         tab.dec();
-        result += "\n" + tab + "}\n";
+        result += tab + "}\n";
         return result;
     }
 

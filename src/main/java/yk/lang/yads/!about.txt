@@ -19,6 +19,7 @@
 +short lines without \n s
 +namespaces in deserialization
 +shorten lines by Array element (not only by key value)
++don't use quotes in serializer if string is without spaces or parentheses
 
 TODO
 -define line width for short lines (so I can consider text input width when generating configs)
@@ -38,7 +39,6 @@ serialize without {} when needed
 -parser generates simple lists only, not maps or YASClasses
 -map {key=value} and YadsClass is just one of many possible post-processings
 
-?don't use quotes in serializer if string is without spaces or parentheses?
 ?support complex keys?
 
 -code-generate optimized (de)serializer for custom classes
