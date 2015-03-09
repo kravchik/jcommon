@@ -1,7 +1,5 @@
 package yk.lang.yads;
 
-import static yk.jcommon.collections.YArrayList.al;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri

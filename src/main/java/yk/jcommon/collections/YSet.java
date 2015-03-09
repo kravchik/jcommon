@@ -1,5 +1,6 @@
 package yk.jcommon.collections;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public interface YSet<T> extends Set<T> {
     T car();
     YSet<T> cdr();
     T first();
+    T first(Predicate<? super T> predicate);
     T last();
 
     T max();
@@ -34,8 +36,6 @@ public interface YSet<T> extends Set<T> {
     YSet<T> sub(T t);
     YSet<T> sub(Set<T> tt);
 
-    YSet<T> append(T t);
-
-    //TODO join
-    //TODO first(predicate)
+    YSet<T> join(Collection<T> c);
+    YSet<T> join(T t);
 }

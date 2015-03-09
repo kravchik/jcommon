@@ -20,7 +20,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         super(c);
     }
 
-    public static <T> YArrayList<T> al(Collection<T> source) {
+    public static <T> YArrayList<T> toYList(Collection<T> source) {
         YArrayList<T> result = new YArrayList<>();
         result.addAll(source);
         return result;
@@ -176,6 +176,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
+    public YList<T> join(T t) {
+        YList<T> result = al();
+        result.addAll(this);
+        result.add(t);
+        return result;
+    }
+
+    @Override
     public YList<T> sub(T t) {
         YList<T> result = al();
         for (T tt : this) if (tt != t) result.add(tt);
@@ -183,7 +191,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public String join(String separator) {
+    public String toString(String separator) {
         boolean was = false;
         String result = "";
         for (Object o : this) {
@@ -196,7 +204,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public String join(String prefix, String appender) {
+    public String toString(String prefix, String appender) {
         boolean first = true;
         StringBuilder sb = new StringBuilder();
         for (Object o : this) {

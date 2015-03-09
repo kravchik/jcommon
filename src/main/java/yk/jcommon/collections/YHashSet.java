@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 public class YHashSet<T> extends HashSet<T> implements YSet<T> {
 
 
-    public static <T> YHashSet<T> hs(Collection<T> source) {
+    public static <T> YHashSet<T> toYSet(Collection<T> source) {
         YHashSet<T> result = new YHashSet<>();
         result.addAll(source);
         return result;
@@ -82,6 +82,12 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
+    public T first(Predicate<? super T> predicate) {
+        for (T t : this) if (predicate.test(t)) return t;
+        return null;
+    }
+
+    @Override
     public T last() {
         throw new RuntimeException("not implemented");
     }
@@ -98,7 +104,7 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
 
     @Override
     public YArrayList<T> toList() {
-        return YArrayList.al(this);
+        return YArrayList.toYList(this);
     }
 
     @Override
@@ -112,7 +118,12 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> append(T t) {
+    public YSet<T> join(Collection<T> c) {
+        return YCollections.appendSet(this, c);
+    }
+
+    @Override
+    public YSet<T> join(T t) {
         return YCollections.appendSet(this, t);
     }
 }

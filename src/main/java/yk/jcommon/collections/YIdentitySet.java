@@ -165,7 +165,7 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> append(T t) {
+    public YSet<T> join(T t) {
         throw BadException.notImplemented();
     }
 }

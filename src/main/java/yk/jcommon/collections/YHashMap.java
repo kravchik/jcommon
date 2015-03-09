@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
-import static yk.jcommon.collections.YArrayList.al;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -32,7 +30,7 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
-    public static <K, V> YHashMap<K, V> hm(Map<K, V> source) {
+    public static <K, V> YHashMap<K, V> toYMap(Map<K, V> source) {
         YHashMap result = new YHashMap();
         result.putAll(source);
         return result;
@@ -102,12 +100,12 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
 
     @Override
     public YSet<K> keySet() {
-        return YHashSet.hs(super.keySet());
+        return YHashSet.toYSet(super.keySet());
     }
 
     @Override
     public YArrayList<V> values() {
-        return al(super.values());
+        return YArrayList.toYList(super.values());
     }
 
     @Override

@@ -164,6 +164,13 @@ public class YCollections {
         return result;
     }
 
+    public static <T> YSet<T> appendSet(YHashSet ts, Collection<T> tt) {
+        YHashSet<T> result = new YHashSet<>();
+        result.addAll(ts);
+        result.addAll(tt);
+        return result;
+    }
+
     public static <T> YSet<T> appendSet(YHashSet ts, T t) {
         YHashSet<T> result = new YHashSet<>();
         result.addAll(ts);

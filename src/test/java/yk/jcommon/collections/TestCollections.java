@@ -11,7 +11,7 @@ public class TestCollections {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         System.out.println(all.shuffle(all)
                 .map(p -> p.toSet().toList().sorted().toString())
-                .toSet().toList().sorted().join("", "\n"));
+                .toSet().toList().sorted().toString("", "\n"));
     }
 
     @Test
