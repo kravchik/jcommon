@@ -39,6 +39,8 @@ public class TestYads {
     @Test
     public void serializePrimitives() {
         assertEquals("10l", YadsSerializer.serialize(10l));
+        assertEquals("hello", YadsSerializer.serialize("hello"));
+        assertEquals("'hello\\n'", YadsSerializer.serialize("hello\n"));//TODO don't escape?
     }
 
     @Test
@@ -68,13 +70,13 @@ public class TestYads {
     @Test
     public void serializer() {
         assertEquals("import= yk.jcommon.fastgeom\nVec2f {\n  x= 1.0\n  y= 2.0\n}\n", YadsSerializer.serialize(new Vec2f(1, 2)));
-        assertEquals("{\n  'hello'\n  'world'\n}\n", YadsSerializer.serialize(al("hello", "world")));
-        assertEquals("{\n  'k'= 'v'\n}\n", YadsSerializer.serialize(hm("k", "v")));
+        assertEquals("{\n  hello\n  world\n}\n", YadsSerializer.serialize(al("hello", "world")));
+        assertEquals("{\n  k= v\n}\n", YadsSerializer.serialize(hm("k", "v")));
 
         assertEquals("import= yk.lang.yads\nTestEnumClass {\n  enumField= ENUM1\n}\n", YadsSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
         assertEquals("import= yk.lang.yads\nTestEnumClass {\n}\n", YadsSerializer.serialize(new TestEnumClass(null)));
 
-        assertEquals("{\n  'hello'\n  null\n}\n", YadsSerializer.serialize(al("hello", null)));
+        assertEquals("{\n  hello\n  null\n}\n", YadsSerializer.serialize(al("hello", null)));
 
         assertEquals("{\n  'h\"e\\'l\\nl\\to'\n}\n", YadsSerializer.serialize(al("h\"e'l\nl\to")));
 
@@ -118,8 +120,8 @@ public class TestYads {
 
     @Test
     public void testYadsAware() {
-        assertEquals("\n  'TestClass2'\n  {1.0}\n", YadsSerializer.serialize(new TestClass2(1)));
-        assertEquals("\n  'TestClass2'\n  {1.0 2.0}\n", YadsSerializer.serialize(new TestClass2(1, 2)));
+        assertEquals("\n  TestClass2\n  {1.0}\n", YadsSerializer.serialize(new TestClass2(1)));
+        assertEquals("\n  TestClass2\n  {1.0 2.0}\n", YadsSerializer.serialize(new TestClass2(1, 2)));
 
         TestClass tc = new TestClass();
         tc.tc2 = new TestClass2(1);

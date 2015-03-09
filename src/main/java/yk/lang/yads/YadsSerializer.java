@@ -56,10 +56,10 @@ public class YadsSerializer {
             if (s.length() > 0) {
                 for (int i = 0; i < s.length(); i++) {
                     char c = s.charAt(i);
-                    if (!between(c, '0', '9')) withoutQuotes = false;
-                    if (!between(c, 'A', 'Z')) withoutQuotes = false;
-                    if (!between(c, 'a', 'z')) withoutQuotes = false;
-                    if (!between(c, '_', '_')) withoutQuotes = false;
+                    if (!(between(c, '0', '9')
+                    || between(c, 'A', 'Z')
+                    || between(c, 'a', 'z')
+                    || between(c, '_', '_'))) withoutQuotes = false;
                 }
                 if (between(s.charAt(0), '0', '9')) withoutQuotes = false;
             } else {
