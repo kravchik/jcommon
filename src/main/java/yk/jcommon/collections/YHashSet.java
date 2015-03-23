@@ -12,13 +12,13 @@ import java.util.function.Predicate;
  */
 public class YHashSet<T> extends HashSet<T> implements YSet<T> {
 
-
     public static <T> YHashSet<T> toYSet(Collection<T> source) {
         YHashSet<T> result = new YHashSet<>();
         result.addAll(source);
         return result;
     }
 
+    @SafeVarargs
     public static <T> YHashSet<T> hs(T... tt) {
         YHashSet<T> result = new YHashSet<>();
         Collections.addAll(result, tt);
@@ -31,15 +31,8 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public boolean any(Predicate<? super T> predicate) {
-        for (T t : this) if (predicate.test(t)) return true;
-        return false;
-    }
-
-    @Override
-    public boolean all(Predicate<? super T> predicate) {
-        for (T t : this) if (!predicate.test(t)) return false;
-        return true;
+    public <R extends T> YSet<R> filterByClass(Class<R> clazz) {
+        return (YSet<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
     }
 
     @Override
@@ -48,7 +41,7 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public <R> YSet<R> flatMap(Function<? super T, ? extends List<? extends R>> mapper) {
+    public <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         return YCollections.flatMapSet(this, mapper);
     }
 
@@ -63,11 +56,6 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public T car() {
-        return iterator().next();
-    }
-
-    @Override
     public YSet<T> cdr() {
         YSet<T> result = new YHashSet<>();
         Iterator<T> iterator = this.iterator();
@@ -77,53 +65,57 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public T first() {
-        return car();
-    }
-
-    @Override
-    public T first(Predicate<? super T> predicate) {
-        for (T t : this) if (predicate.test(t)) return t;
-        return null;
-    }
-
-    @Override
-    public T last() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Override
-    public T max() {
-        return YCollections.maxFromCollection(this);
-    }
-
-    @Override
-    public T min() {
-        return YCollections.minFromCollection(this);
-    }
-
-    @Override
     public YArrayList<T> toList() {
         return YArrayList.toYList(this);
     }
 
     @Override
-    public YSet<T> sub(T t) {
+    public YSet<T> without(T t) {
         return YCollections.subSet(this, t);
     }
 
+    @SafeVarargs
     @Override
-    public YSet<T> sub(Set<T> tt) {
+    public final YSet<T> without(T... tt) {
+        return without(hs(tt));
+    }
+
+    @Override
+    public YSet<T> take(int count) {
+        YSet result = hs();
+        Iterator<T> it = iterator();
+        for (int i = 0; i < count && it.hasNext(); i++) result.add(it.next());
+        return result;
+    }
+
+    @Override
+    public YSet<T> without(Collection<T> tt) {
         return YCollections.subSet(this, tt);
     }
 
     @Override
-    public YSet<T> join(Collection<T> c) {
+    public YSet<T> with(Collection<T> c) {
         return YCollections.appendSet(this, c);
     }
 
     @Override
-    public YSet<T> join(T t) {
+    public YSet<T> with(T t) {
         return YCollections.appendSet(this, t);
     }
+
+    @SafeVarargs
+    @Override
+    public final YSet<T> with(T... tt) {
+        YHashSet<T> result = new YHashSet<>();
+        result.addAll(this);
+        for (int i = 0; i < tt.length; i++) result.add(tt[i]);
+        return result;
+    }
+
+    @Override
+    public YSet<T> toSet() {
+        return this;
+    }
+
+
 }

@@ -20,12 +20,17 @@
 +namespaces in deserialization
 +shorten lines by Array element (not only by key value)
 +don't use quotes in serializer if string is without spaces or parentheses
-
++YCollection
++with/without
 TODO
 -define line width for short lines (so I can consider text input width when generating configs)
 -serialize Set
 -serialize properties + constructor for YadsAware
 -YadsAware must not be forced serialize to List only
+  reuse serializer code when serializing result of YadsAware.serialize
+-javaccless simple parser (to simplify creation for other languages)
+  -or just use ANTLR to generate parser for different platforms
+  -try to implement YadsSerializer with ANTLR
 
 -Range{0} - doesn't work if not imported (though its don't needs to because of field type)
 -serializer - don't generate import for field types (if field type == value type)
@@ -34,20 +39,17 @@ TODO
 -namespaces in serialization
 serialize without {} when needed
 ? forbid range={2} and range={1,2} ? (to force range=2 and range=1,2)
+  ? or look at line-width or complexity to switch {} on and off?
+-serialize package OR package.class (when needed)
 
--symbols like +-*/, etc - are valid identifiers
--parser generates simple lists only, not maps or YASClasses
+-symbols like +-*/, etc - must be valid identifiers
+-parser generates simple lists only, not maps or YASClasses (REMOVE, conflicts with 'line numbers')
 -map {key=value} and YadsClass is just one of many possible post-processings
-
 ?support complex keys?
 
--code-generate optimized (de)serializer for custom classes
-
+?unary minus is regexp of number or grammar rule? Consider method calls and other operators
 ? why do we need escape \t also?
 -optimize not earlier then requested
+-code-generate optimized (de)serializer for custom classes
 
--javaccless simple parser (to simplify creation for other languages)
 
-?unary minus is regexp of number or grammar rule? Consider method calls and other operators
-
--serialize package OR package.class (when needed)

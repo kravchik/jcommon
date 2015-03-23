@@ -89,13 +89,7 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public boolean any(Predicate<? super T> predicate) {
-        for (T t : this) if (predicate.test(t)) return true;
-        return false;
-    }
-
-    @Override
-    public boolean all(Predicate<? super T> predicate) {
+    public <R extends T> YSet<R> filterByClass(Class<R> clazz) {
         throw BadException.notImplemented();
     }
 
@@ -105,7 +99,7 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public <R> YSet<R> flatMap(Function<? super T, ? extends List<? extends R>> mapper) {
+    public <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         throw BadException.notImplemented();
     }
 
@@ -120,32 +114,12 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public T car() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
     public YSet<T> cdr() {
         throw BadException.notImplemented();
     }
 
     @Override
-    public T first() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public T last() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public T max() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public T min() {
+    public YSet<T> toSet() {
         throw BadException.notImplemented();
     }
 
@@ -155,27 +129,39 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> sub(T t) {
+    public YSet<T> without(T t) {
+        throw BadException.notImplemented();
+    }
+
+    @SafeVarargs
+    @Override
+    public final YSet<T> without(T... tt) {
         throw BadException.notImplemented();
     }
 
     @Override
-    public YSet<T> sub(Set<T> tt) {
+    public YCollection<T> take(int count) {
         throw BadException.notImplemented();
     }
 
     @Override
-    public YSet<T> join(T t) {
+    public YSet<T> with(T t) {
+        throw BadException.notImplemented();
+    }
+
+    @SafeVarargs
+    @Override
+    public final YSet<T> with(T... tt) {
         throw BadException.notImplemented();
     }
 
     @Override
-    public T first(Predicate<? super T> predicate) {
+    public YSet<T> without(Collection<T> tt) {
         throw BadException.notImplemented();
     }
 
     @Override
-    public YSet<T> join(Collection<T> c) {
+    public YSet<T> with(Collection<T> c) {
         throw BadException.notImplemented();
     }
 }

@@ -21,4 +21,12 @@ public class TestCollections {
                 , all.shuffle(all).map(p -> p.toSet().toList().sorted().toString()).toSet().toList().sorted().toString());
     }
 
+    @Test
+    public void testFold() {
+        //System.out.println(al(2, 3, 4).fold(1, (a, b) -> a * b)); ahaha - internal compilator error
+        assertEquals(9, (int)al(2, 3, 4).fold(0, (a, b) -> a + b));
+        assertEquals(24, (int)al(2, 3, 4).fold(1, (a, b) -> a * b));
+        YArrayList<Integer> l = al();
+        assertEquals(1, (int) l.fold(1, (a, b) -> a * b));
+    }
 }

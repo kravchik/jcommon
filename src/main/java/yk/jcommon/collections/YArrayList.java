@@ -39,27 +39,8 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public int count(Predicate<? super T> predicate) {
-        int result = 0;
-        for (T t : this) if (predicate.test(t)) result++;
-        return result;
-    }
-
-    @Override
     public <R extends T> YList<R> filterByClass(Class<R> clazz) {
         return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-
-    @Override
-    public boolean any(Predicate<? super T> predicate) {
-        for (T t : this) if (predicate.test(t)) return true;
-        return false;
-    }
-
-    @Override
-    public boolean all(Predicate<? super T> predicate) {
-        for (T t : this) if (!predicate.test(t)) return false;
-        return true;
     }
 
     @Override
@@ -68,15 +49,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public <R> YList<R> flatMap(Function<? super T, ? extends List<? extends R>> mapper) {
+    public <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         return YCollections.flatMapList(this, mapper);
     }
 
     @Override
-    public <R> R foldLeft(R first, BiFunction<R, T, R> folder) {
-        if (size() == 0) return first;
+    public <R> R fold(R first, BiFunction<R, T, R> folder) {
         R result = first;
-        for (int i = 1; i < size(); i++) result = folder.apply(result, get(i));
+        for (int i = 0; i < size(); i++) result = folder.apply(result, get(i));
         return result;
     }
 
@@ -117,21 +97,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public YList<T> sorted() {
-        return YCollections.sortedCollection(this);
-    }
-
-    @Override
-    public YList<T> sorted(Comparator<? super T> comparator) {
-        return YCollections.sortedCollection(this, comparator);
-    }
-
-    @Override
-    public YList<T> sorted(Function<T, Float> evaluator) {
-        return YCollections.sortedCollection(this, (v1, v2) -> Float.compare(evaluator.apply(v1), evaluator.apply(v2)));
-    }
-
-    @Override
     public T car() {
         return get(0);
     }
@@ -139,17 +104,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     @Override
     public YArrayList<T> cdr() {
         return YCollections.cdr(this);
-    }
-
-    @Override
-    public T first() {
-        return car();
-    }
-
-    @Override
-    public T first(Predicate<? super T> predicate) {
-        for (T t : this) if (predicate.test(t)) return t;
-        return null;
     }
 
     @Override
@@ -163,12 +117,18 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
+    public YList<T> toList() {
+        return this;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    @Override
     public YList<T> subList(int fromIndex, int toIndex) {
         return YCollections.subListFromList(this, fromIndex, toIndex);
     }
 
     @Override
-    public YList<T> join(Collection<T> c) {
+    public YList<T> with(Collection<T> c) {
         YList<T> result = al();
         result.addAll(this);
         result.addAll(c);
@@ -176,43 +136,40 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public YList<T> join(T t) {
+    public YList<T> with(T t) {
         YList<T> result = al();
         result.addAll(this);
         result.add(t);
         return result;
     }
 
+    @SafeVarargs
     @Override
-    public YList<T> sub(T t) {
+    public final YList<T> with(T... tt) {
+        YList<T> result = al();
+        result.addAll(this);
+        for (int i = 0; i < tt.length; i++) result.add(tt[i]);
+        return result;
+    }
+
+    @Override
+    public YList<T> without(Collection<T> c) {
+        YList<T> result = al();
+        for (T t : this) if (!c.contains(t)) result.add(t);
+        return result;
+    }
+
+    @Override
+    public YList<T> without(T t) {
         YList<T> result = al();
         for (T tt : this) if (tt != t) result.add(tt);
         return result;
     }
 
+    @SafeVarargs
     @Override
-    public String toString(String separator) {
-        boolean was = false;
-        String result = "";
-        for (Object o : this) {
-            if (was) result += separator;
-            result += o;
-            was = true;
-        }
-        return result;
-
-    }
-
-    @Override
-    public String toString(String prefix, String appender) {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder();
-        for (Object o : this) {
-            if (first) first = false;
-            else sb.append(appender);
-            sb.append(prefix).append(o == null ? "null" : o.toString());
-        }
-        return sb.toString();
+    public final YList<T> without(T... tt) {
+        return without(Arrays.asList(tt));
     }
 
     @Override

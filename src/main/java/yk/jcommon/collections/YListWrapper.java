@@ -34,7 +34,7 @@ public abstract class YListWrapper<T> implements YList<T> {
     }
 
     @Override
-    public <R> YList<R> flatMap(Function<? super T, ? extends List<? extends R>> mapper) {
+    public <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         return YCollections.flatMapList(l, mapper);
     }
 
@@ -56,11 +56,6 @@ public abstract class YListWrapper<T> implements YList<T> {
     @Override
     public YList<T> cdr() {
         return YCollections.cdr(l);
-    }
-
-    @Override
-    public T first() {
-        return car();
     }
 
     @Override
@@ -199,7 +194,7 @@ public abstract class YListWrapper<T> implements YList<T> {
     }
 
     @Override
-    public YList<T> join(Collection<T> c) {
+    public YList<T> with(Collection<T> c) {
         YList<T> result = al();
         result.addAll(this);
         result.addAll(c);

@@ -291,7 +291,7 @@ public class YadsSerializer {
             else instance = Reflector.newInstance(clazz);
             for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
         } else if (clazz == YadsClass.class) {
-            instance = new YadsClass(yad.name, tuples.join(array));
+            instance = new YadsClass(yad.name, tuples.with(array));
         } else {
             if (!array.isEmpty()) {
                 Constructor constructor = Reflector.getApropriateConstructor(clazz, array.toArray());

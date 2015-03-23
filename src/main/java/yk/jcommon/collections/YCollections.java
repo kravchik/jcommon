@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YArrayList.toYList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -46,7 +48,7 @@ public class YCollections {
         return result;
     }
 
-    static <T, R> YList<R> flatMapList(List<T> source, Function<? super T, ? extends List<? extends R>> mapper) {
+    static <T, R> YList<R> flatMapList(List<T> source, Function<? super T, ? extends Collection<? extends R>> mapper) {
         YArrayList<R> result = new YArrayList();
         for (int i = 0, sourceSize = source.size(); i < sourceSize; i++) {
             for (R r : mapper.apply(source.get(i))) result.add(r);
@@ -54,7 +56,7 @@ public class YCollections {
         return result;
     }
 
-    static <T, R> YHashSet<R> flatMapSet(Set<T> source, Function<? super T, ? extends List<? extends R>> mapper) {
+    static <T, R> YHashSet<R> flatMapSet(Set<T> source, Function<? super T, ? extends Collection<? extends R>> mapper) {
         YHashSet<R> result = new YHashSet();
         for (T t : source) {
             for (R r : mapper.apply(t)) result.add(r);
@@ -63,20 +65,14 @@ public class YCollections {
     }
 
     static <T> YList<T> sortedCollection(Collection<T> source) {
-        Object[] a = source.toArray();
-        Arrays.sort(a);
-        YArrayList result = YArrayList.al();
-        //noinspection ManualArrayToCollectionCopy
-        for (int i = 0; i < a.length; i++) result.add(a[i]);
+        YList<T> result = toYList(source);
+        Collections.sort((List)result);
         return result;
     }
 
     static <T> YList<T> sortedCollection(Collection<T> source, Comparator<? super T> comparator) {
-        Object[] a = source.toArray();
-        Arrays.sort(a, (Comparator) comparator);
-        YArrayList result = YArrayList.al();
-        //noinspection ManualArrayToCollectionCopy
-        for (int i = 0; i < a.length; i++) result.add(a[i]);
+        YList<T> result = toYList(source);
+        Collections.sort(result, comparator);
         return result;
     }
 
@@ -102,6 +98,15 @@ public class YCollections {
         return result;
     }
 
+    static <T> T maxFromCollection(Collection<T> source, Comparator<? super T> comparator) {
+        if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T result = null;
+        for (T t : source) {
+            if (result == null || comparator.compare(t, result) > 0) result = t;
+        }
+        return result;
+    }
+
     static <T> T minFromList(List<T> source, Comparator<? super T> comparator) {
         if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
         T result = null;
@@ -110,6 +115,15 @@ public class YCollections {
             if (result == null || comparator.compare(t, result) < 0) result = t;
         }
 
+        return result;
+    }
+
+    static <T> T minFromCollection(Collection<T> source, Comparator<? super T> comparator) {
+        if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T result = null;
+        for (T t : source) {
+            if (result == null || comparator.compare(t, result) < 0) result = t;
+        }
         return result;
     }
 
@@ -187,7 +201,7 @@ public class YCollections {
         YSet<YMap<T, T>> result = YHashSet.hs();
         T car = aa.car();
         YSet<T> cdr = aa.cdr();
-        for (T b : bb) result.addAll(scramble(cdr, bb.sub(b), prev.append(car, b)));
+        for (T b : bb) result.addAll(scramble(cdr, bb.without(b), prev.append(car, b)));
         return result;
     }
 
