@@ -23,6 +23,12 @@
 +YCollection
 +with/without
 TODO
+
+add clone(), test it
+YadsSerializer.deserializeClass((Class)t.getClass(), YadsSerializer.serialize(t))
+  t is integer
+infer type from constructor types (if called as constructor)
+
 -define line width for short lines (so I can consider text input width when generating configs)
 -serialize Set
 -serialize properties + constructor for YadsAware
