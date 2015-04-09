@@ -24,6 +24,7 @@
 +with/without
 TODO
 
+prop = new SomeClass(){{ }} not serializing
 add clone(), test it
 YadsSerializer.deserializeClass((Class)t.getClass(), YadsSerializer.serialize(t))
   t is integer
@@ -39,7 +40,7 @@ infer type from constructor types (if called as constructor)
   -try to implement YadsSerializer with ANTLR
 
 -Range{0} - doesn't work if not imported (though its don't needs to because of field type)
--serializer - don't generate import for field types (if field type == value type)
+-serializer - don't generate import for field types (if field type == value type) (deserializer doesn't needs it)
 -line numbers in errors
 -reflector can't find constructor when casting is needed (int->float for ex.)
 -namespaces in serialization

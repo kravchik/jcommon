@@ -4,11 +4,14 @@ import org.junit.Test;
 import yk.jcommon.collections.Tuple;
 import yk.jcommon.fastgeom.Vec2f;
 import yk.jcommon.utils.BadException;
+import yk.jcommon.utils.Reflector;
+
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.fail;
-import static yk.jcommon.collections.YArrayList.al;
-import static yk.jcommon.collections.YHashMap.hm;
+import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YHashMap.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -127,6 +130,17 @@ public class TestYads {
         tc.tc2 = new TestClass2(1);
         assertEquals("import= yk.lang.yads\nTestClass {\n  someInt= 0\n  tc2= {1.0}\n  someBoolean= false\n}\n", YadsSerializer.serialize(tc));
 
+    }
+
+    @Test
+    public void testFieldTypeNotImported() {
+        assertEquals(fill(new TestClass3(), "pos", new Vec2f(3, 3)), ((List)YadsSerializer.deserialize("import=yk.lang.yads TestClass3{pos=3f, 3f}")).get(0));
+        assertEquals(fill(new TestClass3(), "pos", new Vec2f(3, 3)), YadsSerializer.deserializeClass(TestClass3.class, "pos=3f, 3f"));
+    }
+
+    private static <T> T fill(T obj, Object... values) {
+        for (int i = 0; i < values.length; i += 2) Reflector.set(obj, (String) values[i], values[i+1]);
+        return obj;
     }
 
     @Test
