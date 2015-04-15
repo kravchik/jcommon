@@ -24,6 +24,7 @@
 +with/without
 TODO
 
+YadsSerializer.serializeInner( some string ) causes stack overflow
 prop = new SomeClass(){{ }} not serializing
 add clone(), test it
 YadsSerializer.deserializeClass((Class)t.getClass(), YadsSerializer.serialize(t))
