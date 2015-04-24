@@ -88,13 +88,13 @@ public interface YCollection<T> extends Collection<T> {
 
     @SuppressWarnings("unchecked")
     default public boolean containsAll(T... tt) {
-        for (T t : this) if (!contains(t)) return false;
+        for (T t : tt) if (!contains(t)) return false;
         return true;
     }
 
     @SuppressWarnings("unchecked")
     default public boolean containsAny(T... tt) {
-        for (T t : this) if (contains(t)) return true;
+        for (T t : tt) if (contains(t)) return true;
         return false;
     }
 

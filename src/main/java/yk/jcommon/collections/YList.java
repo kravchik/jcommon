@@ -19,6 +19,10 @@ public interface YList<T> extends YCollection<T>, List<T> {
     <R extends T> YList<R> filterByClass(Class<R> clazz);
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+
+    //TODO groupBy
+    //http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/group-by.html
+
     YList<T> cdr();
     YList<T> with(Collection<T> c);
     YList<T> with(T t);
