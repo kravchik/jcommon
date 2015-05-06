@@ -100,11 +100,12 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
 
     @Override
     public YSet<K> keySet() {
-        return YHashSet.toYSet(super.keySet());
+        return new YHashSetWrapper<>(super.keySet());
     }
 
     @Override
     public YArrayList<V> values() {
+        //TODO wrapper
         return YArrayList.toYList(super.values());
     }
 

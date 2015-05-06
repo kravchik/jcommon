@@ -1,0 +1,7 @@
+
++max/min with evaluator
++containsAny
+
+
+TODO
+

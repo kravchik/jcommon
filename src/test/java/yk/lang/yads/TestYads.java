@@ -72,12 +72,12 @@ public class TestYads {
 
     @Test
     public void serializer() {
-        assertEquals("import= yk.jcommon.fastgeom\nVec2f {\n  x= 1.0\n  y= 2.0\n}\n", YadsSerializer.serialize(new Vec2f(1, 2)));
+        assertEquals("import= yk.jcommon.fastgeom\nVec2f{x= 1.0 y= 2.0}", YadsSerializer.serialize(new Vec2f(1, 2)));
         assertEquals("{\n  hello\n  world\n}\n", YadsSerializer.serialize(al("hello", "world")));
         assertEquals("{\n  k= v\n}\n", YadsSerializer.serialize(hm("k", "v")));
 
-        assertEquals("import= yk.lang.yads\nTestEnumClass {\n  enumField= ENUM1\n}\n", YadsSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
-        assertEquals("import= yk.lang.yads\nTestEnumClass {\n}\n", YadsSerializer.serialize(new TestEnumClass(null)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass{enumField= ENUM1}", YadsSerializer.serialize(new TestEnumClass(TestEnum.ENUM1)));
+        assertEquals("import= yk.lang.yads\nTestEnumClass{}", YadsSerializer.serialize(new TestEnumClass(null)));
 
         assertEquals("{\n  hello\n  null\n}\n", YadsSerializer.serialize(al("hello", null)));
 
@@ -123,12 +123,12 @@ public class TestYads {
 
     @Test
     public void testYadsAware() {
-        assertEquals("\n  TestClass2\n  {1.0}\n", YadsSerializer.serialize(new TestClass2(1)));
-        assertEquals("\n  TestClass2\n  {1.0 2.0}\n", YadsSerializer.serialize(new TestClass2(1, 2)));
+        assertEquals("import= yk.lang.yads\nTestClass2{1.0}", YadsSerializer.serialize(new TestClass2(1)));
+        assertEquals("import= yk.lang.yads\nTestClass2{1.0 2.0}", YadsSerializer.serialize(new TestClass2(1, 2)));
 
         TestClass tc = new TestClass();
         tc.tc2 = new TestClass2(1);
-        assertEquals("import= yk.lang.yads\nTestClass {\n  someInt= 0\n  tc2= {1.0}\n  someBoolean= false\n}\n", YadsSerializer.serialize(tc));
+        assertEquals("import= yk.lang.yads\nTestClass{someInt= 0 tc2={1.0}someBoolean= false}", YadsSerializer.serialize(tc));
 
     }
 
@@ -136,6 +136,11 @@ public class TestYads {
     public void testFieldTypeNotImported() {
         assertEquals(fill(new TestClass3(), "pos", new Vec2f(3, 3)), ((List)YadsSerializer.deserialize("import=yk.lang.yads TestClass3{pos=3f, 3f}")).get(0));
         assertEquals(fill(new TestClass3(), "pos", new Vec2f(3, 3)), YadsSerializer.deserializeClass(TestClass3.class, "pos=3f, 3f"));
+    }
+
+    @Test
+    public void testFieldTypeIsKnown() {
+        assertEquals("import= yk.lang.yads\nTestClass3{pos={x= 3.0 y= 3.0}}", YadsSerializer.serialize(fill(new TestClass3(), "pos", new Vec2f(3, 3))));
     }
 
     private static <T> T fill(T obj, Object... values) {
@@ -150,6 +155,7 @@ public class TestYads {
         System.out.println(YADSParser.parseList("hello world"));
         System.out.println(YADSParser.parseClass("XY{10 20}"));
         System.out.println(YADSParser.parseClass("HBox{pos = 10, 20 VBox{size= 50, 50}}"));
+        System.out.println(YadsSerializer.deserialize("import=yk.lang.yads HBox{pos = 10, 20 VBox{size= 50, 50}}"));
         System.out.println(HBox.class.getName());
         //System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox{pos = 10, 20}")).toString());
 

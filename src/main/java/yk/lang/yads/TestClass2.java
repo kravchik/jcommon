@@ -7,7 +7,7 @@ import java.util.List;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YArrayList.toYList;
 
-public class TestClass2 implements YadsAware {
+public class TestClass2 implements YadsAwareConstructor {
 
     public float a, b;
 
@@ -39,17 +39,6 @@ public class TestClass2 implements YadsAware {
     //    }
     //}
 
-    @Override
-    public List yadsSerialize(boolean typeIsKnown) {
-        if (typeIsKnown) {
-            YList result = al();
-            result.add(a == b ? al(a) : al(a, b));
-            return result;
-        } else {
-            return al(getClass().getSimpleName(), yadsSerialize(true).get(0));
-        }
-    }
-
     //@Override
     //public String yadsSerialize() {
     ////    return al(getClass().getSimpleName(), yadsSerializeWhenTypeIsKnown())
@@ -63,11 +52,6 @@ public class TestClass2 implements YadsAware {
         //return "{" + a + " " + b + "}";
     //}
 
-
-    @Override
-    public YList serializeInner() {
-        return a == b ? al(a) : al(a, b);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -98,5 +82,10 @@ public class TestClass2 implements YadsAware {
                 ", b=" + b +
                 ", ss=" + ss +
                 '}';
+    }
+
+    @Override
+    public List genConstructorArguments() {
+        return a == b ? al(a) : al(a, b);
     }
 }

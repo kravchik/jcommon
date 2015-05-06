@@ -14,8 +14,8 @@ class HBox {
     public Vec2i size;
     public YList elements;
 
-    public void init(YList elements) {
-
+    public HBox(YList elements) {
+        this.elements = elements;
     }
 
     @Override

@@ -31,11 +31,6 @@ public class YHashSet<T> extends HashSet<T> implements YSet<T> {
     }
 
     @Override
-    public <R extends T> YSet<R> filterByClass(Class<R> clazz) {
-        return (YSet<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-
-    @Override
     public <R> YSet<R> map(Function<? super T, ? extends R> mapper) {
         return YCollections.mapSet(this, mapper);
     }

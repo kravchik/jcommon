@@ -22,7 +22,14 @@
 +don't use quotes in serializer if string is without spaces or parentheses
 +YCollection
 +with/without
+-add imports when custom serializer
+-add default semantics for generating constructor
+-define line width for short lines (so I can consider text input width when generating configs)
+-serializer - don't generate import for field types (if field type == value type) (deserializer doesn't needs it)
+-Range{0} - doesn't work if not imported (though its don't needs to because of field type)
 TODO
+
+-serialize Set
 
 YadsSerializer.serializeInner( some string ) causes stack overflow
 prop = new SomeClass(){{ }} not serializing
@@ -31,23 +38,18 @@ YadsSerializer.deserializeClass((Class)t.getClass(), YadsSerializer.serialize(t)
   t is integer
 infer type from constructor types (if called as constructor)
 
--define line width for short lines (so I can consider text input width when generating configs)
--serialize Set
 -serialize properties + constructor for YadsAware
--YadsAware must not be forced serialize to List only
-  reuse serializer code when serializing result of YadsAware.serialize
 -javaccless simple parser (to simplify creation for other languages)
   -or just use ANTLR to generate parser for different platforms
   -try to implement YadsSerializer with ANTLR
 
--Range{0} - doesn't work if not imported (though its don't needs to because of field type)
--serializer - don't generate import for field types (if field type == value type) (deserializer doesn't needs it)
 -line numbers in errors
 -reflector can't find constructor when casting is needed (int->float for ex.)
 -namespaces in serialization
 serialize without {} when needed
 ? forbid range={2} and range={1,2} ? (to force range=2 and range=1,2)
   ? or look at line-width or complexity to switch {} on and off?
+  ? or forbid commas, because "a, b" is very not same as "a"
 -serialize package OR package.class (when needed)
 
 -symbols like +-*/, etc - must be valid identifiers

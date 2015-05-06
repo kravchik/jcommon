@@ -14,7 +14,9 @@ import java.util.function.Predicate;
  */
 public interface YSet<T> extends YCollection<T>, Set<T> {
     YSet<T> filter(Predicate<? super T> predicate);
-    <R extends T> YSet<R> filterByClass(Class<R> clazz);
+    default <R extends T> YSet<R> filterByClass(Class<R> clazz) {
+        return (YSet<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
+    }
     <R> YSet<R> map(Function<? super T, ? extends R> mapper);
     <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
     YSet<T> cdr();

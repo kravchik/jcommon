@@ -26,6 +26,7 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Time: 23:22
  */
 public class YadsSerializer {
+    public static int compactWidth = 100;
     //private static YList<String> namespaces = al("", "test", "yk.lang.yads");
     private static Tab tab = new Tab("  ");
 
@@ -71,18 +72,19 @@ public class YadsSerializer {
         if (o instanceof Boolean) return o + "";
         if (o instanceof List) return serializeList(namespaces, (List) o);
         if (o instanceof Map) return serializeMap(namespaces, (Map) o);
-        if (o instanceof YadsAware) {
-            String result = "";
-            List serialized = ((YadsAware) o).yadsSerialize(typeIsKnown);
-            if (serialized == null) return serializeClass(namespaces, o);
-            //result += tab + "{\n";
-            result += "\n";
+
+        if (o instanceof YadsAwareConstructor) {
+
+            List serialized = ((YadsAwareConstructor) o).genConstructorArguments();
+            if (serialized == null) return serializeClass(namespaces, o, typeIsKnown);
+            String result = (typeIsKnown ? "" : addImport(namespaces, o)) + " {\n";
             tab.inc();
-            for (Object el : serialized) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";
+            for (Object el : serialized) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";//TODO type is known?
             tab.dec();
-            //result += tab + "}\n";
-            return result;
+            result += tab + "}\n";
+            return possiblyCompact(result);
         }
+
         if (o.getClass().isEnum()) return "" + o;
         if (o.getClass().isArray()) {
             if (o.getClass().getComponentType().isArray()) {
@@ -106,7 +108,7 @@ public class YadsSerializer {
                 return result;
             }
         }
-        return serializeClass(namespaces, o);
+        return possiblyCompact(serializeClass(namespaces, o, typeIsKnown));
     }
 
     private static String serializeMap(YSet<String> namespaces, Map o) {//TODO add specific Map type if not just HashMap or YHashMap
@@ -130,23 +132,29 @@ public class YadsSerializer {
     }
 
     private static String possiblyCompact(String s) {
-        if (s.length() < 100) s = compact(s);
+        String compacted = compact(s);
+        if (compacted.length() < compactWidth) return compacted;
         return s;
     }
 
-    private static String serializeClass(YSet<String> namespaces, Object o) {
+    private static String serializeClass(YSet<String> namespaces, Object o, boolean typeIsKnown) {
         String result = "";
-        String name = o.getClass().getName();
-        if (name.contains(".")) {
-            namespaces.add(getPackageName(name));
-            name = name.substring(name.lastIndexOf(".") + 1);
-        }
-        result += name + " {\n";
+        if (!typeIsKnown) result += addImport(namespaces, o);
+        result += " {\n";
         tab.inc();
         result += serializeInner(namespaces, o);
         tab.dec();
         result += tab + "}\n";
         return result;
+    }
+
+    private static String addImport(YSet<String> namespaces, Object o) {
+        String name = o.getClass().getName();
+        if (name.contains(".")) {
+            namespaces.add(getPackageName(name));
+            name = name.substring(name.lastIndexOf(".") + 1);
+        }
+        return name;
     }
 
     private static String getPackageName(String name) {

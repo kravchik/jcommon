@@ -46,11 +46,17 @@ public interface YCollection<T> extends Collection<T> {
     default T max(Comparator<? super T> comparator) {
         return YCollections.maxFromCollection(this, comparator);
     }
+    default T max(Function<T, Float> evaluator) {
+        return YCollections.maxFromCollection(this, (t1, t2) -> Float.compare(evaluator.apply(t1), evaluator.apply(t2)));
+    }
     default T min() {
         return YCollections.minFromCollection(this);
     }
     default T min(Comparator<? super T> comparator) {
         return YCollections.minFromCollection(this, comparator);
+    }
+    default T min(Function<T, Float> evaluator) {
+        return YCollections.minFromCollection(this, (t1, t2) -> Float.compare(evaluator.apply(t1), evaluator.apply(t2)));
     }
 
     YSet<T> toSet();
@@ -90,6 +96,12 @@ public interface YCollection<T> extends Collection<T> {
     default public boolean containsAll(T... tt) {
         for (T t : tt) if (!contains(t)) return false;
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    default public boolean containsAny(Collection<? extends T> tt) {
+        for (T t : tt) if (contains(t)) return true;
+        return false;
     }
 
     @SuppressWarnings("unchecked")

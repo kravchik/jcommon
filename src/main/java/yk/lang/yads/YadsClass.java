@@ -19,7 +19,7 @@ public class YadsClass {
 
     @Override
     public String toString() {
-        return "YADClass{" +
+        return "YadsClass{" +
                 "name='" + name + '\'' +
                 ", body=" + body +
                 '}';
