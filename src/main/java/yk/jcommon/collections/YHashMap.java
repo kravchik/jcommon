@@ -3,10 +3,11 @@ package yk.jcommon.collections;
 import yk.jcommon.utils.BadException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+
+import static yk.jcommon.collections.YArrayList.al;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,20 +47,38 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper) {
-        YMap<K2, V2> result = hm();
-        for (Entry<K, V> e : entrySet()) {
-            Tuple<? extends K2, ? extends V2> t = mapper.apply(e.getKey(), e.getValue());
-            //TODO assert repeating keys?
-            result.put(t.a, t.b);
+    public <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper) {
+        YList<V2> result = al();
+        for (Entry<K, V> entry : this.entrySet()) {
+            result.add(mapper.apply(entry.getKey(), entry.getValue()));
         }
         return result;
     }
 
     @Override
-    public <K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper) {
-        return null;
+    public <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {
+        YMap<K, V2> result = hm();
+        for (Entry<K, V> entry : this.entrySet()) {
+            result.put(entry.getKey(), mapper.apply(entry.getKey(), entry.getValue()));
+        }
+        return result;
     }
+
+    //@Override
+    //public <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper) {
+    //    YMap<K2, V2> result = hm();
+    //    for (Entry<K, V> e : entrySet()) {
+    //        Tuple<? extends K2, ? extends V2> t = mapper.apply(e.getKey(), e.getValue());
+    //        //TODO assert repeating keys?
+    //        result.put(t.a, t.b);
+    //    }
+    //    return result;
+    //}
+    //
+    //@Override
+    //public <K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper) {
+    //    return null;
+    //}
 
     @Override
     public Tuple<K, V> car() {

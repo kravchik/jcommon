@@ -1,6 +1,5 @@
 package yk.jcommon.collections;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -13,8 +12,11 @@ import java.util.function.BiPredicate;
  */
 public interface YMap<K, V> extends Map<K, V> {
     Map<K, V> filter(BiPredicate<? super K, ? super V> predicate);
-    <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper);
-    <K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper);
+    <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
+    <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper);
+
+    //<K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper);
+    //<K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper);
 
     Tuple<K, V> car();
     Map<K, V> cdr();

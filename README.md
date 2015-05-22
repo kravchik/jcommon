@@ -22,7 +22,7 @@ Example 2
     YList<String> all = al("shift", "ctrl", "alt", "super");
     System.out.println(all.shuffle(all)
             .map(p -> p.toSet().toList().sorted().toString())
-            .toSet().toList().sorted().join("", "\n"));
+            .toSet().toList().sorted().toString("\n"));
 ```
 Gives result:
 ```
@@ -91,7 +91,6 @@ HBox {
 ```
 How would some game config look lie:
 ```
-import=my.game
 Npc {
   name='Grumble Fingur'
   type=Goblin
@@ -100,33 +99,31 @@ Npc {
   }
 }
 ```
+Or just simple config file:
+```
+serverType = node
+port = 8080
+//port = 80
+description = "Awesome
+super server"
+```
 
 ###syntax
 * no commas or semicolons needed, so noise level is very low
 * strings and keys without quotes (that is also reduces noise)
 * but can use "" or '' (for strings with spaces, for example)
 * ' ' for strings - so you can include YADS in java strings without escaping
-* spaces and tabs don't have special meaning (like in yaml or python), so you can arrange data-text as you wish, even in one line
+* spaces and tabs don't have special meaning (opposite to yaml or python), so you can arrange data-text as you wish, even in one line (important for various input types: xls cells, input fields, etc)
 * multiline strings (with both "" and '' quotes)
-* equal for key=value
 * numbers, booleans
 * utf8, no restriction on keys or strings
 * comments (one line // and multiline /**/)
-* carefully controlled comma use to aviod one level parentheses like in {pos=10, 10 size=100, 200}
+* carefully controlled comma, to avoid one level parentheses like in {pos=10, 10 size=100, 200}
 
 ###serialization
-* simple parsing or additionally - deserialization
-* serialization of any data structure to string
-* key states field name
-* value type is inferred from field type
-* value type could be stated explicitly
-* arrays are also supported
+* serialize any data to human readable string, and then back to the same data without any additional effort
+* maps, lists, arrays, objects with class preservation
 * if type is unknown - array, map, or special class is constructed
-* all pares are initilizing into fields (or key=value for map)
-* other elements are given to init(elements) method
-* if value is string but type is not, then Type.parse with that string is called (TODO)
-* you can specify imports, or fully qualified class name
-* or do nothing, and get map, array, or YADClass with name explicitly specified
 
 ##mvn artifact
 ```xml
@@ -138,7 +135,7 @@ Npc {
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.104</version>
+    <version>0.109</version>
 </dependency>
 ```
 

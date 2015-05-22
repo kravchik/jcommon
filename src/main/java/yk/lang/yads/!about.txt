@@ -31,6 +31,8 @@ TODO
 
 -serialize Set
 
+sort map and set while serializing
+
 YadsSerializer.serializeInner( some string ) causes stack overflow
 prop = new SomeClass(){{ }} not serializing
 add clone(), test it
