@@ -38,12 +38,12 @@ Gives result:
 [super]
 ```
 
+* java8's .stream() I consider not usable
 * each collection extends standard java collection, so you can use it whenever standard collection would else be used
-* just add some useful methods (java8's .stream() I consider not usable)
-* all added methods are not modifying collection
+* just added some functional not modifying methods
 * yes, there are copies everywhere, but hey! Optimize it when your profiler say you so!
-* very convinient
-
+* very convenient
+* resulting code is looking like Xtend's or Scala's but with pure java
 
 ##ANIO
 **yk.jcommon.net.anio**
