@@ -15,6 +15,7 @@ import static yk.jcommon.collections.YArrayList.al;
  * Date: 10/1/14
  * Time: 11:50 PM
  */
+//TODO extends LinkedHashMap?
 public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
 
 
@@ -43,7 +44,9 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
 
     @Override
     public Map<K, V> filter(BiPredicate<? super K, ? super V> predicate) {
-        return null;
+        Map<K, V> result = hm();
+        for (Entry<K, V> entry : this.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
+        return result;
     }
 
     @Override

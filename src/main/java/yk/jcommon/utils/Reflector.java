@@ -2,6 +2,7 @@ package yk.jcommon.utils;
 
 import sun.reflect.ReflectionFactory;
 import yk.jcommon.collections.YList;
+import yk.jcommon.collections.YMap;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -16,6 +17,7 @@ import static yk.jcommon.collections.YHashMap.hm;
  * Time: 8:43 PM
  */
 public class Reflector {
+    //TODO YCollections
 
     public static Class classForName(String name) {
         try {
@@ -177,8 +179,9 @@ public class Reflector {
         return result;
     }
 
+    //TODO YMap
     public static Map<String, Field> getAllNonStaticFields(Class clazz) {
-        Map<String, Field> result = new LinkedHashMap<String, Field>();
+        Map<String, Field> result = new LinkedHashMap<>();
         while (clazz != Object.class) {
             for (Field f : clazz.getDeclaredFields()) {
                 int modifiers = f.getModifiers();
@@ -191,9 +194,10 @@ public class Reflector {
         return result;
     }
 
+    //TODO YMap
     public static Map<String, Field> getAllNonStaticFieldsReversed(Class clazz) {
         if (clazz == Object.class) return hm();
-        Map<String, Field> result = new LinkedHashMap<String, Field>();
+        Map<String, Field> result = new LinkedHashMap<>();
         result.putAll(getAllNonStaticFieldsReversed(clazz.getSuperclass()));
 
         for (Field f : clazz.getDeclaredFields()) {
