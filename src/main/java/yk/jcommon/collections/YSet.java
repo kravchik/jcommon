@@ -29,6 +29,7 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
     @SuppressWarnings("unchecked")
     YSet<T> without(T... tt);
 
+    //TODO set (because its linked)
     YList<T> sorted();
     YList<T> sorted(Comparator<? super T> comparator);
 }

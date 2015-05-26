@@ -10,7 +10,7 @@ import java.util.function.Predicate;
  * Date: 8/13/14
  * Time: 8:53 PM
  */
-public class YHashSet<T> extends HashSet<T> implements YSet<T> {
+public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
 
     public static <T> YHashSet<T> toYSet(Collection<T> source) {
         YHashSet<T> result = new YHashSet<>();

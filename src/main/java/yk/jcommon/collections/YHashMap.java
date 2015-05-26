@@ -3,6 +3,7 @@ package yk.jcommon.collections;
 import yk.jcommon.utils.BadException;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -15,8 +16,7 @@ import static yk.jcommon.collections.YArrayList.al;
  * Date: 10/1/14
  * Time: 11:50 PM
  */
-//TODO extends LinkedHashMap?
-public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
+public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
 
     //public static YHashMap map(Object... oo) {
@@ -45,14 +45,14 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
     @Override
     public Map<K, V> filter(BiPredicate<? super K, ? super V> predicate) {
         Map<K, V> result = hm();
-        for (Entry<K, V> entry : this.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
+        for (Map.Entry<K, V> entry : this.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
         return result;
     }
 
     @Override
     public <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper) {
         YList<V2> result = al();
-        for (Entry<K, V> entry : this.entrySet()) {
+        for (Map.Entry<K, V> entry : this.entrySet()) {
             result.add(mapper.apply(entry.getKey(), entry.getValue()));
         }
         return result;
@@ -61,7 +61,7 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
     @Override
     public <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {
         YMap<K, V2> result = hm();
-        for (Entry<K, V> entry : this.entrySet()) {
+        for (Map.Entry<K, V> entry : this.entrySet()) {
             result.put(entry.getKey(), mapper.apply(entry.getKey(), entry.getValue()));
         }
         return result;
@@ -85,7 +85,7 @@ public class YHashMap<K, V> extends HashMap<K, V> implements YMap<K, V> {
 
     @Override
     public Tuple<K, V> car() {
-        Entry<K, V> next = entrySet().iterator().next();
+        Map.Entry<K, V> next = entrySet().iterator().next();
         return new Tuple<>(next.getKey(), next.getValue());
     }
 

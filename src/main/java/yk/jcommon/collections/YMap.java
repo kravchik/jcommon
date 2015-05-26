@@ -40,4 +40,6 @@ public interface YMap<K, V> extends Map<K, V> {
 
     YMap<K, V> sub(K pKey);
 
+    //TODO sorted() - sorted keys
+    //TODO sortedValues() - sorted values
 }
