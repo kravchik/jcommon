@@ -1,5 +1,6 @@
 package yk.jcommon.collections;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -32,15 +33,14 @@ public interface YMap<K, V> extends Map<K, V> {
     YSet<K> keySet();
 
     @Override
-    YArrayList<V> values();
+    YList<V> values();
 
-    //TODO with
-    //TODO without
-    YMap<K, V> append(K k, V v);
-    YMap<K, V> append(Map<K, V> kv);
-    YMap<K, V> append(K k, V v, Object... other);
+    YMap<K, V> with(K k, V v);
+    YMap<K, V> with(K k, V v, Object... other);
+    YMap<K, V> with(Map<K, V> kv);
 
-    YMap<K, V> sub(K pKey);
+    YMap<K, V> without(K pKey);
+    YMap<K, V> without(Collection<K> keys);
 
     //TODO sorted() - sorted keys
     //TODO sortedValues() - sorted values

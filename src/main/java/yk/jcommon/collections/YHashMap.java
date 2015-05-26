@@ -2,13 +2,13 @@ package yk.jcommon.collections;
 
 import yk.jcommon.utils.BadException;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
-import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YArrayList.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +39,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     public static <K, V> YHashMap<K, V> hm() {
-        return new YHashMap<K, V>();
+        return new YHashMap<>();
     }
 
     @Override
@@ -91,12 +91,12 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public Map<K, V> cdr() {
-        throw BadException.notImplemented();
+        return without(car().a);
     }
 
     @Override
     public Tuple<K, V> first() {
-        throw BadException.notImplemented();
+        return car();
     }
 
     @Override
@@ -126,39 +126,47 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public YArrayList<V> values() {
+    public YList<V> values() {
         //TODO wrapper
-        return YArrayList.toYList(super.values());
+        //return new YListWrapper(super.values());
+        return toYList(super.values());
     }
 
     @Override
-    public YMap<K, V> append(K k, V v) {
-        YMap<K, V> result = new YHashMap<>();
+    public YMap<K, V> with(K k, V v) {
+        YMap<K, V> result = hm();
         result.putAll(this);
         result.put(k, v);
         return result;
     }
 
     @Override
-    public YMap<K, V> append(Map<K, V> kv) {
-        YMap<K, V> result = new YHashMap<>();
+    public YMap<K, V> with(K k, V v, Object... other) {
+        YMap<K, V> result = with(k, v);
+        for (int i = 0; i < other.length; i += 2) result.put((K)other[i], (V)other[i+1]);
+        return result;
+    }
+
+    @Override
+    public YMap<K, V> with(Map<K, V> kv) {
+        YMap<K, V> result = hm();
         result.putAll(this);
         result.putAll(kv);
         return result;
     }
 
     @Override
-    public YMap<K, V> append(K k, V v, Object... other) {
-        YMap<K, V> result = append(k, v);
-        for (int i = 0; i < other.length; i += 2) result.put((K)other[i], (V)other[i+1]);
+    public YMap<K, V> without(K pKey) {
+        YMap<K, V> result = new YHashMap<>();
+        result.putAll(this);
+        result.remove(pKey);
         return result;
     }
 
     @Override
-    public YMap<K, V> sub(K pKey) {
-        YMap<K, V> result = new YHashMap<>();
-        result.putAll(this);
-        result.remove(pKey);
+    public YMap<K, V> without(Collection<K> keys) {
+        YMap<K, V> result = toYMap(this);
+        for (K key : keys) result.remove(key);
         return result;
     }
 }

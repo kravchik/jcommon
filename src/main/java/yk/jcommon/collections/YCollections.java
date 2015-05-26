@@ -201,7 +201,7 @@ public class YCollections {
         YSet<YMap<T, T>> result = YHashSet.hs();
         T car = aa.car();
         YSet<T> cdr = aa.cdr();
-        for (T b : bb) result.addAll(scramble(cdr, bb.without(b), prev.append(car, b)));
+        for (T b : bb) result.addAll(scramble(cdr, bb.without(b), prev.with(car, b)));
         return result;
     }
 
