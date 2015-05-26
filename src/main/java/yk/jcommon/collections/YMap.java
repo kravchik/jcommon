@@ -34,6 +34,8 @@ public interface YMap<K, V> extends Map<K, V> {
     @Override
     YArrayList<V> values();
 
+    //TODO with
+    //TODO without
     YMap<K, V> append(K k, V v);
     YMap<K, V> append(Map<K, V> kv);
     YMap<K, V> append(K k, V v, Object... other);
