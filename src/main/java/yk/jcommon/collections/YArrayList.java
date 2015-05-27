@@ -39,11 +39,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public <R extends T> YList<R> filterByClass(Class<R> clazz) {
-        return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-
-    @Override
     public <R> YList<R> map(Function<? super T, ? extends R> mapper) {
         return YCollections.mapList(this, mapper);
     }
@@ -114,11 +109,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     @Override
     public YSet<T> toSet() {
         return YCollections.collectionToHashSet(this);
-    }
-
-    @Override
-    public YList<T> toList() {
-        return this;
     }
 
     @SuppressWarnings("NullableProblems")

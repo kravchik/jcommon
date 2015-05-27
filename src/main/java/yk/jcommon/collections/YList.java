@@ -16,12 +16,22 @@ import java.util.function.Predicate;
 public interface YList<T> extends YCollection<T>, List<T> {
 
     YList<T> filter(Predicate<? super T> predicate);
-    <R extends T> YList<R> filterByClass(Class<R> clazz);
+    @Override
+    default <R extends T> YList<R> filterByClass(Class<R> clazz) {
+        return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
+    }
+
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
     //TODO groupBy
     //http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/group-by.html
+
+    @Override
+    default YList<T> toList() {
+        return this;
+    }
+
 
     YList<T> cdr();
     YList<T> with(Collection<T> c);

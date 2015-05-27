@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YArrayList.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,16 +12,16 @@ import static yk.jcommon.collections.YArrayList.al;
  * Date: 8/12/14
  * Time: 5:43 PM
  */
-public abstract class YListWrapper<T> implements YList<T> {
+public class YListWrapper<T> implements YList<T> {
     private List<T> l;
 
     public YListWrapper(List<T> l) {
         this.l = l;
     }
 
-    //public static <T> YListWrapper<T> wrap(List<T> source) {
-    //    return new YListWrapper(source);
-    //}
+    public static <T> YListWrapper<T> wrap(List<T> source) {
+        return new YListWrapper(source);
+    }
 
     @Override
     public YList filter(Predicate predicate) {
@@ -61,6 +61,18 @@ public abstract class YListWrapper<T> implements YList<T> {
     @Override
     public T last() {
         return l.get(l.size() - 1);
+    }
+
+    @Override
+    public YList<T> allMin(Comparator<? super T> comparator) {
+        return toYList(l).allMin(comparator);
+    }
+
+    @Override
+    public YList<YList<T>> shuffle(YList<T> other) {
+        YList<YList<T>> result = al();
+        for (T t : l) for (T o : other) result.add(al(t, o));
+        return result;
     }
 
     @Override
@@ -195,9 +207,36 @@ public abstract class YListWrapper<T> implements YList<T> {
 
     @Override
     public YList<T> with(Collection<T> c) {
-        YList<T> result = al();
-        result.addAll(this);
-        result.addAll(c);
-        return result;
+        return toYList(l).with(c);
+    }
+
+    @Override
+    public YList<T> with(T t) {
+        return toYList(l).with(t);
+    }
+
+    @Override
+    public YList<T> with(T... t) {
+        return toYList(l).with(t);
+    }
+
+    @Override
+    public YList<T> without(Collection<T> c) {
+        return toYList(l).without(c);
+    }
+
+    @Override
+    public YList<T> without(T t) {
+        return toYList(l).without(t);
+    }
+
+    @Override
+    public YList<T> without(T... t) {
+        return toYList(l).without(t);
+    }
+
+    @Override
+    public YList<T> take(int count) {
+        return toYList(l).take(count);
     }
 }

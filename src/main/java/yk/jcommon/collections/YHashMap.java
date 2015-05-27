@@ -67,22 +67,6 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
-    //@Override
-    //public <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper) {
-    //    YMap<K2, V2> result = hm();
-    //    for (Entry<K, V> e : entrySet()) {
-    //        Tuple<? extends K2, ? extends V2> t = mapper.apply(e.getKey(), e.getValue());
-    //        //TODO assert repeating keys?
-    //        result.put(t.a, t.b);
-    //    }
-    //    return result;
-    //}
-    //
-    //@Override
-    //public <K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper) {
-    //    return null;
-    //}
-
     @Override
     public Tuple<K, V> car() {
         Map.Entry<K, V> next = entrySet().iterator().next();
@@ -127,8 +111,6 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public YList<V> values() {
-        //TODO wrapper
-        //return new YListWrapper(super.values());
         return toYList(super.values());
     }
 

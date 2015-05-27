@@ -16,9 +16,6 @@ public interface YMap<K, V> extends Map<K, V> {
     <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
     <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper);
 
-    //<K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, Tuple<? extends K2, ? extends V2>> mapper);
-    //<K2, V2> YMap<K2, V2> flatMap(BiFunction<? super K, ? super V, ? extends List<Tuple<? extends K2, ? extends V2>>> mapper);
-
     Tuple<K, V> car();
     Map<K, V> cdr();
     Tuple<K, V> first();
