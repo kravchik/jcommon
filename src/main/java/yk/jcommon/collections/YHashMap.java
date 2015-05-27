@@ -2,9 +2,7 @@ package yk.jcommon.collections;
 
 import yk.jcommon.utils.BadException;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
@@ -28,7 +26,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     public static <K, V> YHashMap<K, V> hm(K k, V v, Object... oo) {//TODO assert repeating keys
         YHashMap result = new YHashMap();
         result.put(k, v);
-        for (int i = 0; i < oo.length; i+=2) result.put(oo[i], oo[i+1]);
+        for (int i = 0; i < oo.length; i += 2) result.put(oo[i], oo[i + 1]);
         return result;
     }
 
@@ -45,7 +43,8 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     @Override
     public Map<K, V> filter(BiPredicate<? super K, ? super V> predicate) {
         Map<K, V> result = hm();
-        for (Map.Entry<K, V> entry : this.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
+        for (Map.Entry<K, V> entry : this.entrySet())
+            if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
         return result;
     }
 
@@ -125,7 +124,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     @Override
     public YMap<K, V> with(K k, V v, Object... other) {
         YMap<K, V> result = with(k, v);
-        for (int i = 0; i < other.length; i += 2) result.put((K)other[i], (V)other[i+1]);
+        for (int i = 0; i < other.length; i += 2) result.put((K) other[i], (V) other[i + 1]);
         return result;
     }
 
@@ -150,5 +149,37 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         YMap<K, V> result = toYMap(this);
         for (K key : keys) result.remove(key);
         return result;
+    }
+
+    @Override
+    public YMap<K, V> sorted(Comparator<Map.Entry<K, V>> comparator) {
+        YMap<K, V> result = hm();
+        for (Map.Entry<K, V> entry : toYList(this.entrySet()).sorted(comparator)) result.put(entry.getKey(), entry.getValue());
+        return result;
+    }
+
+    @Override
+    public YMap<K, V> sorted(BiFunction<K, V, Float> evaluator) {
+        List<Temp<K, V>> temp = al();
+        for (Map.Entry<K, V> entry : this.entrySet()) temp.add(new Temp<K, V>(entry, evaluator));
+        Collections.sort(temp);
+        YMap<K, V> result = hm();
+        for (Temp<K, V> t : temp) result.put(t.entry.getKey(), t.entry.getValue());
+        return result;
+    }
+
+    private static class Temp<K, V> implements Comparable<Temp<K, V>> {
+        float evaluation;
+        Map.Entry<K, V> entry;
+
+        private Temp(Map.Entry<K, V> entry, BiFunction<K, V, Float> evaluator) {
+            this.entry = entry;
+            evaluation = evaluator.apply(entry.getKey(), entry.getValue());
+        }
+
+        @Override
+        public int compareTo(Temp<K, V> o) {
+            return Float.compare(evaluation, o.evaluation);
+        }
     }
 }
