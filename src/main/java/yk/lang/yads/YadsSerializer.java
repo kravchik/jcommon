@@ -179,7 +179,7 @@ public class YadsSerializer {
     }
 
     public static Object deserialize(Namespaces namespaces, String s) {
-        return deserializeList(namespaces, YADSParser.parseList(s));
+        return deserializeList(namespaces, YadsParser.parseList(s));
     }
 
     public static <T> T deserializeClass(Class<? extends T> clazz, String s) {
@@ -191,7 +191,7 @@ public class YadsSerializer {
     }
 
     public static <T> T deserializeClass(Namespaces namespaces, Class<? extends T> clazz, String s) {
-        return (T) deserializeClass(namespaces, clazz, new YadsClass(null, YADSParser.parseList(s)));
+        return (T) deserializeClass(namespaces, clazz, new YadsClass(null, YadsParser.parseList(s)));
     }
 
     private static Object deserializeList(Namespaces namespaces, YList l) {
