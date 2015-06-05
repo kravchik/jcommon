@@ -23,20 +23,20 @@ public class TestYads {
 
     @Test
     public void parsePrimitives() {
-        assertEquals(al("hello", "hello", "hello", "", ""), YADSParser.parseList("hello 'hello' \"hello\" '' \"\""));
-        assertEquals(al("\"hello\"", "'hello'"), YADSParser.parseList(" '\\\"hello\\\"'  '\\'hello\\''"));
-        assertEquals(al("hello\nworld", "hello\tworld"), YADSParser.parseList(" 'hello\\nworld'  'hello\\tworld'"));
+        assertEquals(al("hello", "hello", "hello", "", ""), YadsParser.parseList("hello 'hello' \"hello\" '' \"\""));
+        assertEquals(al("\"hello\"", "'hello'"), YadsParser.parseList(" '\\\"hello\\\"'  '\\'hello\\''"));
+        assertEquals(al("hello\nworld", "hello\tworld"), YadsParser.parseList(" 'hello\\nworld'  'hello\\tworld'"));
 
-        assertEquals(al("hello\nworld", "hello\tworld"), YADSParser.parseList(" 'hello\nworld'  'hello\tworld'"));
+        assertEquals(al("hello\nworld", "hello\tworld"), YadsParser.parseList(" 'hello\nworld'  'hello\tworld'"));
 
-        assertEquals(al("\"'hello world'\"", "\"'hello world'\""), YADSParser.parseList(" \"\\\"'hello world'\\\"\"  '\"\\'hello world\\'\"'"));
-        assertEquals(al("\\'"), YADSParser.parseList(" \"\\\\'\" "));
-        assertEquals(al("\\\""), YADSParser.parseList(" '\\\\\"' "));
+        assertEquals(al("\"'hello world'\"", "\"'hello world'\""), YadsParser.parseList(" \"\\\"'hello world'\\\"\"  '\"\\'hello world\\'\"'"));
+        assertEquals(al("\\'"), YadsParser.parseList(" \"\\\\'\" "));
+        assertEquals(al("\\\""), YadsParser.parseList(" '\\\\\"' "));
 
-        assertEquals(al(10, 10l, 10L, 10f, 10d, 10D, 10.1d, 10.1f, 10.1f), YADSParser.parseList("10 10l 10L 10f 10d 10D 10.1d 10.1f 10.1"));
-        assertEquals(al(1424083792130l), YADSParser.parseList("1424083792130l"));
-        assertEquals(al(-10), YADSParser.parseList("-10"));
-        assertEquals(al(true, false), YADSParser.parseList("true false"));
+        assertEquals(al(10, 10l, 10L, 10f, 10d, 10D, 10.1d, 10.1f, 10.1f), YadsParser.parseList("10 10l 10L 10f 10d 10D 10.1d 10.1f 10.1"));
+        assertEquals(al(1424083792130l), YadsParser.parseList("1424083792130l"));
+        assertEquals(al(-10), YadsParser.parseList("-10"));
+        assertEquals(al(true, false), YadsParser.parseList("true false"));
     }
 
     @Test
@@ -152,14 +152,14 @@ public class TestYads {
     public void test() {
         System.out.println("'\u005cn'");
 
-        System.out.println(YADSParser.parseList("hello world"));
-        System.out.println(YADSParser.parseClass("XY{10 20}"));
-        System.out.println(YADSParser.parseClass("HBox{pos = 10, 20 VBox{size= 50, 50}}"));
+        System.out.println(YadsParser.parseList("hello world"));
+        System.out.println(YadsParser.parseClass("XY{10 20}"));
+        System.out.println(YadsParser.parseClass("HBox{pos = 10, 20 VBox{size= 50, 50}}"));
         System.out.println(YadsSerializer.deserialize("import=yk.lang.yads HBox{pos = 10, 20 VBox{size= 50, 50}}"));
         System.out.println(HBox.class.getName());
-        //System.out.println(YADSSerializer.deserializeClass(null, YADSParser.parseClass("HBox{pos = 10, 20}")).toString());
+        //System.out.println(YADSSerializer.deserializeClass(null, YadsParser.parseClass("HBox{pos = 10, 20}")).toString());
 
-        //System.out.println(YADSSerializer.deserializeList(YADSParser.parseList("import= yk.lang.yads HBox{pos = 10, 20}")).toString());
+        //System.out.println(YADSSerializer.deserializeList(YadsParser.parseList("import= yk.lang.yads HBox{pos = 10, 20}")).toString());
 
         //TODO convert with respect to method call arguments types!
         //TODO map or YAD if class not defined and unknown
