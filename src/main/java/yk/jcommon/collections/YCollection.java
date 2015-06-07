@@ -80,6 +80,7 @@ public interface YCollection<T> extends Collection<T> {
         return YCollections.sortedCollection(this, comparator);
     }
 
+    //TODO Function<T, Comparable<T>>
     default YList<T> sorted(Function<T, Float> evaluator) {
         return YCollections.sortedCollection(this, (v1, v2) -> Float.compare(evaluator.apply(v1), evaluator.apply(v2)));
     }

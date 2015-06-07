@@ -39,6 +39,8 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> without(K pKey);
     YMap<K, V> without(Collection<K> keys);
 
+    //TODO Function<T, Comparable<T>>
+
     //TODO sorted() - sorted keys
     //TODO sortedValues() - sorted values
 }
