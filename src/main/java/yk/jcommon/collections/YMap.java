@@ -1,6 +1,7 @@
 package yk.jcommon.collections;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -39,7 +40,7 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> without(K pKey);
     YMap<K, V> without(Collection<K> keys);
 
-    YMap<K, V> sorted(Comparator<Map.Entry<K, V>> comparator);
+    YMap<K, V> sorted(Comparator<Entry<K, V>> comparator);
     YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator);
 
     // пока 0.110 - не используется, туда и залить!
