@@ -1,7 +1,6 @@
 package yk.jcommon.collections;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
