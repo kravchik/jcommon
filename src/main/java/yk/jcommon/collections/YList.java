@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashMap.hm;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -24,8 +27,20 @@ public interface YList<T> extends YCollection<T>, List<T> {
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
-    //TODO groupBy
-    //http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/group-by.html
+    //TODO same for sets
+    default <K> YMap<K, List<T>> groupBy(Function<T, K> grouper) {
+        YMap<K, List<T>> result = hm();
+        for (T t : this) {
+            K group = grouper.apply(t);
+            List<T> gg = result.get(group);
+            if (gg == null) {
+                gg = al();
+                result.put(group, gg);
+            }
+            gg.add(t);
+        }
+        return result;
+    }
 
     @Override
     default YList<T> toList() {

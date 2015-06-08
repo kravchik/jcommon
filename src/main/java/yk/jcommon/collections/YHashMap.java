@@ -159,27 +159,50 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public YMap<K, V> sorted(BiFunction<K, V, Float> evaluator) {
+    public YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator) {
         List<Temp<K, V>> temp = al();
-        for (Map.Entry<K, V> entry : this.entrySet()) temp.add(new Temp<K, V>(entry, evaluator));
+        for (Map.Entry<K, V> entry : this.entrySet()) temp.add(new Temp<>(entry, evaluator));
         Collections.sort(temp);
         YMap<K, V> result = hm();
         for (Temp<K, V> t : temp) result.put(t.entry.getKey(), t.entry.getValue());
         return result;
     }
 
+    @Override
+    public YMap<K, V> take(int n) {
+        YMap<K, V> result = hm();
+        int count = 0;
+        for (K k : keySet()) {
+            if (count++ >= n) break;
+            result.put(k, get(k));
+        }
+        return result;
+    }
+
+    @Override
+    public String toString(String kvInfix, String elementsInfix) {
+        boolean was = false;
+        String result = "";
+        for (K k : keySet()) {
+            if (was) result += elementsInfix;
+            result += k + kvInfix + get(k);
+            was = true;
+        }
+        return result;
+    }
+
     private static class Temp<K, V> implements Comparable<Temp<K, V>> {
-        float evaluation;
+        Comparable evaluation;
         Map.Entry<K, V> entry;
 
-        private Temp(Map.Entry<K, V> entry, BiFunction<K, V, Float> evaluator) {
+        private Temp(Map.Entry<K, V> entry, BiFunction<K, V, Comparable> evaluator) {
             this.entry = entry;
             evaluation = evaluator.apply(entry.getKey(), entry.getValue());
         }
 
         @Override
         public int compareTo(Temp<K, V> o) {
-            return Float.compare(evaluation, o.evaluation);
+            return evaluation.compareTo(o);
         }
     }
 }

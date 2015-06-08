@@ -41,5 +41,10 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> without(Collection<K> keys);
 
     YMap<K, V> sorted(Comparator<Map.Entry<K, V>> comparator);
-    YMap<K, V> sorted(BiFunction<K, V, Float> evaluator);
+    YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator);
+
+    // пока 0.110 - не используется, туда и залить!
+    YMap<K, V> take(int n);
+    String toString(String kvInfix, String elementsInfix);
+    //TODO toString(infix, (k, v) -> string)
 }
