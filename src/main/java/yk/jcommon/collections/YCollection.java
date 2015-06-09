@@ -112,14 +112,14 @@ public interface YCollection<T> extends Collection<T> {
     }
 
     default public String toString(String separator) {
+        StringBuilder sb = new StringBuilder("");
         boolean was = false;
-        String result = "";
         for (Object o : this) {
-            if (was) result += separator;
-            result += o;
+            if (was) sb.append(separator);
+            sb.append(o);
             was = true;
         }
-        return result;
+        return sb.toString();
 
     }
 
