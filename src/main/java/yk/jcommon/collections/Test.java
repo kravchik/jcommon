@@ -16,7 +16,7 @@ public class Test {
                 .map(File::getName)                         //get name
                 .filter(n -> n.startsWith("."))             //only invisible
                 .sorted()                                   //sorted
-                .fold("", (r, n) -> r + ", " + n);      //to print fine
+                .reduce("", (r, n) -> r + ", " + n);      //to print fine
         System.out.println(names);
 
         //File("/home/yuri")listFiles()f(_.isDirectory)m(_.getName)f(n.startsWith(".")sfl("" _1+", "+_2)

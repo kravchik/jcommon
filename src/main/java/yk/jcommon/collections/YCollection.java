@@ -2,6 +2,7 @@ package yk.jcommon.collections;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -24,9 +25,16 @@ public interface YCollection<T> extends Collection<T> {
 
     <R> YCollection<R> map(Function<? super T, ? extends R> mapper);
     <R> YCollection<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
-    default <R> R fold(R first, BiFunction<R, T, R> folder) {
+    default <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;
         for (T t : this) result = folder.apply(result, t);
+        return result;
+    }
+    default T reduce(BiFunction<T, T, T> folder) {
+        if (isEmpty()) return null;
+        Iterator<T> i = iterator();
+        T result = i.next();
+        while (i.hasNext()) result = folder.apply(result, i.next());
         return result;
     }
 

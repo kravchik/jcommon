@@ -49,7 +49,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public <R> R fold(R first, BiFunction<R, T, R> folder) {
+    public <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;
         for (int i = 0; i < size(); i++) result = folder.apply(result, get(i));
         return result;
