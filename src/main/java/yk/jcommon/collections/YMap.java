@@ -22,8 +22,13 @@ public interface YMap<K, V> extends Map<K, V> {
     Tuple<K, V> first();
     Tuple<K, V> last();
 
+    //TODO max(comparator)
+    //TODO max(evaluator)
     Tuple<K, V> max();
     Tuple<K, V> min();
+
+    //TODO all
+    //TODO any
 
     V getOr(K key, V cur);
 
@@ -43,7 +48,6 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> sorted(Comparator<Entry<K, V>> comparator);
     YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator);
 
-    // пока 0.110 - не используется, туда и залить!
     YMap<K, V> take(int n);
     String toString(String kvInfix, String elementsInfix);
     //TODO toString(infix, (k, v) -> string)

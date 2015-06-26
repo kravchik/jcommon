@@ -96,4 +96,17 @@ public class Threads {
         public boolean exit;
         abstract public void tick(float dt) throws Exception;
     }
+
+    //TODO
+
+//    public static void tick20(Function<Float, Boolean> f) {
+//        Threads.tick(new Threads.Tickable() {
+//                         @Override
+//                         public void tick(float dt) throws Exception {
+//                             exit = !f.apply(dt);
+//                         }
+//                     }, 20
+//        );
+//    }
+
 }

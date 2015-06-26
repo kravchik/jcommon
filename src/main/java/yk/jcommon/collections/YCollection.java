@@ -141,4 +141,12 @@ public interface YCollection<T> extends Collection<T> {
         }
         return sb.toString();
     }
+
+    //TODO
+//    public <K, V> YMap<K, V> toMapKeys(Collection<K> input, Function<K, V> f) {
+//        YMap<K, V> result = hm();
+//        for (K k : input) result.put(k, f.apply(k));
+//        return result;
+//    }
+
 }

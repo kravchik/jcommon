@@ -202,7 +202,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
         @Override
         public int compareTo(Temp<K, V> o) {
-            return evaluation.compareTo(o);
+            return evaluation.compareTo(o.evaluation);
         }
     }
 }
