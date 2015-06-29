@@ -13,12 +13,12 @@ import java.util.function.BiPredicate;
  * Time: 10:34 PM
  */
 public interface YMap<K, V> extends Map<K, V> {
-    Map<K, V> filter(BiPredicate<? super K, ? super V> predicate);
+    YMap<K, V> filter(BiPredicate<? super K, ? super V> predicate);
     <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
     <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper);
 
     Tuple<K, V> car();
-    Map<K, V> cdr();
+    YMap<K, V> cdr();
     Tuple<K, V> first();
     Tuple<K, V> last();
 
