@@ -3,17 +3,14 @@ package yk.jcommon.collections;
 import yk.jcommon.utils.BadException;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.toYList;
-import static yk.jcommon.collections.YHashSet.hs;
+import static yk.jcommon.collections.YArrayList.*;
 
 public class YHashSetWrapper<T> implements YSet<T> {
-    //TODO move most functions without use of 'original' to default implementation
     private Set<T> original;
 
     public YHashSetWrapper(Set<T> original) {
@@ -42,11 +39,6 @@ public class YHashSetWrapper<T> implements YSet<T> {
         iterator.next();
         for (; iterator.hasNext(); ) result.add(iterator.next());
         return result;
-    }
-
-    @Override
-    public YSet<T> toSet() {
-        return this;
     }
 
     @Override
@@ -80,29 +72,6 @@ public class YHashSetWrapper<T> implements YSet<T> {
     @Override
     public YSet<T> without(T t) {
         return YCollections.subSet(original, t);
-    }
-
-    @Override
-    public YSet<T> without(T... tt) {
-        return without(hs(tt));
-    }
-
-    @Override
-    public YList<T> sorted() {
-        return YCollections.sortedCollection(original);
-    }
-
-    @Override
-    public YList<T> sorted(Comparator<? super T> comparator) {
-        return YCollections.sortedCollection(original, comparator);
-    }
-
-    @Override
-    public YCollection<T> take(int count) {
-        YSet result = hs();
-        Iterator<T> it = iterator();
-        for (int i = 0; i < count && it.hasNext(); i++) result.add(it.next());
-        return result;
     }
 
     @Override

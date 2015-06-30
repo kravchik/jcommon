@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,13 +23,13 @@ public interface YMap<K, V> extends Map<K, V> {
     Tuple<K, V> first();
     Tuple<K, V> last();
 
-    //TODO max(comparator)
-    //TODO max(evaluator)
-    Tuple<K, V> max();
-    Tuple<K, V> min();
+    Tuple<K, V> max(BiFunction<K, V, Float> evaluator);
+    V maxValue(Function<V, Float> evaluator);
+    Tuple<K, V> min(BiFunction<K, V, Float> evaluator);
+    V minValue(Function<V, Float> evaluator);
 
-    //TODO all
-    //TODO any
+    boolean isAll(BiPredicate<K, V> predicate);
+    boolean isAny(BiPredicate<K, V> predicate);
 
     V getOr(K key, V cur);
 
@@ -49,6 +50,6 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator);
 
     YMap<K, V> take(int n);
-    String toString(String kvInfix, String elementsInfix);
-    //TODO toString(infix, (k, v) -> string)
+    String toString(String elementsInfix, String kvInfix);
+    String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction);
 }

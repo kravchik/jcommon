@@ -5,6 +5,7 @@ import yk.jcommon.utils.BadException;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import static yk.jcommon.collections.YArrayList.*;
 
@@ -23,8 +24,9 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     //    return result;
     //}
 
-    public static <K, V> YHashMap<K, V> hm(K k, V v, Object... oo) {//TODO assert repeating keys
+    public static <K, V> YHashMap<K, V> hm(K k, V v, Object... oo) {
         YHashMap result = new YHashMap();
+        if (result.containsKey(k)) BadException.die("repeating key: " + k);
         result.put(k, v);
         for (int i = 0; i < oo.length; i += 2) result.put(oo[i], oo[i + 1]);
         return result;
@@ -41,8 +43,8 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public Map<K, V> filter(BiPredicate<? super K, ? super V> predicate) {
-        Map<K, V> result = hm();
+    public YMap<K, V> filter(BiPredicate<? super K, ? super V> predicate) {
+        YMap<K, V> result = hm();
         for (Map.Entry<K, V> entry : this.entrySet())
             if (predicate.test(entry.getKey(), entry.getValue())) result.put(entry.getKey(), entry.getValue());
         return result;
@@ -73,7 +75,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public Map<K, V> cdr() {
+    public YMap<K, V> cdr() {
         return without(car().a);
     }
 
@@ -88,13 +90,71 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public Tuple<K, V> max() {
-        throw BadException.notImplemented();
+    public Tuple<K, V> max(BiFunction<K, V, Float> evaluator) {
+        float maxValue = Float.MIN_VALUE;
+        K maxKey = null;
+        for (K k : super.keySet()) {
+            float curValue = evaluator.apply(k, get(k));
+            if (curValue > maxValue) {
+                maxKey = k;
+                maxValue = curValue;
+            }
+        }
+        return new Tuple<>(maxKey, get(maxKey));
     }
 
     @Override
-    public Tuple<K, V> min() {
-        throw BadException.notImplemented();
+    public V maxValue(Function<V, Float> evaluator) {
+        float maxValue = Float.MIN_VALUE;
+        V mv = null;
+        for (V v : super.values()) {
+            float curValue = evaluator.apply(v);
+            if (curValue > maxValue) {
+                mv = v;
+                maxValue = curValue;
+            }
+        }
+        return mv;
+    }
+
+    @Override
+    public Tuple<K, V> min(BiFunction<K, V, Float> evaluator) {
+        float minValue = Float.MAX_VALUE;
+        K minKey = null;
+        for (K k : super.keySet()) {
+            float curValue = evaluator.apply(k, get(k));
+            if (curValue < minValue) {
+                minKey = k;
+                minValue = curValue;
+            }
+        }
+        return new Tuple<>(minKey, get(minKey));
+    }
+
+    @Override
+    public V minValue(Function<V, Float> evaluator) {
+        float minValue = Float.MAX_VALUE;
+        V mv = null;
+        for (V v : super.values()) {
+            float curValue = evaluator.apply(v);
+            if (curValue < minValue) {
+                mv = v;
+                minValue = curValue;
+            }
+        }
+        return mv;
+    }
+
+    @Override
+    public boolean isAll(BiPredicate<K, V> predicate) {
+        for (Map.Entry<K, V> entry : super.entrySet()) if (!predicate.test(entry.getKey(), entry.getValue())) return false;
+        return true;
+    }
+
+    @Override
+    public boolean isAny(BiPredicate<K, V> predicate) {
+        for (Map.Entry<K, V> entry : super.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) return true;
+        return false;
     }
 
     @Override
@@ -110,6 +170,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public YList<V> values() {
+        //TODO collection wrapper
         return toYList(super.values());
     }
 
@@ -180,15 +241,27 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public String toString(String kvInfix, String elementsInfix) {
+    public String toString(String elementsInfix, String kvInfix) {
         boolean was = false;
-        String result = "";
+        StringBuilder sb = new StringBuilder("");
         for (K k : keySet()) {
-            if (was) result += elementsInfix;
-            result += k + kvInfix + get(k);
+            if (was) sb.append(elementsInfix);
+            sb.append(k).append(kvInfix).append(get(k));
             was = true;
         }
-        return result;
+        return sb.toString();
+    }
+
+    @Override
+    public String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction) {
+        boolean was = false;
+        StringBuilder sb = new StringBuilder("");
+        for (K k : keySet()) {
+            if (was) sb.append(elementsInfix);
+            sb.append(toStringFunction.apply(k, get(k)));
+            was = true;
+        }
+        return sb.toString();
     }
 
     private static class Temp<K, V> implements Comparable<Temp<K, V>> {

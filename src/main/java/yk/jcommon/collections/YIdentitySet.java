@@ -104,22 +104,7 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public YList<T> sorted() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public YList<T> sorted(Comparator<? super T> comparator) {
-        throw BadException.notImplemented();
-    }
-
-    @Override
     public YSet<T> cdr() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public YSet<T> toSet() {
         throw BadException.notImplemented();
     }
 
@@ -130,17 +115,6 @@ public class YIdentitySet<T> implements YSet<T> {
 
     @Override
     public YSet<T> without(T t) {
-        throw BadException.notImplemented();
-    }
-
-    @SafeVarargs
-    @Override
-    public final YSet<T> without(T... tt) {
-        throw BadException.notImplemented();
-    }
-
-    @Override
-    public YCollection<T> take(int count) {
         throw BadException.notImplemented();
     }
 

@@ -39,16 +39,6 @@ public class YListWrapper<T> implements YList<T> {
     }
 
     @Override
-    public YList<T> sorted() {
-        return YCollections.sortedCollection(l);
-    }
-
-    @Override
-    public YList<T> sorted(Comparator<? super T> comparator) {
-        return YCollections.sortedCollection(l, comparator);
-    }
-
-    @Override
     public T car() {
         return l.get(0);
     }

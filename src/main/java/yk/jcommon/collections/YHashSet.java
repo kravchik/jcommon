@@ -41,16 +41,6 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     }
 
     @Override
-    public YList<T> sorted() {
-        return YCollections.sortedCollection(this);
-    }
-
-    @Override
-    public YList<T> sorted(Comparator<? super T> comparator) {
-        return YCollections.sortedCollection(this, comparator);
-    }
-
-    @Override
     public YSet<T> cdr() {
         YSet<T> result = new YHashSet<>();
         Iterator<T> iterator = this.iterator();
@@ -67,20 +57,6 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     @Override
     public YSet<T> without(T t) {
         return YCollections.subSet(this, t);
-    }
-
-    @SafeVarargs
-    @Override
-    public final YSet<T> without(T... tt) {
-        return without(hs(tt));
-    }
-
-    @Override
-    public YSet<T> take(int count) {
-        YSet result = hs();
-        Iterator<T> it = iterator();
-        for (int i = 0; i < count && it.hasNext(); i++) result.add(it.next());
-        return result;
     }
 
     @Override
@@ -106,11 +82,5 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
         for (int i = 0; i < tt.length; i++) result.add(tt[i]);
         return result;
     }
-
-    @Override
-    public YSet<T> toSet() {
-        return this;
-    }
-
 
 }

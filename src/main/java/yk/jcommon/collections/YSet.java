@@ -1,10 +1,12 @@
 package yk.jcommon.collections;
 
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static yk.jcommon.collections.YHashSet.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +22,12 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
     <R> YSet<R> map(Function<? super T, ? extends R> mapper);
     <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
     YSet<T> cdr();
+
+    @Override
+    default YSet<T> toSet() {
+        return this;
+    }
+
     YSet<T> with(Collection<T> c);
     YSet<T> with(T t);
     @SuppressWarnings("unchecked")
@@ -27,9 +35,16 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
     YSet<T> without(Collection<T> tt);
     YSet<T> without(T t);
     @SuppressWarnings("unchecked")
-    YSet<T> without(T... tt);
+    default YSet<T> without(T... tt) {
+        return without(hs(tt));
+    }
 
-    //TODO set (because its linked)
-    YList<T> sorted();
-    YList<T> sorted(Comparator<? super T> comparator);
+    @Override
+    default YSet<T> take(int count) {
+        YSet result = hs();
+        Iterator<T> it = iterator();
+        for (int i = 0; i < count && it.hasNext(); i++) result.add(it.next());
+        return result;
+    }
+
 }

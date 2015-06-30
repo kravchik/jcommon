@@ -7,6 +7,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YHashMap.hm;
+
 @SuppressWarnings("UnusedDeclaration")
 public interface YCollection<T> extends Collection<T> {
 
@@ -54,8 +56,8 @@ public interface YCollection<T> extends Collection<T> {
     default T max(Comparator<? super T> comparator) {
         return YCollections.maxFromCollection(this, comparator);
     }
-    default T max(Function<T, Float> evaluator) {
-        return YCollections.maxFromCollection(this, (t1, t2) -> Float.compare(evaluator.apply(t1), evaluator.apply(t2)));
+    default T max(Function<T, Comparable> evaluator) {
+        return YCollections.maxFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
     }
     default T min() {
         return YCollections.minFromCollection(this);
@@ -63,8 +65,8 @@ public interface YCollection<T> extends Collection<T> {
     default T min(Comparator<? super T> comparator) {
         return YCollections.minFromCollection(this, comparator);
     }
-    default T min(Function<T, Float> evaluator) {
-        return YCollections.minFromCollection(this, (t1, t2) -> Float.compare(evaluator.apply(t1), evaluator.apply(t2)));
+    default T min(Function<T, Comparable> evaluator) {
+        return YCollections.minFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
     }
 
     YSet<T> toSet();
@@ -80,6 +82,7 @@ public interface YCollection<T> extends Collection<T> {
     @SuppressWarnings("unchecked")
     YCollection<T> without(T... t);
 
+    //YSet returns not YSet but YList, because sorting algorithm itself creates list
     default YList<T> sorted() {
         return YCollections.sortedCollection(this);
     }
@@ -88,9 +91,8 @@ public interface YCollection<T> extends Collection<T> {
         return YCollections.sortedCollection(this, comparator);
     }
 
-    //TODO Function<T, Comparable<T>>
-    default YList<T> sorted(Function<T, Float> evaluator) {
-        return YCollections.sortedCollection(this, (v1, v2) -> Float.compare(evaluator.apply(v1), evaluator.apply(v2)));
+    default YList<T> sorted(Function<T, Comparable> evaluator) {
+        return YCollections.sortedCollection(this, (v1, v2) -> evaluator.apply(v1).compareTo(evaluator.apply(v2)));
     }
 
     YCollection<T> take(int count);
@@ -142,11 +144,10 @@ public interface YCollection<T> extends Collection<T> {
         return sb.toString();
     }
 
-    //TODO
-//    public <K, V> YMap<K, V> toMapKeys(Collection<K> input, Function<K, V> f) {
-//        YMap<K, V> result = hm();
-//        for (K k : input) result.put(k, f.apply(k));
-//        return result;
-//    }
+    default public <V> YMap<T, V> toMapKeys(Function<T, V> f) {
+        YMap<T, V> result = hm();
+        for (T k : this) result.put(k, f.apply(k));
+        return result;
+    }
 
 }
