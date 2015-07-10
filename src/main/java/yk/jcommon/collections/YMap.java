@@ -36,6 +36,9 @@ public interface YMap<K, V> extends Map<K, V> {
     @Override
     YSet<K> keySet();
 
+    @Override
+    YCollection<V> values();
+
     YMap<K, V> with(K k, V v);
     YMap<K, V> with(K k, V v, Object... other);
     YMap<K, V> with(Map<K, V> kv);
