@@ -109,11 +109,6 @@ public class YIdentitySet<T> implements YSet<T> {
     }
 
     @Override
-    public YArrayList<T> toList() {
-        throw BadException.notImplemented();
-    }
-
-    @Override
     public YSet<T> without(T t) {
         throw BadException.notImplemented();
     }

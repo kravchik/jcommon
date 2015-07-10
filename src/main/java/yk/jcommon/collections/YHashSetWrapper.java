@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.*;
-
 public class YHashSetWrapper<T> implements YSet<T> {
     private Set<T> original;
 
@@ -39,11 +37,6 @@ public class YHashSetWrapper<T> implements YSet<T> {
         iterator.next();
         for (; iterator.hasNext(); ) result.add(iterator.next());
         return result;
-    }
-
-    @Override
-    public YList<T> toList() {
-        return toYList(original);
     }
 
     @Override

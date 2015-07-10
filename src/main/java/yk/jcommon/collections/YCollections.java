@@ -22,15 +22,9 @@ public class YCollections {
         return result;
     }
 
-    public static <T> YHashSet<T> filterSet(Set<T> l, Predicate<? super T> predicate) {
+    public static <T> YHashSet<T> filterSet(Collection<T> l, Predicate<? super T> predicate) {
         YHashSet result = new YHashSet();
         for (T t : l) if (predicate.test(t)) result.add(t);
-        return result;
-    }
-
-    static <T> YSet<T> collectionToHashSet(Collection<T> source) {
-        YSet result = new YHashSet<>();
-        result.addAll(source);
         return result;
     }
 

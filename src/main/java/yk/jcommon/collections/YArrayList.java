@@ -106,11 +106,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return get(size() - 1);
     }
 
-    @Override
-    public YSet<T> toSet() {
-        return YCollections.collectionToHashSet(this);
-    }
-
     @SuppressWarnings("NullableProblems")
     @Override
     public YList<T> subList(int fromIndex, int toIndex) {

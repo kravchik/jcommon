@@ -191,11 +191,6 @@ public class YListWrapper<T> implements YList<T> {
     }
 
     @Override
-    public YSet<T> toSet() {
-        return YCollections.collectionToHashSet(l);
-    }
-
-    @Override
     public YList<T> with(Collection<T> c) {
         return toYList(l).with(c);
     }

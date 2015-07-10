@@ -7,7 +7,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YArrayList.toYList;
 import static yk.jcommon.collections.YHashMap.hm;
+import static yk.jcommon.collections.YHashSet.toYSet;
 
 @SuppressWarnings("UnusedDeclaration")
 public interface YCollection<T> extends Collection<T> {
@@ -69,8 +71,12 @@ public interface YCollection<T> extends Collection<T> {
         return YCollections.minFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
     }
 
-    YSet<T> toSet();
-    YList<T> toList();
+    default YSet<T> toSet() {
+        return toYSet(this);
+    }
+    default YList<T> toList() {
+        return toYList(this);
+    }
 
     YCollection<T> with(Collection<T> c);
     YCollection<T> with(T t);

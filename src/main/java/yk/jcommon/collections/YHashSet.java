@@ -50,11 +50,6 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     }
 
     @Override
-    public YArrayList<T> toList() {
-        return YArrayList.toYList(this);
-    }
-
-    @Override
     public YSet<T> without(T t) {
         return YCollections.subSet(this, t);
     }
