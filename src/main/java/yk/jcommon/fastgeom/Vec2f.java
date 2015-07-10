@@ -189,4 +189,8 @@ public class Vec2f implements Serializable {
     public static Vec2f fromAngle(float angle) {
         return new Vec2f((float)Math.cos(angle), (float) Math.sin(angle));
     }
+
+    public boolean isBehind(Vec2f b) {
+        return this.mulScalar(b) < 0;
+    }
 }

@@ -37,6 +37,10 @@ public class Vec3f implements Serializable {
         return new Vec3f(x, y, z);
     }
 
+    public Vec3f Vec3f(Vec2f v, float z) {
+        return new Vec3f(v.x, v.y, z);
+    }
+
     public Vec3f(Vec3f from) {
         this.x = from.x;
         this.y = from.y;

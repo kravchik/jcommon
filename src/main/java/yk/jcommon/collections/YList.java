@@ -3,11 +3,13 @@ package yk.jcommon.collections;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.al;
-import static yk.jcommon.collections.YHashMap.hm;
+import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YHashMap.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,4 +66,14 @@ public interface YList<T> extends YCollection<T>, List<T> {
     T last();
     YList<T> allMin(Comparator<? super T> comparator);
     YList<YList<T>> shuffle(YList<T> other);
+
+    default void forUniquePares(BiConsumer<T, T> bc) {
+        for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) bc.accept(get(i), get(j));
+    }
+
+    default <R> YList<R> mapUniquePares(BiFunction<T, T, R> bf) {
+        YList<R> result = al();
+        for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) result.add(bf.apply(get(i), get(j)));
+        return result;
+    }
 }

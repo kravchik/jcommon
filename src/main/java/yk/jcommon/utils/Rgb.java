@@ -1,5 +1,8 @@
 package yk.jcommon.utils;
 
+import com.sun.javafx.geom.Vec4f;
+import yk.jcommon.fastgeom.Vec3f;
+
 public class Rgb {
 
     public static int get(int value, int i) {
@@ -45,5 +48,27 @@ public class Rgb {
         int b = (int) Math.min(255, getB(c1) * proportion + getB(c2) * (1 - proportion));
         int a = (int) Math.min(255, getA(c1) * proportion + getA(c2) * (1 - proportion));
         return packRgb(r, g, b, a);
+    }
+
+    public static int packRgb(Vec3f v) {
+        int r = (int) (v.x * 255f);
+        int g = (int) (v.y * 255f);
+        int b = (int) (v.z * 255f);
+        r = Math.max(0, Math.min(255, r));
+        g = Math.max(0, Math.min(255, g));
+        b = Math.max(0, Math.min(255, b));
+        return Rgb.packRgb(r, g, b);
+    }
+
+    public static int packRgb(Vec4f v) {
+        int r = (int) (v.x * 255f);
+        int g = (int) (v.y * 255f);
+        int b = (int) (v.z * 255f);
+        int a = (int) (v.w * 255f);
+        r = Math.max(0, Math.min(255, r));
+        g = Math.max(0, Math.min(255, g));
+        b = Math.max(0, Math.min(255, b));
+        a = Math.max(0, Math.min(255, a));
+        return Rgb.packRgb(r, g, b, a);
     }
 }

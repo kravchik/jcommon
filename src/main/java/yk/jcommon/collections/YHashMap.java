@@ -169,7 +169,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public YList<V> values() {
+    public YList<V> yValues() {
         //TODO collection wrapper
         return toYList(super.values());
     }

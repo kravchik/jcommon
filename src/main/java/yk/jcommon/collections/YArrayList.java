@@ -29,7 +29,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     @SafeVarargs
     public static <T> YArrayList<T> al(T... tt) {
         YArrayList<T> result = new YArrayList<>();
-        result.addAll(Arrays.asList(tt));
+        for (int i = 0; i < tt.length; i++) result.add(tt[i]);
         return result;
     }
 

@@ -21,7 +21,7 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     @SafeVarargs
     public static <T> YHashSet<T> hs(T... tt) {
         YHashSet<T> result = new YHashSet<>();
-        Collections.addAll(result, tt);
+        for (int i = 0; i < tt.length; i++) result.add(tt[i]);
         return result;
     }
 
