@@ -29,12 +29,12 @@ public class Vec3f implements Serializable {
         this.z = z;
     }
 
-    public static Vec3f v(final float x, final float y, final float z) {
+    public static Vec3f v3(final float x, final float y, final float z) {
         return new Vec3f(x, y, z);
     }
 
-    public static Vec3f v3(final float x, final float y, final float z) {
-        return new Vec3f(x, y, z);
+    public static Vec3f v23(Vec2f v, float z) {
+        return new Vec3f(v, z);
     }
 
     public Vec3f(Vec2f v, float z) {
@@ -63,30 +63,6 @@ public class Vec3f implements Serializable {
         return new Vec3f(x / value, y / value, z / value);
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public Vec2f getXY() {
-        return new Vec2f(x, y);
-    }
-
-    public Vec2f getXZ() {
-        return new Vec2f(x, z);
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public Vec2f getYZ() {
-        return new Vec2f(y, z);
-    }
-
-    public float getZ() {
-        return z;
-    }
-
     public Vec3f mul(final float b) {
         return new Vec3f(x * b, y * b, z * b);
     }
@@ -100,13 +76,12 @@ public class Vec3f implements Serializable {
     }
 
     public Vec3f normalized() {
-        final float radius = 1 / (float) Math.sqrt(x * x + y * y + z * z);
-        return new Vec3f(x * radius, y * radius, z * radius);
+        return normalized(1);
     }
 
     public Vec3f normalized(float r) {
-        final float radius = r / (float) Math.sqrt(x * x + y * y + z * z);
-        return new Vec3f(x * radius, y * radius, z * radius);
+        final float m = r / length();
+        return new Vec3f(x * m, y * m, z * m);
     }
 
     public float scalarProduct(final Vec3f b) {
@@ -161,7 +136,7 @@ public class Vec3f implements Serializable {
      * @return
      */
     public Vec3f lerp(Vec3f to, float blend) {
-        return to.sub(this).mul(blend).add(this);
+        return mix(this, to, blend);
     }
 
     //0 - a, 1 - b
@@ -184,4 +159,29 @@ public class Vec3f implements Serializable {
     public Vec2f getXy() {
         return new Vec2f(x, y);
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public Vec2f getXY() {
+        return new Vec2f(x, y);
+    }
+
+    public Vec2f getXZ() {
+        return new Vec2f(x, z);
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public Vec2f getYZ() {
+        return new Vec2f(y, z);
+    }
+
+    public float getZ() {
+        return z;
+    }
+
 }

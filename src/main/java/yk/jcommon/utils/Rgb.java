@@ -1,7 +1,7 @@
 package yk.jcommon.utils;
 
-import com.sun.javafx.geom.Vec4f;
 import yk.jcommon.fastgeom.Vec3f;
+import yk.jcommon.fastgeom.Vec4f;
 
 public class Rgb {
 
@@ -51,24 +51,17 @@ public class Rgb {
     }
 
     public static int packRgb(Vec3f v) {
-        int r = (int) (v.x * 255f);
-        int g = (int) (v.y * 255f);
-        int b = (int) (v.z * 255f);
-        r = Math.max(0, Math.min(255, r));
-        g = Math.max(0, Math.min(255, g));
-        b = Math.max(0, Math.min(255, b));
+        int r = Math.max(0, Math.min(255, (int) (v.x * 255f)));
+        int g = Math.max(0, Math.min(255, (int) (v.y * 255f)));
+        int b = Math.max(0, Math.min(255, (int) (v.z * 255f)));
         return Rgb.packRgb(r, g, b);
     }
 
     public static int packRgb(Vec4f v) {
-        int r = (int) (v.x * 255f);
-        int g = (int) (v.y * 255f);
-        int b = (int) (v.z * 255f);
-        int a = (int) (v.w * 255f);
-        r = Math.max(0, Math.min(255, r));
-        g = Math.max(0, Math.min(255, g));
-        b = Math.max(0, Math.min(255, b));
-        a = Math.max(0, Math.min(255, a));
+        int r = Math.max(0, Math.min(255, (int) (v.x * 255f)));
+        int g = Math.max(0, Math.min(255, (int) (v.y * 255f)));
+        int b = Math.max(0, Math.min(255, (int) (v.z * 255f)));
+        int a = Math.max(0, Math.min(255, (int) (v.w * 255f)));
         return Rgb.packRgb(r, g, b, a);
     }
 }

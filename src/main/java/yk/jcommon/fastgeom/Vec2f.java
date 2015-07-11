@@ -96,8 +96,7 @@ public class Vec2f implements Serializable {
     }
 
     public Vec2f normalized() {
-        float length = length();
-        return new Vec2f(x / length, y / length);
+        return normalized(1);
     }
 
     public Vec2f normalized(float len) {
