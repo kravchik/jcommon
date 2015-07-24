@@ -1,7 +1,13 @@
 package yk.jcommon.search;
 
+import yk.jcommon.collections.YList;
+import yk.jcommon.collections.YMap;
+
 import java.util.*;
 import java.util.function.Consumer;
+
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashMap.hm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,14 +16,14 @@ import java.util.function.Consumer;
  * Time: 11:58 PM
  */
 abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>, Iterable<SSearch.Node<STATE>>, Iterator<SSearch.Node<STATE>> {
-    public Map<STATE, Node<STATE>> seen = new HashMap<STATE, Node<STATE>>();
+    public YMap<STATE, Node<STATE>> seen = hm();
     //TODO sortedSeen - to find closest not solution
-    protected List<Node<STATE>> edge = new ArrayList<Node<STATE>>();
+    public YList<Node<STATE>> edge = al();
 
     abstract public List<STATE> generate(Node<STATE> node);
 
     protected SSearch(STATE first) {
-        edge.add(new Node<STATE>(null, first));
+        edge.add(new Node<>(null, first));
     }
 
     @Override
@@ -46,6 +52,7 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
         List<STATE> nexts = generate(node);
         for (STATE next : nexts) if (!seen.containsKey(next)) {
             Node newNode = new Node(node, next);
+            newNode.value = evaluate(newNode);
             seen.put(next, newNode);
             edge.add(newNode);
         }
@@ -53,17 +60,32 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
         return node;
     }
 
+    /**
+     * bigger - better
+     * @param node
+     * @return
+     */
+    public float evaluate(Node<STATE> node) {
+        return -node.deepness;
+    }
+
     public Node<STATE> nextSolution(int steps) {
-        for (int i = 0; i < steps; i++) {
+        for (int i = 0; i < steps && hasNext(); i++) {
             Node<STATE> cur = next();
             if (isSolution(cur)) return cur;
         }
         return null;
     }
 
+    public Node<STATE> nextBest(int tries) {//can return same thing again
+        Node<STATE> node = nextSolution(tries);
+        return node != null ? node : seen.maxValue(st -> st.value);
+    }
+
+
     @Override
     public int compare(Node<STATE> a, Node<STATE> b) {
-        return a.deepness - b.deepness;
+        return Float.compare(b.value, a.value);
     }
 
     public boolean isSolution(Node<STATE> node) {
@@ -74,6 +96,7 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
         public STATE state;
         public Node<STATE> prevNode;
         public int deepness;
+        public float value;
 
         public Node(Node<STATE> prevNode, STATE state) {
             this.prevNode = prevNode;

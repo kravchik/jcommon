@@ -24,6 +24,14 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     //    return result;
     //}
 
+
+    public YHashMap() {
+    }
+
+    public YHashMap(Map<? extends K, ? extends V> m) {
+        super(m);
+    }
+
     public static <K, V> YHashMap<K, V> hm(K k, V v, Object... oo) {
         YHashMap result = new YHashMap();
         if (result.containsKey(k)) BadException.die("repeating key: " + k);
