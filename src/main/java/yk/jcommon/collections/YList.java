@@ -1,5 +1,7 @@
 package yk.jcommon.collections;
 
+import yk.jcommon.utils.Util;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -76,4 +78,24 @@ public interface YList<T> extends YCollection<T>, List<T> {
         for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) result.add(bf.apply(get(i), get(j)));
         return result;
     }
+
+    default public YList<YList<T>> split(Object eq) {
+        return split(e -> Util.equalsWithNull(e, eq));
+    }
+
+    default public YList<YList<T>> split(Predicate<T> isSplitter) {
+        YList<YList<T>> result = al();
+        YList<T> cur = al();
+        for (T l : this) {
+            if (isSplitter.test(l)) {
+                result.add(cur);
+                cur = al();
+            } else {
+                cur.add(l);
+            }
+        }
+        result.add(cur);
+        return result;
+    }
+
 }

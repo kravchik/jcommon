@@ -7,6 +7,8 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import static yk.jcommon.collections.YHashMap.hm;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -52,4 +54,11 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> take(int n);
     String toString(String elementsInfix, String kvInfix);
     String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction);
+
+    default boolean containsAll(Map<K, V> whom) {
+        for (Map.Entry<K, V> entry : whom.entrySet()) {
+            if (!containsKey(entry.getKey()) || !get(entry.getKey()).equals(entry.getValue())) return false;
+        }
+        return true;
+    }
 }

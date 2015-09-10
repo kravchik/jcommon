@@ -156,4 +156,9 @@ public interface YCollection<T> extends Collection<T> {
         return result;
     }
 
+    default <V> YMap<T, V> mapKeys(Function<T, V> f) {
+        YMap<T, V> result = hm();
+        for (T k : this) result.put(k, f.apply(k));
+        return result;
+    }
 }

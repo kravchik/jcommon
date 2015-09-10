@@ -4,7 +4,7 @@
 
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.114</version>
+    <version>0.115</version>
 
     <packaging>jar</packaging>
     <name>jcommon</name>

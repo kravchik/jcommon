@@ -407,4 +407,18 @@ public class Util {
 
     public static final AggregateTranslator ESCAPE_YADS_SINGLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"'", "\\'"}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
     public static final AggregateTranslator ESCAPE_YADS_DOUBLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"\"", "\\\""}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
+
+    public static boolean equalsWithNull(Object a, Object b) {
+        return a == null ? b == null : a.equals(b);
+    }
+
+    public static String addLength(String s, int targetLength) {
+        return addLength(s, targetLength, " ");
+    }
+
+    public static String addLength(String s, int targetLength, String with) {
+        StringBuilder sb = new StringBuilder(s);
+        while(sb.length() < targetLength) sb.append(with);
+        return sb.toString();
+    }
 }
