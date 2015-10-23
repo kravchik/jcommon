@@ -16,7 +16,8 @@ import static yk.jcommon.utils.Util.sqr;
  */
 public class Quaternionf implements Serializable {
 
-    public static final Quaternionf ZERO = new Quaternionf(0, 0, 0, 0);
+//    public static final Quaternionf ZERO = new Quaternionf(0, 0, 0, 0);
+    public static final Quaternionf ZERO_ROT = new Quaternionf(1, 0, 0, 0);
 
     /**
      *

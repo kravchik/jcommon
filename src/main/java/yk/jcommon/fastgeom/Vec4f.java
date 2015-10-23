@@ -19,8 +19,7 @@ public class Vec4f implements Serializable {
 
     public Vec4f(final float w, final float x, final float y, final float z) {
         this.w = w;
-        this.x = x;
-        this.y = y;
+        this.x = x;this.y = y;
         this.z = z;
     }
 
@@ -175,6 +174,10 @@ public class Vec4f implements Serializable {
 
     public float getY() {
         return y;
+    }
+
+    public Vec3f getXyz() {
+        return new Vec3f(x, y, z);
     }
 
 }

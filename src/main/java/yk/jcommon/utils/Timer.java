@@ -5,6 +5,7 @@ package yk.jcommon.utils;
  * Date: 21.10.11
  * Time: 1:59
  */
+@Deprecated //use Stopwatch because of bad name
 public class Timer {
     private long start;
     public long value;

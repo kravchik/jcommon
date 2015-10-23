@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author Yuri Kravchik Created 16.10.2008
  */
 public class Vec3f implements Serializable {
-    public final float x, y, z;
+    public float x, y, z;
 
     public static final Vec3f ZERO = new Vec3f(0, 0, 0);
 
@@ -23,7 +23,7 @@ public class Vec3f implements Serializable {
 
     public static final Vec3f AXISZ = new Vec3f(0, 0, 1);
 
-    public Vec3f(final float x, final float y, final float z) {
+    public Vec3f(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -182,6 +182,14 @@ public class Vec3f implements Serializable {
 
     public float getZ() {
         return z;
+    }
+
+    public Vec3f negative() {
+        return new Vec3f(-x, -y, -z);
+    }
+
+    public Vec4f toVec4f(float w) {
+        return new Vec4f(w, x, y, z);
     }
 
 }

@@ -1,6 +1,7 @@
 package yk.jcommon.fastgeom;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ import java.nio.FloatBuffer;
  */
 public class Matrix4 {
     private static final int S = 4;
-    public float[] data = new float[S*S];
+    public float[] data = new float[S * S];
 
     public void set(int i, int j, float d) {
         data[i * 4 + j] = d;
@@ -52,10 +53,10 @@ public class Matrix4 {
     public Matrix4 multiply(Matrix4 by) {
         Matrix4 result = new Matrix4();
 
-        for(int i = 0;i < 4;i++){
-            for(int j = 0;j < 4;j++){
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 float r = 0;
-                for(int k = 0;k < 4;k++) r += get(i, k) * by.get(k, j);
+                for (int k = 0; k < 4; k++) r += get(i, k) * by.get(k, j);
                 result.set(i, j, r);
             }
         }
@@ -73,7 +74,7 @@ public class Matrix4 {
 
     public static Matrix4 perspective(float fovy, float aspect, float zNear, float zFar) {
         float sine, cotangent, deltaZ;
-        float radians = fovy / 2 * (float)Math.PI / 180;
+        float radians = fovy / 2 * (float) Math.PI / 180;
 
         deltaZ = zFar - zNear;
         sine = (float) Math.sin(radians);
@@ -85,7 +86,7 @@ public class Matrix4 {
         Matrix4 result = new Matrix4();
         result.set(0, 0, cotangent / aspect);
         result.set(1, 1, cotangent);
-        result.set(2, 2, - (zFar + zNear) / deltaZ);
+        result.set(2, 2, -(zFar + zNear) / deltaZ);
         result.set(2, 3, -1);
         result.set(3, 2, -2 * zNear * zFar / deltaZ);
         //result.set(3, 3, 0);
@@ -111,117 +112,117 @@ public class Matrix4 {
         float inv[] = new float[16], det;
         int i;
 
-        inv[0] = m[5]  * m[10] * m[15] -
-                  m[5]  * m[11] * m[14] -
-                  m[9]  * m[6]  * m[15] +
-                  m[9]  * m[7]  * m[14] +
-                  m[13] * m[6]  * m[11] -
-                  m[13] * m[7]  * m[10];
+        inv[0] = m[5] * m[10] * m[15] -
+                m[5] * m[11] * m[14] -
+                m[9] * m[6] * m[15] +
+                m[9] * m[7] * m[14] +
+                m[13] * m[6] * m[11] -
+                m[13] * m[7] * m[10];
 
-        inv[4] = -m[4]  * m[10] * m[15] +
-                  m[4]  * m[11] * m[14] +
-                  m[8]  * m[6]  * m[15] -
-                  m[8]  * m[7]  * m[14] -
-                  m[12] * m[6]  * m[11] +
-                  m[12] * m[7]  * m[10];
+        inv[4] = -m[4] * m[10] * m[15] +
+                m[4] * m[11] * m[14] +
+                m[8] * m[6] * m[15] -
+                m[8] * m[7] * m[14] -
+                m[12] * m[6] * m[11] +
+                m[12] * m[7] * m[10];
 
-        inv[8] = m[4]  * m[9] * m[15] -
-                  m[4]  * m[11] * m[13] -
-                  m[8]  * m[5] * m[15] +
-                  m[8]  * m[7] * m[13] +
-                  m[12] * m[5] * m[11] -
-                  m[12] * m[7] * m[9];
+        inv[8] = m[4] * m[9] * m[15] -
+                m[4] * m[11] * m[13] -
+                m[8] * m[5] * m[15] +
+                m[8] * m[7] * m[13] +
+                m[12] * m[5] * m[11] -
+                m[12] * m[7] * m[9];
 
-        inv[12] = -m[4]  * m[9] * m[14] +
-                   m[4]  * m[10] * m[13] +
-                   m[8]  * m[5] * m[14] -
-                   m[8]  * m[6] * m[13] -
-                   m[12] * m[5] * m[10] +
-                   m[12] * m[6] * m[9];
+        inv[12] = -m[4] * m[9] * m[14] +
+                m[4] * m[10] * m[13] +
+                m[8] * m[5] * m[14] -
+                m[8] * m[6] * m[13] -
+                m[12] * m[5] * m[10] +
+                m[12] * m[6] * m[9];
 
-        inv[1] = -m[1]  * m[10] * m[15] +
-                  m[1]  * m[11] * m[14] +
-                  m[9]  * m[2] * m[15] -
-                  m[9]  * m[3] * m[14] -
-                  m[13] * m[2] * m[11] +
-                  m[13] * m[3] * m[10];
+        inv[1] = -m[1] * m[10] * m[15] +
+                m[1] * m[11] * m[14] +
+                m[9] * m[2] * m[15] -
+                m[9] * m[3] * m[14] -
+                m[13] * m[2] * m[11] +
+                m[13] * m[3] * m[10];
 
-        inv[5] = m[0]  * m[10] * m[15] -
-                  m[0]  * m[11] * m[14] -
-                  m[8]  * m[2] * m[15] +
-                  m[8]  * m[3] * m[14] +
-                  m[12] * m[2] * m[11] -
-                  m[12] * m[3] * m[10];
+        inv[5] = m[0] * m[10] * m[15] -
+                m[0] * m[11] * m[14] -
+                m[8] * m[2] * m[15] +
+                m[8] * m[3] * m[14] +
+                m[12] * m[2] * m[11] -
+                m[12] * m[3] * m[10];
 
-        inv[9] = -m[0]  * m[9] * m[15] +
-                  m[0]  * m[11] * m[13] +
-                  m[8]  * m[1] * m[15] -
-                  m[8]  * m[3] * m[13] -
-                  m[12] * m[1] * m[11] +
-                  m[12] * m[3] * m[9];
+        inv[9] = -m[0] * m[9] * m[15] +
+                m[0] * m[11] * m[13] +
+                m[8] * m[1] * m[15] -
+                m[8] * m[3] * m[13] -
+                m[12] * m[1] * m[11] +
+                m[12] * m[3] * m[9];
 
-        inv[13] = m[0]  * m[9] * m[14] -
-                   m[0]  * m[10] * m[13] -
-                   m[8]  * m[1] * m[14] +
-                   m[8]  * m[2] * m[13] +
-                   m[12] * m[1] * m[10] -
-                   m[12] * m[2] * m[9];
+        inv[13] = m[0] * m[9] * m[14] -
+                m[0] * m[10] * m[13] -
+                m[8] * m[1] * m[14] +
+                m[8] * m[2] * m[13] +
+                m[12] * m[1] * m[10] -
+                m[12] * m[2] * m[9];
 
-        inv[2] = m[1]  * m[6] * m[15] -
-                  m[1]  * m[7] * m[14] -
-                  m[5]  * m[2] * m[15] +
-                  m[5]  * m[3] * m[14] +
-                  m[13] * m[2] * m[7] -
-                  m[13] * m[3] * m[6];
+        inv[2] = m[1] * m[6] * m[15] -
+                m[1] * m[7] * m[14] -
+                m[5] * m[2] * m[15] +
+                m[5] * m[3] * m[14] +
+                m[13] * m[2] * m[7] -
+                m[13] * m[3] * m[6];
 
-        inv[6] = -m[0]  * m[6] * m[15] +
-                  m[0]  * m[7] * m[14] +
-                  m[4]  * m[2] * m[15] -
-                  m[4]  * m[3] * m[14] -
-                  m[12] * m[2] * m[7] +
-                  m[12] * m[3] * m[6];
+        inv[6] = -m[0] * m[6] * m[15] +
+                m[0] * m[7] * m[14] +
+                m[4] * m[2] * m[15] -
+                m[4] * m[3] * m[14] -
+                m[12] * m[2] * m[7] +
+                m[12] * m[3] * m[6];
 
-        inv[10] = m[0]  * m[5] * m[15] -
-                   m[0]  * m[7] * m[13] -
-                   m[4]  * m[1] * m[15] +
-                   m[4]  * m[3] * m[13] +
-                   m[12] * m[1] * m[7] -
-                   m[12] * m[3] * m[5];
+        inv[10] = m[0] * m[5] * m[15] -
+                m[0] * m[7] * m[13] -
+                m[4] * m[1] * m[15] +
+                m[4] * m[3] * m[13] +
+                m[12] * m[1] * m[7] -
+                m[12] * m[3] * m[5];
 
-        inv[14] = -m[0]  * m[5] * m[14] +
-                   m[0]  * m[6] * m[13] +
-                   m[4]  * m[1] * m[14] -
-                   m[4]  * m[2] * m[13] -
-                   m[12] * m[1] * m[6] +
-                   m[12] * m[2] * m[5];
+        inv[14] = -m[0] * m[5] * m[14] +
+                m[0] * m[6] * m[13] +
+                m[4] * m[1] * m[14] -
+                m[4] * m[2] * m[13] -
+                m[12] * m[1] * m[6] +
+                m[12] * m[2] * m[5];
 
         inv[3] = -m[1] * m[6] * m[11] +
-                  m[1] * m[7] * m[10] +
-                  m[5] * m[2] * m[11] -
-                  m[5] * m[3] * m[10] -
-                  m[9] * m[2] * m[7] +
-                  m[9] * m[3] * m[6];
+                m[1] * m[7] * m[10] +
+                m[5] * m[2] * m[11] -
+                m[5] * m[3] * m[10] -
+                m[9] * m[2] * m[7] +
+                m[9] * m[3] * m[6];
 
         inv[7] = m[0] * m[6] * m[11] -
-                  m[0] * m[7] * m[10] -
-                  m[4] * m[2] * m[11] +
-                  m[4] * m[3] * m[10] +
-                  m[8] * m[2] * m[7] -
-                  m[8] * m[3] * m[6];
+                m[0] * m[7] * m[10] -
+                m[4] * m[2] * m[11] +
+                m[4] * m[3] * m[10] +
+                m[8] * m[2] * m[7] -
+                m[8] * m[3] * m[6];
 
         inv[11] = -m[0] * m[5] * m[11] +
-                   m[0] * m[7] * m[9] +
-                   m[4] * m[1] * m[11] -
-                   m[4] * m[3] * m[9] -
-                   m[8] * m[1] * m[7] +
-                   m[8] * m[3] * m[5];
+                m[0] * m[7] * m[9] +
+                m[4] * m[1] * m[11] -
+                m[4] * m[3] * m[9] -
+                m[8] * m[1] * m[7] +
+                m[8] * m[3] * m[5];
 
         inv[15] = m[0] * m[5] * m[10] -
-                   m[0] * m[6] * m[9] -
-                   m[4] * m[1] * m[10] +
-                   m[4] * m[2] * m[9] +
-                   m[8] * m[1] * m[6] -
-                   m[8] * m[2] * m[5];
+                m[0] * m[6] * m[9] -
+                m[4] * m[1] * m[10] +
+                m[4] * m[2] * m[9] +
+                m[8] * m[1] * m[6] -
+                m[8] * m[2] * m[5];
 
         det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
@@ -260,7 +261,7 @@ public class Matrix4 {
 
     public Matrix3 get33() {
         Matrix3 result = new Matrix3();
-        for (int i = 1; i <= 3; i++) for (int j = 1; j <= 3; j++) result.set(i, j, get(i-1, j-1));
+        for (int i = 1; i <= 3; i++) for (int j = 1; j <= 3; j++) result.set(i, j, get(i - 1, j - 1));
         return result;
     }
 
@@ -268,5 +269,20 @@ public class Matrix4 {
         Matrix4 result = new Matrix4();
         for (int i = 0; i < S; i++) for (int j = 0; j < S; j++) result.set(j, i, get(i, j));
         return result;
+    }
+
+
+    public Vec4f multiply(Vec4f v) {
+        return new Vec4f(v.x * get(0, 0) + v.x * get(0, 1) + v.x * get(0, 2) + v.x * get(0, 3),
+                v.y * get(1, 0) + v.y * get(1, 1) + v.y * get(1, 2) + v.y * get(1, 3),
+                v.z * get(2, 0) + v.z * get(2, 1) + v.z * get(2, 2) + v.z * get(2, 3),
+                v.w * get(3, 0) + v.w * get(3, 1) + v.w * get(3, 2) + v.w * get(3, 3)
+        );
+
+    }
+
+    @Override
+    public String toString() {
+        return "Matrix4{data=" + Arrays.toString(data) + '}';
     }
 }

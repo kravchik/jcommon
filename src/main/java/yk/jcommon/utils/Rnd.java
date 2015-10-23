@@ -1,9 +1,7 @@
 package yk.jcommon.utils;
 
 import yk.jcommon.collections.YList;
-import yk.jcommon.fastgeom.FloatRange;
-import yk.jcommon.fastgeom.IntRange;
-import yk.jcommon.fastgeom.Vec2f;
+import yk.jcommon.fastgeom.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +17,8 @@ import static yk.jcommon.collections.YArrayList.*;
  * Time: 10:53 PM
  */
 public class Rnd {
+    @Deprecated//only for fast tests and prototypes
+    public static Rnd instance = new Rnd();
 
     public Random rnd = new Random();
 
@@ -81,6 +81,10 @@ public class Rnd {
 
     public Vec2f nextVec2f() {
         return new Vec2f(nextFloat(), nextFloat());
+    }
+
+    public Vec3f nextVec3f() {
+        return new Vec3f(nextFloat(), nextFloat(), nextFloat());
     }
 
     public Vec2f nextVec2f(float l, float r, float t, float b) {

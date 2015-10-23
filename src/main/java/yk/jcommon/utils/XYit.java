@@ -10,19 +10,31 @@ import java.util.Iterator;
  */
 public class XYit implements Iterable<XYit>, Iterator<XYit> {
     //WARNING IT IS SLOWER THEN TWO FORS   (0.016 vs 0.013)
-    public final int w, h;
+    public final int r, t;
+    public final int l, b;
 
     public int x;
     public int y;
 
     public XYit(BufferedImage im) {
-        w = im.getWidth();
-        h = im.getHeight();
+        r = im.getWidth();
+        t = im.getHeight();
+        l = 0;
+        b = 0;
     }
 
     public XYit(int width, int height) {
-        w = width;
-        h = height;
+        r = width;
+        t = height;
+        l = 0;
+        b = 0;
+    }
+
+    public XYit(int l, int b, int r, int t) {
+        this.r = r;
+        this.l = l;
+        this.t = t;
+        this.b = b;
     }
 
     public static XYit im(BufferedImage im) {
@@ -34,19 +46,19 @@ public class XYit implements Iterable<XYit>, Iterator<XYit> {
     }
 
     public Iterator<XYit> iterator() {
-        x = -1;
-        y = 0;
+        x = l-1;
+        y = b;
         return this;
     }
 
     public boolean hasNext() {
-        return x != w - 1 || y != h - 1;
+        return x != r - 1 || y != t - 1;
     }
 
     public XYit next() {
         x++;
-        if (x == w) {
-            x = 0;
+        if (x == r) {
+            x = l;
             y++;
         }
         return this;
@@ -59,13 +71,16 @@ public class XYit implements Iterable<XYit>, Iterator<XYit> {
     @Override
     public String toString() {
         return "XYit{" +
-                "x=" + x +
+                "l=" + l +
+                ", b=" + b +
+                ", r=" + r +
+                ", t=" + t +
+                ", x=" + x +
                 ", y=" + y +
-                ", w=" + w +
-                ", h=" + h +
                 '}';
     }
-//    @Override
+
+    //    @Override
 //    public void forEach(Block<? super XYit> block) {
 //    }
 }

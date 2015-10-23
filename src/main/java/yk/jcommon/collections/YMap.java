@@ -61,4 +61,8 @@ public interface YMap<K, V> extends Map<K, V> {
         }
         return true;
     }
+
+    default boolean notEmpty() {
+        return !isEmpty();
+    }
 }

@@ -9,7 +9,7 @@ import yk.jcommon.fastgeom.Vec3f;
  * Date: 3/13/13
  * Time: 8:53 PM
  */
-public class Cam {
+public class Cam {//TODO remove
 
     public Vec3f lookAt = Vec3f.ZERO;
     //public Vec3f lookFrom = Vec3f.ZERO;

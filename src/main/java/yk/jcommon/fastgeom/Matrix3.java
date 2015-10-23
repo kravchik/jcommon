@@ -121,4 +121,10 @@ public class Matrix3 {
         for (int i = 1; i <= S; i++) for (int j = 1; j <= S; j++) result.set(j, i, get(i, j));
         return result;
     }
+
+    public Vec3f multiply(Vec3f v) {
+        return new Vec3f(v.x * get(1, 1) + v.x * get(1, 2) + v.x * get(1, 3),
+                v.y * get(2, 1) + v.y * get(2, 2) + v.y * get(2, 3),
+                v.z * get(3, 1) + v.z * get(3, 2) + v.z * get(3, 3));
+    }
 }

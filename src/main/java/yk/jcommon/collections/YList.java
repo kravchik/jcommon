@@ -32,16 +32,35 @@ public interface YList<T> extends YCollection<T>, List<T> {
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
     //TODO same for sets
-    default <K> YMap<K, List<T>> groupBy(Function<T, K> grouper) {
-        YMap<K, List<T>> result = hm();
+    default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
+        YMap<K, YList<T>> result = hm();
         for (T t : this) {
             K group = grouper.apply(t);
-            List<T> gg = result.get(group);
+            YList<T> gg = result.get(group);
             if (gg == null) {
                 gg = al();
                 result.put(group, gg);
             }
             gg.add(t);
+        }
+        return result;
+    }
+
+    default <K> YList<YList<T>> splitByDif(BiFunction<T, T, Boolean> splitter) {
+        T last = null;
+        YList<T> cur = null;
+        YList<YList<T>> result = al();
+        for (T t : this) {
+            if (cur == null) {
+                cur = al(t);
+                result.add(cur);
+            } else if (splitter.apply(last, t)) {
+                cur = al(t);
+                result.add(cur);
+            } else {
+                cur.add(t);
+            }
+            last = t;
         }
         return result;
     }

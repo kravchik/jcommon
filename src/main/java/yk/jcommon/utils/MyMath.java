@@ -7,6 +7,8 @@ package yk.jcommon.utils;
  * Time: 3:02 PM
  */
 public class MyMath {
+    public static float PI = (float) Math.PI;
+
     public static int module(int v, int m) {
         int res = v % m;
         return res < 0 ? res + m : res;

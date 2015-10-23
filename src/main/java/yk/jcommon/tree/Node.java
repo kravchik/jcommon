@@ -20,6 +20,7 @@ public class Node<T extends AABBoxed> extends Poolable<Node> {//factually it is 
     public IntBox box = new IntBox();
     public Node[] children = new Node[4];
     public List<T> included = new ArrayList<T>();
+    public int minSize = 5;
 
     public Node() {
     }
@@ -35,6 +36,8 @@ public class Node<T extends AABBoxed> extends Poolable<Node> {//factually it is 
         //Node result = new Node();
         Node result = pool.borrow();
         result.init(this, newL, newB, newL + box.w / 2, newB + box.h / 2);
+        result.box.r--;
+        result.box.t--;
         return result;
     }
 
@@ -57,7 +60,7 @@ public class Node<T extends AABBoxed> extends Poolable<Node> {//factually it is 
 
     public void insert(IntBox ibox, T bboxed) {
         if (box.isCrossed(ibox)) {
-            if (ibox.w * 2 < box.w && box.w > 5) {//too small
+            if (ibox.w * 2 < box.w && box.w > minSize) {//too small
                 createChildren();
                 for(int i = 0; i < children.length; i++) {
                     children[i].insert(ibox, bboxed);

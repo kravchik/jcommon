@@ -45,6 +45,11 @@ public interface YCollection<T> extends Collection<T> {
     default T car() {
         return iterator().next();
     }
+    default T cadr() {
+        Iterator<T> iterator = iterator();
+        iterator.next();
+        return iterator.next();
+    }
     YCollection<T> cdr();
     default T first() {return car();}
     default T first(Predicate<? super T> predicate) {
@@ -160,5 +165,9 @@ public interface YCollection<T> extends Collection<T> {
         YMap<T, V> result = hm();
         for (T k : this) result.put(k, f.apply(k));
         return result;
+    }
+
+    default boolean notEmpty() {
+        return !isEmpty();
     }
 }

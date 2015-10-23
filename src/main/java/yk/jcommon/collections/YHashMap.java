@@ -99,7 +99,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public Tuple<K, V> max(BiFunction<K, V, Float> evaluator) {
-        float maxValue = Float.MIN_VALUE;
+        float maxValue = Float.NEGATIVE_INFINITY;
         K maxKey = null;
         for (K k : super.keySet()) {
             float curValue = evaluator.apply(k, get(k));

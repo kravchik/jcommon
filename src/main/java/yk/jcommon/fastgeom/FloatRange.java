@@ -78,4 +78,8 @@ public class FloatRange {
         result = 31 * result + (max != +0.0f ? Float.floatToIntBits(max) : 0);
         return result;
     }
+
+    public float fit(float value) {
+        return Math.max(min, Math.min(max, value));
+    }
 }

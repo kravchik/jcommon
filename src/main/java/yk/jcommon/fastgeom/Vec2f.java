@@ -192,4 +192,8 @@ public class Vec2f implements Serializable {
     public boolean isBehind(Vec2f b) {
         return this.mulScalar(b) < 0;
     }
+
+    public Vec3f asXZ(float y) {
+        return new Vec3f(x, y, this.y);
+    }
 }
