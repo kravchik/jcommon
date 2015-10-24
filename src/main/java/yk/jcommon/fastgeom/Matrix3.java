@@ -1,6 +1,7 @@
 package yk.jcommon.fastgeom;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 import static yk.jcommon.collections.YArrayList.al;
@@ -127,4 +128,10 @@ public class Matrix3 {
                 v.y * get(2, 1) + v.y * get(2, 2) + v.y * get(2, 3),
                 v.z * get(3, 1) + v.z * get(3, 2) + v.z * get(3, 3));
     }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(data);
+    }
+
 }

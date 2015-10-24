@@ -283,6 +283,6 @@ public class Matrix4 {
 
     @Override
     public String toString() {
-        return "Matrix4{data=" + Arrays.toString(data) + '}';
+        return Arrays.toString(data);
     }
 }

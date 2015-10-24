@@ -196,4 +196,17 @@ public class Vec2f implements Serializable {
     public Vec3f asXZ(float y) {
         return new Vec3f(x, y, this.y);
     }
+
+    public Vec2f multiply(float f) {//groovy operator overloading
+        return mul(f);
+    }
+
+    public Vec2f multiply(double f) {//groovy operator overloading
+        return mul((float)f);
+    }
+
+    public Vec2f negative() {
+        return new Vec2f(-x, -y);
+    }
+
 }
