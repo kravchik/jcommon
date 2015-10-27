@@ -13,7 +13,7 @@ public class Matrix4 {
     private static final int S = 4;
     public float[] data = new float[S * S];
 
-    public void set(int i, int j, float d) {
+    public void set(int i, int j, float d) {//TODO from 1
         data[i * 4 + j] = d;
     }
 
@@ -69,6 +69,19 @@ public class Matrix4 {
         result.set(3, 0, result.get(3, 0) + v.x);
         result.set(3, 1, result.get(3, 1) + v.y);
         result.set(3, 2, result.get(3, 2) + v.z);
+        return result;
+    }
+
+    public static Matrix4 ortho(float l, float r, float t, float b, float n, float f) {
+        Matrix4 result = new Matrix4();
+        result.set(0, 0, 2/(r-l));
+        result.set(1, 1, 2/(t-b));
+        result.set(2, 2, -2/(f-n));
+        result.set(3, 3, 1);
+
+        result.set(3, 0, -(r+l)/(r-l));
+        result.set(3, 1, -(t+b)/(t-b));
+        result.set(3, 2, -(f+n)/(f-n));
         return result;
     }
 
