@@ -7,7 +7,8 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YArrayList.toYList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -94,7 +95,9 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public Tuple<K, V> last() {
-        throw BadException.notImplemented();
+        K key = null;
+        for (K k : keySet()) key = k;
+        return key == null ? null : new Tuple(key, get(key));
     }
 
     @Override

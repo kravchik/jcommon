@@ -7,8 +7,6 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-import static yk.jcommon.collections.YHashMap.hm;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -24,6 +22,8 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> cdr();
     Tuple<K, V> first();
     Tuple<K, V> last();
+
+    //TODO first by predicate
 
     Tuple<K, V> max(BiFunction<K, V, Float> evaluator);
     V maxValue(Function<V, Float> evaluator);

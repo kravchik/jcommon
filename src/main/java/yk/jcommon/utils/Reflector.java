@@ -2,7 +2,6 @@ package yk.jcommon.utils;
 
 import sun.reflect.ReflectionFactory;
 import yk.jcommon.collections.YList;
-import yk.jcommon.collections.YMap;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -321,4 +320,23 @@ public class Reflector {
         }
         return result;
     }
+
+    public static YList<Method> getAllMethodsInHierarchy(Class<?> source) {
+        YList<Method> result = al();
+        while (source != null) {
+            Collections.addAll(result, source.getDeclaredMethods());
+            source = source.getSuperclass();
+        }
+        return result;
+    }
+
+    public static YList<Field> getAllFieldsInHierarchy(Class<?> source) {
+        YList<Field> result = al();
+        while (source != null) {
+            Collections.addAll(result, source.getDeclaredFields());
+            source = source.getSuperclass();
+        }
+        return result;
+    }
+
 }

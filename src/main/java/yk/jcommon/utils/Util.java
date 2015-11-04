@@ -1,11 +1,12 @@
 package yk.jcommon.utils;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.text.translate.*;
 import yk.jcommon.fastgeom.Vec2f;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -420,5 +421,11 @@ public class Util {
         StringBuilder sb = new StringBuilder(s);
         while(sb.length() < targetLength) sb.append(with);
         return sb.toString();
+    }
+
+    public static String stacktraceToString(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 }

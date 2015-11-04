@@ -4,7 +4,7 @@
 
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.117</version>
+    <version>0.118-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <name>jcommon</name>
@@ -120,7 +120,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-            <scope>test</scope>
             <optional>true</optional>
         </dependency>
     </dependencies>

@@ -1,6 +1,9 @@
 package yk.jcommon.collections;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -171,6 +174,13 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     public YList<YList<T>> shuffle(YList<T> other) {
         YList<YList<T>> result = al();
         for (T t : this) for (T o : other) result.add(al(t, o));
+        return result;
+    }
+
+    @Override
+    public YList<T> reverse() {
+        YList<T> result = al();
+        for (int i = this.size() - 1; i >= 0; i--) result.add(get(i));
         return result;
     }
 }

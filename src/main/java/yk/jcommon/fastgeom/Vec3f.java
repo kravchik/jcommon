@@ -160,15 +160,16 @@ public class Vec3f implements Serializable {
         return new Vec2f(x, y);
     }
 
+    public void setXy(Vec2f v) {
+        this.x = v.x;
+        this.y = v.y;
+    }
+
     public float getX() {
         return x;
     }
 
-    public Vec2f getXY() {
-        return new Vec2f(x, y);
-    }
-
-    public Vec2f getXZ() {
+    public Vec2f getXz() {
         return new Vec2f(x, z);
     }
 
@@ -176,7 +177,7 @@ public class Vec3f implements Serializable {
         return y;
     }
 
-    public Vec2f getYZ() {
+    public Vec2f getYz() {
         return new Vec2f(y, z);
     }
 

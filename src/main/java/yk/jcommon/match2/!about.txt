@@ -1,0 +1,31 @@
+
+
+//TODO
+
+OneOf(...) - choose one of the values, for ex:
+  p(IfStatement, new OneOf("ifBlock", "elseBlock", "booleanBlock"), "access")
+field name can be variable in Property
+
+NotEquals, for ex:
+  index1 != index2
+
+
+//DONE
+breadth first search Probe
+probe - find stacktrace to some pattern, for ex:
+  Probe(p(var("fieldName"), "lookingFor"))
+  or as debug result of Deeper
+  FAILED, must be breadth first search
+
+Deeper (!)
+ByIndex
+Not
+Var
+Any
+And
+Property
+initial matcher
+
+
+
+

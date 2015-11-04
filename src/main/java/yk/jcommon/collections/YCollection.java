@@ -93,7 +93,8 @@ public interface YCollection<T> extends Collection<T> {
     @SuppressWarnings("unchecked")
     YCollection<T> without(T... t);
 
-    //YSet returns not YSet but YList, because sorting algorithm itself creates list
+    //TODO reversed
+    //YSet returns not YSet but YList, because sorting algorithm itself creates list  //TODO fix this?
     default YList<T> sorted() {
         return YCollections.sortedCollection(this);
     }

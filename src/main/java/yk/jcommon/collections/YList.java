@@ -10,8 +10,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.*;
-import static yk.jcommon.collections.YHashMap.*;
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashMap.hm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -114,6 +114,12 @@ public interface YList<T> extends YCollection<T>, List<T> {
             }
         }
         result.add(cur);
+        return result;
+    }
+
+    default YList<T> reverse() {
+        YList<T> result = al();
+        for (T t : this) result.add(0, t);
         return result;
     }
 
