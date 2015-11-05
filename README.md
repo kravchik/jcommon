@@ -56,7 +56,7 @@ or
 ##ANIO
 **yk.jcommon.net.anio**
 
-A normal IO for Java. (because java.nio is not for human beings)
+java.nio wrapper with node.js style API (because java.nio's API is not for human beings). Transfer data with just a few lines of code.
 
 ```java
     ASocket server = new ASocket(8000, socket -> {
@@ -76,8 +76,9 @@ A normal IO for Java. (because java.nio is not for human beings)
 
 ```
 * callbacks on connect, callbacks on data
-* node.js style (in a good sense)
+* node.js style
 * replaceable serialization engine
+* no threads (threading control is on you) 
 
 
 ##YADS
