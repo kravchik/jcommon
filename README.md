@@ -2,6 +2,11 @@ jcommon
 =======
 Common utils, abstractions and tools that I use in my projects. They make Java pleasant.
 
+##Pattern-matching
+
+[wiki](https://github.com/kravchik/jcommon/wiki/pattern-matching)
+[habrahabr (russian)](http://habrahabr.ru/post/270173/)
+
 ##YCollections
 **yk.jcommon.collections**
 
@@ -124,6 +129,8 @@ super server"
 * serialize any data to human readable string, and then back to the same data without any additional effort
 * maps, lists, arrays, objects with class preservation
 * if type is unknown - array, map, or special class is constructed
+
+[more on wiki](https://github.com/kravchik/jcommon/wiki/YADS-instead-of-.properties-syntax-example)
 
 ##mvn artifact
 ```xml
