@@ -2,12 +2,6 @@ jcommon
 =======
 Common utils, abstractions and tools that I use in my projects. They make Java pleasant.
 
-##Pattern-matching
-
-[wiki](https://github.com/kravchik/jcommon/wiki/pattern-matching)
-or
-[habrahabr (russian)](http://habrahabr.ru/post/270173/)
-
 ##YCollections
 **yk.jcommon.collections**
 
@@ -50,6 +44,12 @@ Gives result:
 * very convenient
 * resulting code is looking like Xtend's or Scala's but with pure java
 * java8's .stream() I consider not usable
+
+##Pattern-matching
+
+[wiki](https://github.com/kravchik/jcommon/wiki/pattern-matching)
+or
+[habrahabr (russian)](http://habrahabr.ru/post/270173/)
 
 ##ANIO
 **yk.jcommon.net.anio**
