@@ -428,4 +428,8 @@ public class Util {
         t.printStackTrace(new PrintWriter(sw));
         return sw.toString();
     }
+
+    public static String capitalize(String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
 }

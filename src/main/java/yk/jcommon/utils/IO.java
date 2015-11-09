@@ -3,6 +3,7 @@ package yk.jcommon.utils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.List;
 
 /**
  * Kravchik Yuri
@@ -66,5 +67,10 @@ public class IO {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //TODO script utils
+    public static void replaceLines(String fileName, String prefix, List<String> lines) {
+        writeFile(fileName, Util.insertLines(IO.readFile(fileName), prefix, lines));
     }
 }

@@ -14,6 +14,7 @@ import java.util.function.Function;
  * Time: 10:34 PM
  */
 public interface YMap<K, V> extends Map<K, V> {
+    //TODO notContainsKey()
     YMap<K, V> filter(BiPredicate<? super K, ? super V> predicate);
     <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
     <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper);

@@ -47,16 +47,16 @@ public class Quaternionf implements Serializable {
 
     public Quaternionf(final float a, final Vec3f axis) {
         this.a = a;
-        this.i = axis.getX();
-        this.j = axis.getY();
-        this.k = axis.getZ();
+        this.i = axis.x;
+        this.j = axis.y;
+        this.k = axis.z;
     }
 
     public Quaternionf(final Vec3f vector) {
         a = 0;
-        i = vector.getX();
-        j = vector.getY();
-        k = vector.getZ();
+        i = vector.x;
+        j = vector.y;
+        k = vector.z;
     }
 
     public Quaternionf(

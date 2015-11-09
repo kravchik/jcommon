@@ -21,6 +21,7 @@ import static yk.jcommon.collections.YHashMap.hm;
  */
 @SuppressWarnings("UnusedDeclaration")
 public interface YList<T> extends YCollection<T>, List<T> {
+    //TODO nTimes
 
     YList<T> filter(Predicate<? super T> predicate);
     @Override
