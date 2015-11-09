@@ -53,6 +53,21 @@ Flexible way to make 'selects' in your data-structures. Abstract syntax tree ana
 or
 [habrahabr (russian)](http://habrahabr.ru/post/270173/)
 
+##Vector arithmetics
+
+Full set of common functions for 3D mathematics (for each x2/x3/x4 vector and vector/scalar):
+ 
+* max
+* min
+* reflect
+* smoothstep
+* ...
+* and many more
+
+[look at Vec3f](https://github.com/kravchik/jcommon/blob/master/src/main/java/yk/jcommon/fastgeom/Vec3f.java) 
+even more in [senjin](https://github.com/kravchik/senjin/blob/master/src/main/java/yk/senjin/shaders/gshader/ShaderParent.java)
+
+
 ##ANIO
 **yk.jcommon.net.anio**
 
