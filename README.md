@@ -65,7 +65,8 @@ Full set of common functions for 3D mathematics (for each x2/x3/x4 vector and ve
 * and many more
 
 [look at Vec3f](https://github.com/kravchik/jcommon/blob/master/src/main/java/yk/jcommon/fastgeom/Vec3f.java) 
-even more in [senjin](https://github.com/kravchik/senjin/blob/master/src/main/java/yk/senjin/shaders/gshader/ShaderParent.java)
+
+even more at [senjin](https://github.com/kravchik/senjin/blob/master/src/main/java/yk/senjin/shaders/gshader/ShaderParent.java)
 
 
 ##ANIO
