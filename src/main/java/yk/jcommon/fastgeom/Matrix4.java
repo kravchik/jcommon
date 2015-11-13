@@ -13,6 +13,18 @@ public class Matrix4 {
     private static final int S = 4;
     public float[] data = new float[S * S];
 
+    public static Matrix4 identity() {
+        return new Matrix4().setIdentity();
+    }
+
+    public static Matrix4 zero() {
+        return new Matrix4();
+    }
+
+    @Deprecated
+    public Matrix4() {
+    }
+
     public void set(int i, int j, float d) {//TODO from 1
         data[i * 4 + j] = d;
     }
@@ -51,20 +63,20 @@ public class Matrix4 {
     }
 
     public Matrix4 multiply(Matrix4 by) {
-        Matrix4 result = new Matrix4();
+        Matrix4 result = Matrix4.zero();
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 float r = 0;
-                for (int k = 0; k < 4; k++) r += get(i, k) * by.get(k, j);
-                result.set(i, j, r);
+                for (int k = 0; k < 4; k++) r += get(k, i) * by.get(j, k);
+                result.set(j, i, r);
             }
         }
         return result;
     }
 
     public Matrix4 translate(Vec3f v) {
-        Matrix4 result = new Matrix4();
+        Matrix4 result = Matrix4.zero();
         System.arraycopy(data, 0, result.data, 0, data.length);
         result.set(3, 0, result.get(3, 0) + v.x);
         result.set(3, 1, result.get(3, 1) + v.y);
@@ -72,8 +84,8 @@ public class Matrix4 {
         return result;
     }
 
-    public static Matrix4 ortho(float l, float r, float t, float b, float n, float f) {
-        Matrix4 result = new Matrix4();
+    public static Matrix4 ortho(float l, float r, float b, float t, float n, float f) {
+        Matrix4 result = Matrix4.zero();
         result.set(0, 0, 2/(r-l));
         result.set(1, 1, 2/(t-b));
         result.set(2, 2, -2/(f-n));
@@ -96,7 +108,7 @@ public class Matrix4 {
 
         cotangent = (float) Math.cos(radians) / sine;
 
-        Matrix4 result = new Matrix4();
+        Matrix4 result = Matrix4.zero();
         result.set(0, 0, cotangent / aspect);
         result.set(1, 1, cotangent);
         result.set(2, 2, -(zFar + zNear) / deltaZ);
@@ -286,10 +298,10 @@ public class Matrix4 {
 
 
     public Vec4f multiply(Vec4f v) {
-        return new Vec4f(v.x * get(0, 0) + v.x * get(0, 1) + v.x * get(0, 2) + v.x * get(0, 3),
-                v.y * get(1, 0) + v.y * get(1, 1) + v.y * get(1, 2) + v.y * get(1, 3),
-                v.z * get(2, 0) + v.z * get(2, 1) + v.z * get(2, 2) + v.z * get(2, 3),
-                v.w * get(3, 0) + v.w * get(3, 1) + v.w * get(3, 2) + v.w * get(3, 3)
+        return Vec4f.v4(v.x * get(0, 0) + v.y * get(1, 0) + v.z * get(2, 0) + v.w * get(3, 0),
+                        v.x * get(0, 1) + v.y * get(1, 1) + v.z * get(2, 1) + v.w * get(3, 1),
+                        v.x * get(0, 2) + v.y * get(1, 2) + v.z * get(2, 2) + v.w * get(3, 2),
+                        v.x * get(0, 3) + v.y * get(1, 3) + v.z * get(2, 3) + v.w * get(3, 3)
         );
 
     }

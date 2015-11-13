@@ -165,15 +165,19 @@ public class Vec4f implements Serializable {
     //gglsl auto generated text
 public Vec4f plus(Vec4f arg1) {return Vec4f.v4((float)this.x+(float)arg1.x, (float)this.y+(float)arg1.y, (float)this.z+(float)arg1.z, (float)this.w+(float)arg1.w);}
 public Vec4f plus(float arg1) {return Vec4f.v4((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1, (float)this.w+(float)arg1);}
+public Vec4f plus(Float arg1) {return Vec4f.v4((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1, (float)this.w+(float)arg1);}
 public Vec4f plus(Number arg1) {return Vec4f.v4((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1, (float)this.w+(float)arg1);}
 public Vec4f minus(Vec4f arg1) {return Vec4f.v4((float)this.x-(float)arg1.x, (float)this.y-(float)arg1.y, (float)this.z-(float)arg1.z, (float)this.w-(float)arg1.w);}
 public Vec4f minus(float arg1) {return Vec4f.v4((float)this.x-(float)arg1, (float)this.y-(float)arg1, (float)this.z-(float)arg1, (float)this.w-(float)arg1);}
+public Vec4f minus(Float arg1) {return Vec4f.v4((float)this.x-(float)arg1, (float)this.y-(float)arg1, (float)this.z-(float)arg1, (float)this.w-(float)arg1);}
 public Vec4f minus(Number arg1) {return Vec4f.v4((float)this.x-(float)arg1, (float)this.y-(float)arg1, (float)this.z-(float)arg1, (float)this.w-(float)arg1);}
 public Vec4f multiply(Vec4f arg1) {return Vec4f.v4((float)this.x*(float)arg1.x, (float)this.y*(float)arg1.y, (float)this.z*(float)arg1.z, (float)this.w*(float)arg1.w);}
 public Vec4f multiply(float arg1) {return Vec4f.v4((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1, (float)this.w*(float)arg1);}
+public Vec4f multiply(Float arg1) {return Vec4f.v4((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1, (float)this.w*(float)arg1);}
 public Vec4f multiply(Number arg1) {return Vec4f.v4((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1, (float)this.w*(float)arg1);}
 public Vec4f div(Vec4f arg1) {return Vec4f.v4((float)this.x/(float)arg1.x, (float)this.y/(float)arg1.y, (float)this.z/(float)arg1.z, (float)this.w/(float)arg1.w);}
 public Vec4f div(float arg1) {return Vec4f.v4((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1, (float)this.w/(float)arg1);}
+public Vec4f div(Float arg1) {return Vec4f.v4((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1, (float)this.w/(float)arg1);}
 public Vec4f div(Number arg1) {return Vec4f.v4((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1, (float)this.w/(float)arg1);}
 public Vec4f radians() {return Vec4f.v4((float)(this.x/180f*Math.PI), (float)(this.y/180f*Math.PI), (float)(this.z/180f*Math.PI), (float)(this.w/180f*Math.PI));}
 public Vec4f degrees() {return Vec4f.v4((float)(this.x/Math.PI*180), (float)(this.y/Math.PI*180), (float)(this.z/Math.PI*180), (float)(this.w/Math.PI*180));}
@@ -192,12 +196,12 @@ public Vec4f abs() {return Vec4f.v4(((float)Math.abs(this.x)), ((float)Math.abs(
 public Vec4f sign() {return Vec4f.v4(((float)Math.signum(this.x)), ((float)Math.signum(this.y)), ((float)Math.signum(this.z)), ((float)Math.signum(this.w)));}
 public Vec4f floor() {return Vec4f.v4(((float)Math.floor(this.x)), ((float)Math.floor(this.y)), ((float)Math.floor(this.z)), ((float)Math.floor(this.w)));}
 public Vec4f ceil() {return Vec4f.v4(((float)Math.ceil(this.x)), ((float)Math.ceil(this.y)), ((float)Math.ceil(this.z)), ((float)Math.ceil(this.w)));}
-public Vec4f fract() {return Vec4f.v4(this.x - ((int)this.x), this.y - ((int)this.y), this.z - ((int)this.z), this.w - ((int)this.w));}
+public Vec4f fract() {return Vec4f.v4(this.x - (float)Math.floor(this.x), this.y - (float)Math.floor(this.y), this.z - (float)Math.floor(this.z), this.w - (float)Math.floor(this.w));}
 public Vec4f mod(Vec4f arg1) {return Vec4f.v4((float)(this.x-arg1.x*Math.floor(this.x/arg1.x)), (float)(this.y-arg1.y*Math.floor(this.y/arg1.y)), (float)(this.z-arg1.z*Math.floor(this.z/arg1.z)), (float)(this.w-arg1.w*Math.floor(this.w/arg1.w)));}
 public Vec4f min(Vec4f arg1) {return Vec4f.v4((float)Math.min(this.x, arg1.x), (float)Math.min(this.y, arg1.y), (float)Math.min(this.z, arg1.z), (float)Math.min(this.w, arg1.w));}
 public Vec4f min(float arg1) {return Vec4f.v4((float)Math.min(this.x, arg1), (float)Math.min(this.y, arg1), (float)Math.min(this.z, arg1), (float)Math.min(this.w, arg1));}
-public Vec4f max(Vec4f arg1) {return Vec4f.v4((float)Math.min(this.x, arg1.x), (float)Math.min(this.y, arg1.y), (float)Math.min(this.z, arg1.z), (float)Math.min(this.w, arg1.w));}
-public Vec4f max(float arg1) {return Vec4f.v4((float)Math.min(this.x, arg1), (float)Math.min(this.y, arg1), (float)Math.min(this.z, arg1), (float)Math.min(this.w, arg1));}
+public Vec4f max(Vec4f arg1) {return Vec4f.v4((float)Math.max(this.x, arg1.x), (float)Math.max(this.y, arg1.y), (float)Math.max(this.z, arg1.z), (float)Math.max(this.w, arg1.w));}
+public Vec4f max(float arg1) {return Vec4f.v4((float)Math.max(this.x, arg1), (float)Math.max(this.y, arg1), (float)Math.max(this.z, arg1), (float)Math.max(this.w, arg1));}
 public Vec4f clamp(Vec4f arg1, Vec4f arg2) {return Vec4f.v4(Math.max(arg1.x, Math.min(arg2.x, this.x)), Math.max(arg1.y, Math.min(arg2.y, this.y)), Math.max(arg1.z, Math.min(arg2.z, this.z)), Math.max(arg1.w, Math.min(arg2.w, this.w)));}
 public Vec4f clamp(float arg1, float arg2) {return Vec4f.v4(Math.max(arg1, Math.min(arg2, this.x)), Math.max(arg1, Math.min(arg2, this.y)), Math.max(arg1, Math.min(arg2, this.z)), Math.max(arg1, Math.min(arg2, this.w)));}
 public Vec4f mix(Vec4f arg1, Vec4f arg2) {return Vec4f.v4(this.x * (1 - arg2.x) + arg1.x * arg2.x, this.y * (1 - arg2.y) + arg1.y * arg2.y, this.z * (1 - arg2.z) + arg1.z * arg2.z, this.w * (1 - arg2.w) + arg1.w * arg2.w);}

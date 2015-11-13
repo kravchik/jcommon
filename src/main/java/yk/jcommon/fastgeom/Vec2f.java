@@ -201,6 +201,18 @@ public class Vec2f implements Serializable {
         return this.mulScalar(b) < 0;
     }
 
+    public Vec3f withZ(float z) {
+        return new Vec3f(x, y, z);
+    }
+
+    public Vec3f withY(float y) {
+        return new Vec3f(this.x, y, this.y);
+    }
+
+    public Vec3f withX(float x) {
+        return new Vec3f(x, this.x, this.y);
+    }
+
     public Vec3f asXZ(float y) {
         return new Vec3f(x, y, this.y);
     }
@@ -220,15 +232,19 @@ public class Vec2f implements Serializable {
 //gglsl auto generated text
 public Vec2f plus(Vec2f arg1) {return Vec2f.v2((float)this.x+(float)arg1.x, (float)this.y+(float)arg1.y);}
 public Vec2f plus(float arg1) {return Vec2f.v2((float)this.x+(float)arg1, (float)this.y+(float)arg1);}
+public Vec2f plus(Float arg1) {return Vec2f.v2((float)this.x+(float)arg1, (float)this.y+(float)arg1);}
 public Vec2f plus(Number arg1) {return Vec2f.v2((float)this.x+(float)arg1, (float)this.y+(float)arg1);}
 public Vec2f minus(Vec2f arg1) {return Vec2f.v2((float)this.x-(float)arg1.x, (float)this.y-(float)arg1.y);}
 public Vec2f minus(float arg1) {return Vec2f.v2((float)this.x-(float)arg1, (float)this.y-(float)arg1);}
+public Vec2f minus(Float arg1) {return Vec2f.v2((float)this.x-(float)arg1, (float)this.y-(float)arg1);}
 public Vec2f minus(Number arg1) {return Vec2f.v2((float)this.x-(float)arg1, (float)this.y-(float)arg1);}
 public Vec2f multiply(Vec2f arg1) {return Vec2f.v2((float)this.x*(float)arg1.x, (float)this.y*(float)arg1.y);}
 public Vec2f multiply(float arg1) {return Vec2f.v2((float)this.x*(float)arg1, (float)this.y*(float)arg1);}
+public Vec2f multiply(Float arg1) {return Vec2f.v2((float)this.x*(float)arg1, (float)this.y*(float)arg1);}
 public Vec2f multiply(Number arg1) {return Vec2f.v2((float)this.x*(float)arg1, (float)this.y*(float)arg1);}
 public Vec2f div(Vec2f arg1) {return Vec2f.v2((float)this.x/(float)arg1.x, (float)this.y/(float)arg1.y);}
 public Vec2f div(float arg1) {return Vec2f.v2((float)this.x/(float)arg1, (float)this.y/(float)arg1);}
+public Vec2f div(Float arg1) {return Vec2f.v2((float)this.x/(float)arg1, (float)this.y/(float)arg1);}
 public Vec2f div(Number arg1) {return Vec2f.v2((float)this.x/(float)arg1, (float)this.y/(float)arg1);}
 public Vec2f radians() {return Vec2f.v2((float)(this.x/180f*Math.PI), (float)(this.y/180f*Math.PI));}
 public Vec2f degrees() {return Vec2f.v2((float)(this.x/Math.PI*180), (float)(this.y/Math.PI*180));}
@@ -247,12 +263,12 @@ public Vec2f abs() {return Vec2f.v2(((float)Math.abs(this.x)), ((float)Math.abs(
 public Vec2f sign() {return Vec2f.v2(((float)Math.signum(this.x)), ((float)Math.signum(this.y)));}
 public Vec2f floor() {return Vec2f.v2(((float)Math.floor(this.x)), ((float)Math.floor(this.y)));}
 public Vec2f ceil() {return Vec2f.v2(((float)Math.ceil(this.x)), ((float)Math.ceil(this.y)));}
-public Vec2f fract() {return Vec2f.v2(this.x - ((int)this.x), this.y - ((int)this.y));}
+public Vec2f fract() {return Vec2f.v2(this.x - (float)Math.floor(this.x), this.y - (float)Math.floor(this.y));}
 public Vec2f mod(Vec2f arg1) {return Vec2f.v2((float)(this.x-arg1.x*Math.floor(this.x/arg1.x)), (float)(this.y-arg1.y*Math.floor(this.y/arg1.y)));}
 public Vec2f min(Vec2f arg1) {return Vec2f.v2((float)Math.min(this.x, arg1.x), (float)Math.min(this.y, arg1.y));}
 public Vec2f min(float arg1) {return Vec2f.v2((float)Math.min(this.x, arg1), (float)Math.min(this.y, arg1));}
-public Vec2f max(Vec2f arg1) {return Vec2f.v2((float)Math.min(this.x, arg1.x), (float)Math.min(this.y, arg1.y));}
-public Vec2f max(float arg1) {return Vec2f.v2((float)Math.min(this.x, arg1), (float)Math.min(this.y, arg1));}
+public Vec2f max(Vec2f arg1) {return Vec2f.v2((float)Math.max(this.x, arg1.x), (float)Math.max(this.y, arg1.y));}
+public Vec2f max(float arg1) {return Vec2f.v2((float)Math.max(this.x, arg1), (float)Math.max(this.y, arg1));}
 public Vec2f clamp(Vec2f arg1, Vec2f arg2) {return Vec2f.v2(Math.max(arg1.x, Math.min(arg2.x, this.x)), Math.max(arg1.y, Math.min(arg2.y, this.y)));}
 public Vec2f clamp(float arg1, float arg2) {return Vec2f.v2(Math.max(arg1, Math.min(arg2, this.x)), Math.max(arg1, Math.min(arg2, this.y)));}
 public Vec2f mix(Vec2f arg1, Vec2f arg2) {return Vec2f.v2(this.x * (1 - arg2.x) + arg1.x * arg2.x, this.y * (1 - arg2.y) + arg1.y * arg2.y);}

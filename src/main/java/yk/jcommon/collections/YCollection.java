@@ -7,6 +7,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YArrayList.toYList;
 import static yk.jcommon.collections.YHashMap.hm;
 import static yk.jcommon.collections.YHashSet.toYSet;
@@ -28,6 +29,14 @@ public interface YCollection<T> extends Collection<T> {
     }
 
     <R> YCollection<R> map(Function<? super T, ? extends R> mapper);
+    default <R> YCollection<R> mapWithIndex(BiFunction<Integer, ? super T, ? extends R> mapper) {
+        Iterator<T> it = iterator();
+        YCollection<R> result = al();
+        for (int i = 0; i < size(); i++) {
+            result.add(mapper.apply(i, it.next()));
+        }
+        return result;
+    };
     <R> YCollection<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
     default <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;
