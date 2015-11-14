@@ -17,6 +17,7 @@ import static yk.jcommon.utils.Util.sqr;
  *
  * @author Yuri Kravchik Created 04.01.2009
  */
+@SuppressWarnings("unused")
 public class Vec2f implements Serializable {
     public static final Vec2f ZERO = new Vec2f();
     public float x, y;//TODO final
@@ -248,33 +249,33 @@ public Vec2f div(Float arg1) {return Vec2f.v2((float)this.x/(float)arg1, (float)
 public Vec2f div(Number arg1) {return Vec2f.v2((float)this.x/(float)arg1, (float)this.y/(float)arg1);}
 public Vec2f radians() {return Vec2f.v2((float)(this.x/180f*Math.PI), (float)(this.y/180f*Math.PI));}
 public Vec2f degrees() {return Vec2f.v2((float)(this.x/Math.PI*180), (float)(this.y/Math.PI*180));}
-public Vec2f sin() {return Vec2f.v2(((float)Math.sin(this.x)), ((float)Math.sin(this.y)));}
-public Vec2f cos() {return Vec2f.v2(((float)Math.cos(this.x)), ((float)Math.cos(this.y)));}
-public Vec2f tan() {return Vec2f.v2(((float)Math.tan(this.x)), ((float)Math.tan(this.y)));}
-public Vec2f asin() {return Vec2f.v2(((float)Math.asin(this.x)), ((float)Math.asin(this.y)));}
-public Vec2f acos() {return Vec2f.v2(((float)Math.acos(this.x)), ((float)Math.acos(this.y)));}
-public Vec2f atan() {return Vec2f.v2(((float)Math.atan(this.x)), ((float)Math.atan(this.y)));}
-public Vec2f atan(Vec2f arg1) {return Vec2f.v2((float)Math.atan2(this.x, arg1.x), (float)Math.atan2(this.y, arg1.y));}
-public Vec2f pow(Vec2f arg1) {return Vec2f.v2((float)Math.pow(this.x, arg1.x), (float)Math.pow(this.y, arg1.y));}
-public Vec2f exp() {return Vec2f.v2(((float)Math.exp(this.x)), ((float)Math.exp(this.y)));}
-public Vec2f log() {return Vec2f.v2(((float)Math.log(this.x)), ((float)Math.log(this.y)));}
-public Vec2f sqrt() {return Vec2f.v2(((float)Math.sqrt(this.x)), ((float)Math.sqrt(this.y)));}
-public Vec2f abs() {return Vec2f.v2(((float)Math.abs(this.x)), ((float)Math.abs(this.y)));}
-public Vec2f sign() {return Vec2f.v2(((float)Math.signum(this.x)), ((float)Math.signum(this.y)));}
-public Vec2f floor() {return Vec2f.v2(((float)Math.floor(this.x)), ((float)Math.floor(this.y)));}
-public Vec2f ceil() {return Vec2f.v2(((float)Math.ceil(this.x)), ((float)Math.ceil(this.y)));}
+public Vec2f sin() {return Vec2f.v2((float)Math.sin(this.x), (float)Math.sin(this.y));}
+public Vec2f cos() {return Vec2f.v2((float)Math.cos(this.x), (float)Math.cos(this.y));}
+public Vec2f tan() {return Vec2f.v2((float)Math.tan(this.x), (float)Math.tan(this.y));}
+public Vec2f asin() {return Vec2f.v2((float)Math.asin(this.x), (float)Math.asin(this.y));}
+public Vec2f acos() {return Vec2f.v2((float)Math.acos(this.x), (float)Math.acos(this.y));}
+public Vec2f atan() {return Vec2f.v2((float)Math.atan(this.x), (float)Math.atan(this.y));}
+public Vec2f atan(Vec2f x) {return Vec2f.v2((float)Math.atan2(this.x, x.x), (float)Math.atan2(this.y, x.y));}
+public Vec2f pow(Vec2f power) {return Vec2f.v2((float)Math.pow(this.x, power.x), (float)Math.pow(this.y, power.y));}
+public Vec2f exp() {return Vec2f.v2((float)Math.exp(this.x), (float)Math.exp(this.y));}
+public Vec2f log() {return Vec2f.v2((float)Math.log(this.x), (float)Math.log(this.y));}
+public Vec2f sqrt() {return Vec2f.v2((float)Math.sqrt(this.x), (float)Math.sqrt(this.y));}
+public Vec2f abs() {return Vec2f.v2(Math.abs(this.x), Math.abs(this.y));}
+public Vec2f sign() {return Vec2f.v2(Math.signum(this.x), Math.signum(this.y));}
+public Vec2f floor() {return Vec2f.v2((float)Math.floor(this.x), (float)Math.floor(this.y));}
+public Vec2f ceil() {return Vec2f.v2((float)Math.ceil(this.x), (float)Math.ceil(this.y));}
 public Vec2f fract() {return Vec2f.v2(this.x - (float)Math.floor(this.x), this.y - (float)Math.floor(this.y));}
-public Vec2f mod(Vec2f arg1) {return Vec2f.v2((float)(this.x-arg1.x*Math.floor(this.x/arg1.x)), (float)(this.y-arg1.y*Math.floor(this.y/arg1.y)));}
-public Vec2f min(Vec2f arg1) {return Vec2f.v2((float)Math.min(this.x, arg1.x), (float)Math.min(this.y, arg1.y));}
-public Vec2f min(float arg1) {return Vec2f.v2((float)Math.min(this.x, arg1), (float)Math.min(this.y, arg1));}
-public Vec2f max(Vec2f arg1) {return Vec2f.v2((float)Math.max(this.x, arg1.x), (float)Math.max(this.y, arg1.y));}
-public Vec2f max(float arg1) {return Vec2f.v2((float)Math.max(this.x, arg1), (float)Math.max(this.y, arg1));}
-public Vec2f clamp(Vec2f arg1, Vec2f arg2) {return Vec2f.v2(Math.max(arg1.x, Math.min(arg2.x, this.x)), Math.max(arg1.y, Math.min(arg2.y, this.y)));}
-public Vec2f clamp(float arg1, float arg2) {return Vec2f.v2(Math.max(arg1, Math.min(arg2, this.x)), Math.max(arg1, Math.min(arg2, this.y)));}
-public Vec2f mix(Vec2f arg1, Vec2f arg2) {return Vec2f.v2(this.x * (1 - arg2.x) + arg1.x * arg2.x, this.y * (1 - arg2.y) + arg1.y * arg2.y);}
-public Vec2f mix(Vec2f arg1, float arg2) {return Vec2f.v2(((float)this.x * (1 - arg2) + arg1.x * arg2), ((float)this.y * (1 - arg2) + arg1.y * arg2));}
-public Vec2f step(Vec2f arg1) {return Vec2f.v2(arg1.x < this.x ? 0 : 1, arg1.y < this.y ? 0 : 1);}
-public Vec2f smoothstep(Vec2f arg1, Vec2f arg2) {return Vec2f.v2(arg2.x < this.x ? 0 : arg2.x > arg1.x ? 1 : arg2.x*arg2.x*(3 - 2*arg2.x), arg2.y < this.y ? 0 : arg2.y > arg1.y ? 1 : arg2.y*arg2.y*(3 - 2*arg2.y));}
+public Vec2f mod(Vec2f by) {return Vec2f.v2((float)(this.x-by.x*Math.floor(this.x/by.x)), (float)(this.y-by.y*Math.floor(this.y/by.y)));}
+public Vec2f min(Vec2f arg1) {return Vec2f.v2(Math.min(this.x, arg1.x), Math.min(this.y, arg1.y));}
+public Vec2f min(float arg1) {return Vec2f.v2(Math.min(this.x, arg1), Math.min(this.y, arg1));}
+public Vec2f max(Vec2f arg1) {return Vec2f.v2(Math.max(this.x, arg1.x), Math.max(this.y, arg1.y));}
+public Vec2f max(float arg1) {return Vec2f.v2(Math.max(this.x, arg1), Math.max(this.y, arg1));}
+public Vec2f clamp(Vec2f max, Vec2f value) {return Vec2f.v2(Math.max(max.x, Math.min(value.x, this.x)), Math.max(max.y, Math.min(value.y, this.y)));}
+public Vec2f clamp(float max, float value) {return Vec2f.v2(Math.max(max, Math.min(value, this.x)), Math.max(max, Math.min(value, this.y)));}
+public Vec2f mix(Vec2f to, Vec2f progress) {return Vec2f.v2(this.x * (1 - progress.x) + to.x * progress.x, this.y * (1 - progress.y) + to.y * progress.y);}
+public Vec2f mix(Vec2f to, float progress) {return Vec2f.v2(this.x * (1 - progress) + to.x * progress, this.y * (1 - progress) + to.y * progress);}
+public Vec2f step(Vec2f value) {return Vec2f.v2(value.x < this.x ? 0 : 1, value.y < this.y ? 0 : 1);}
+public Vec2f smoothstep(Vec2f to, Vec2f progress) {return Vec2f.v2(progress.x < this.x ? 0 : progress.x > to.x ? 1 : progress.x*progress.x*(3 - 2*progress.x), progress.y < this.y ? 0 : progress.y > to.y ? 1 : progress.y*progress.y*(3 - 2*progress.y));}
 
 //gglsl auto generated text
 }
