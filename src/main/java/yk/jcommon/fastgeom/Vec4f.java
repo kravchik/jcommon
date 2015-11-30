@@ -202,8 +202,8 @@ public Vec4f min(Vec4f arg1) {return Vec4f.v4(Math.min(this.x, arg1.x), Math.min
 public Vec4f min(float arg1) {return Vec4f.v4(Math.min(this.x, arg1), Math.min(this.y, arg1), Math.min(this.z, arg1), Math.min(this.w, arg1));}
 public Vec4f max(Vec4f arg1) {return Vec4f.v4(Math.max(this.x, arg1.x), Math.max(this.y, arg1.y), Math.max(this.z, arg1.z), Math.max(this.w, arg1.w));}
 public Vec4f max(float arg1) {return Vec4f.v4(Math.max(this.x, arg1), Math.max(this.y, arg1), Math.max(this.z, arg1), Math.max(this.w, arg1));}
-public Vec4f clamp(Vec4f max, Vec4f value) {return Vec4f.v4(Math.max(max.x, Math.min(value.x, this.x)), Math.max(max.y, Math.min(value.y, this.y)), Math.max(max.z, Math.min(value.z, this.z)), Math.max(max.w, Math.min(value.w, this.w)));}
-public Vec4f clamp(float max, float value) {return Vec4f.v4(Math.max(max, Math.min(value, this.x)), Math.max(max, Math.min(value, this.y)), Math.max(max, Math.min(value, this.z)), Math.max(max, Math.min(value, this.w)));}
+public Vec4f clamp(Vec4f min, Vec4f max) {return Vec4f.v4(Math.max(min.x, Math.min(this.x, max.x)), Math.max(min.y, Math.min(this.y, max.y)), Math.max(min.z, Math.min(this.z, max.z)), Math.max(min.w, Math.min(this.w, max.w)));}
+public Vec4f clamp(float min, float max) {return Vec4f.v4(Math.max(min, Math.min(this.x, max)), Math.max(min, Math.min(this.y, max)), Math.max(min, Math.min(this.z, max)), Math.max(min, Math.min(this.w, max)));}
 public Vec4f mix(Vec4f to, Vec4f progress) {return Vec4f.v4(this.x * (1 - progress.x) + to.x * progress.x, this.y * (1 - progress.y) + to.y * progress.y, this.z * (1 - progress.z) + to.z * progress.z, this.w * (1 - progress.w) + to.w * progress.w);}
 public Vec4f mix(Vec4f to, float progress) {return Vec4f.v4(this.x * (1 - progress) + to.x * progress, this.y * (1 - progress) + to.y * progress, this.z * (1 - progress) + to.z * progress, this.w * (1 - progress) + to.w * progress);}
 public Vec4f step(Vec4f value) {return Vec4f.v4(value.x < this.x ? 0 : 1, value.y < this.y ? 0 : 1, value.z < this.z ? 0 : 1, value.w < this.w ? 0 : 1);}

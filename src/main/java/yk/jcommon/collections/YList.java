@@ -1,5 +1,6 @@
 package yk.jcommon.collections;
 
+import yk.jcommon.utils.MyMath;
 import yk.jcommon.utils.Util;
 
 import java.util.Collection;
@@ -122,6 +123,25 @@ public interface YList<T> extends YCollection<T>, List<T> {
         YList<T> result = al();
         for (T t : this) result.add(0, t);
         return result;
+    }
+
+    default void forEachNeighbours(Consumer3<T, T, T> consumer) {
+        for (int i = 0; i < this.size(); i++) {
+            T t1 = this.get(MyMath.module(i + 0, this.size()));
+            T t2 = this.get(MyMath.module(i + 1, this.size()));
+            T t3 = this.get(MyMath.module(i + 2, this.size()));
+            consumer.accept(t1, t2, t3);
+        }
+    }
+
+    default void forEachNeighbours(Consumer4<T, T, T, T> consumer) {
+        for (int i = 0; i < this.size(); i++) {
+            T t1 = this.get(MyMath.module(i + 0, this.size()));
+            T t2 = this.get(MyMath.module(i + 1, this.size()));
+            T t3 = this.get(MyMath.module(i + 2, this.size()));
+            T t4 = this.get(MyMath.module(i + 3, this.size()));
+            consumer.accept(t1, t2, t3, t4);
+        }
     }
 
 }

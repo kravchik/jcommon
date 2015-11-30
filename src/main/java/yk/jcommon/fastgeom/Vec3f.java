@@ -219,8 +219,8 @@ public Vec3f min(Vec3f arg1) {return Vec3f.v3(Math.min(this.x, arg1.x), Math.min
 public Vec3f min(float arg1) {return Vec3f.v3(Math.min(this.x, arg1), Math.min(this.y, arg1), Math.min(this.z, arg1));}
 public Vec3f max(Vec3f arg1) {return Vec3f.v3(Math.max(this.x, arg1.x), Math.max(this.y, arg1.y), Math.max(this.z, arg1.z));}
 public Vec3f max(float arg1) {return Vec3f.v3(Math.max(this.x, arg1), Math.max(this.y, arg1), Math.max(this.z, arg1));}
-public Vec3f clamp(Vec3f max, Vec3f value) {return Vec3f.v3(Math.max(max.x, Math.min(value.x, this.x)), Math.max(max.y, Math.min(value.y, this.y)), Math.max(max.z, Math.min(value.z, this.z)));}
-public Vec3f clamp(float max, float value) {return Vec3f.v3(Math.max(max, Math.min(value, this.x)), Math.max(max, Math.min(value, this.y)), Math.max(max, Math.min(value, this.z)));}
+public Vec3f clamp(Vec3f min, Vec3f max) {return Vec3f.v3(Math.max(min.x, Math.min(this.x, max.x)), Math.max(min.y, Math.min(this.y, max.y)), Math.max(min.z, Math.min(this.z, max.z)));}
+public Vec3f clamp(float min, float max) {return Vec3f.v3(Math.max(min, Math.min(this.x, max)), Math.max(min, Math.min(this.y, max)), Math.max(min, Math.min(this.z, max)));}
 public Vec3f mix(Vec3f to, Vec3f progress) {return Vec3f.v3(this.x * (1 - progress.x) + to.x * progress.x, this.y * (1 - progress.y) + to.y * progress.y, this.z * (1 - progress.z) + to.z * progress.z);}
 public Vec3f mix(Vec3f to, float progress) {return Vec3f.v3(this.x * (1 - progress) + to.x * progress, this.y * (1 - progress) + to.y * progress, this.z * (1 - progress) + to.z * progress);}
 public Vec3f step(Vec3f value) {return Vec3f.v3(value.x < this.x ? 0 : 1, value.y < this.y ? 0 : 1, value.z < this.z ? 0 : 1);}

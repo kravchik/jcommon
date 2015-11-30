@@ -210,13 +210,13 @@ public static Vec4f max(Vec4f arg0, Vec4f arg1) {return Vec4f.v4(Math.max(arg0.x
 public static Vec2f max(Vec2f arg0, float arg1) {return Vec2f.v2(Math.max(arg0.x, arg1), Math.max(arg0.y, arg1));}
 public static Vec3f max(Vec3f arg0, float arg1) {return Vec3f.v3(Math.max(arg0.x, arg1), Math.max(arg0.y, arg1), Math.max(arg0.z, arg1));}
 public static Vec4f max(Vec4f arg0, float arg1) {return Vec4f.v4(Math.max(arg0.x, arg1), Math.max(arg0.y, arg1), Math.max(arg0.z, arg1), Math.max(arg0.w, arg1));}
-public static float clamp(float min, float max, float value) {return Math.max(max, Math.min(value, min));}
-public static Vec2f clamp(Vec2f min, Vec2f max, Vec2f value) {return Vec2f.v2(Math.max(max.x, Math.min(value.x, min.x)), Math.max(max.y, Math.min(value.y, min.y)));}
-public static Vec3f clamp(Vec3f min, Vec3f max, Vec3f value) {return Vec3f.v3(Math.max(max.x, Math.min(value.x, min.x)), Math.max(max.y, Math.min(value.y, min.y)), Math.max(max.z, Math.min(value.z, min.z)));}
-public static Vec4f clamp(Vec4f min, Vec4f max, Vec4f value) {return Vec4f.v4(Math.max(max.x, Math.min(value.x, min.x)), Math.max(max.y, Math.min(value.y, min.y)), Math.max(max.z, Math.min(value.z, min.z)), Math.max(max.w, Math.min(value.w, min.w)));}
-public static Vec2f clamp(Vec2f min, float max, float value) {return Vec2f.v2(Math.max(max, Math.min(value, min.x)), Math.max(max, Math.min(value, min.y)));}
-public static Vec3f clamp(Vec3f min, float max, float value) {return Vec3f.v3(Math.max(max, Math.min(value, min.x)), Math.max(max, Math.min(value, min.y)), Math.max(max, Math.min(value, min.z)));}
-public static Vec4f clamp(Vec4f min, float max, float value) {return Vec4f.v4(Math.max(max, Math.min(value, min.x)), Math.max(max, Math.min(value, min.y)), Math.max(max, Math.min(value, min.z)), Math.max(max, Math.min(value, min.w)));}
+public static float clamp(float value, float min, float max) {return Math.max(min, Math.min(value, max));}
+public static Vec2f clamp(Vec2f value, Vec2f min, Vec2f max) {return Vec2f.v2(Math.max(min.x, Math.min(value.x, max.x)), Math.max(min.y, Math.min(value.y, max.y)));}
+public static Vec3f clamp(Vec3f value, Vec3f min, Vec3f max) {return Vec3f.v3(Math.max(min.x, Math.min(value.x, max.x)), Math.max(min.y, Math.min(value.y, max.y)), Math.max(min.z, Math.min(value.z, max.z)));}
+public static Vec4f clamp(Vec4f value, Vec4f min, Vec4f max) {return Vec4f.v4(Math.max(min.x, Math.min(value.x, max.x)), Math.max(min.y, Math.min(value.y, max.y)), Math.max(min.z, Math.min(value.z, max.z)), Math.max(min.w, Math.min(value.w, max.w)));}
+public static Vec2f clamp(Vec2f value, float min, float max) {return Vec2f.v2(Math.max(min, Math.min(value.x, max)), Math.max(min, Math.min(value.y, max)));}
+public static Vec3f clamp(Vec3f value, float min, float max) {return Vec3f.v3(Math.max(min, Math.min(value.x, max)), Math.max(min, Math.min(value.y, max)), Math.max(min, Math.min(value.z, max)));}
+public static Vec4f clamp(Vec4f value, float min, float max) {return Vec4f.v4(Math.max(min, Math.min(value.x, max)), Math.max(min, Math.min(value.y, max)), Math.max(min, Math.min(value.z, max)), Math.max(min, Math.min(value.w, max)));}
 public static float mix(float from, float to, float progress) {return from * (1 - progress) + to * progress;}
 public static Vec2f mix(Vec2f from, Vec2f to, Vec2f progress) {return Vec2f.v2(from.x * (1 - progress.x) + to.x * progress.x, from.y * (1 - progress.y) + to.y * progress.y);}
 public static Vec3f mix(Vec3f from, Vec3f to, Vec3f progress) {return Vec3f.v3(from.x * (1 - progress.x) + to.x * progress.x, from.y * (1 - progress.y) + to.y * progress.y, from.z * (1 - progress.z) + to.z * progress.z);}

@@ -28,7 +28,9 @@ public class FileWatcher {
 
 
     public boolean isChanged() {
-        for (WatchEvent<?> event : watchKey.pollEvents()) if (event.context().toString().contains(fileName)) return true;
+        for (WatchEvent<?> event : watchKey.pollEvents()) {
+            if (event.context().toString().contains(fileName)) return true;
+        }
         return false;
     }
 }

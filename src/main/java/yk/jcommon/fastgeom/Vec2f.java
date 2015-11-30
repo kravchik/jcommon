@@ -270,8 +270,8 @@ public Vec2f min(Vec2f arg1) {return Vec2f.v2(Math.min(this.x, arg1.x), Math.min
 public Vec2f min(float arg1) {return Vec2f.v2(Math.min(this.x, arg1), Math.min(this.y, arg1));}
 public Vec2f max(Vec2f arg1) {return Vec2f.v2(Math.max(this.x, arg1.x), Math.max(this.y, arg1.y));}
 public Vec2f max(float arg1) {return Vec2f.v2(Math.max(this.x, arg1), Math.max(this.y, arg1));}
-public Vec2f clamp(Vec2f max, Vec2f value) {return Vec2f.v2(Math.max(max.x, Math.min(value.x, this.x)), Math.max(max.y, Math.min(value.y, this.y)));}
-public Vec2f clamp(float max, float value) {return Vec2f.v2(Math.max(max, Math.min(value, this.x)), Math.max(max, Math.min(value, this.y)));}
+public Vec2f clamp(Vec2f min, Vec2f max) {return Vec2f.v2(Math.max(min.x, Math.min(this.x, max.x)), Math.max(min.y, Math.min(this.y, max.y)));}
+public Vec2f clamp(float min, float max) {return Vec2f.v2(Math.max(min, Math.min(this.x, max)), Math.max(min, Math.min(this.y, max)));}
 public Vec2f mix(Vec2f to, Vec2f progress) {return Vec2f.v2(this.x * (1 - progress.x) + to.x * progress.x, this.y * (1 - progress.y) + to.y * progress.y);}
 public Vec2f mix(Vec2f to, float progress) {return Vec2f.v2(this.x * (1 - progress) + to.x * progress, this.y * (1 - progress) + to.y * progress);}
 public Vec2f step(Vec2f value) {return Vec2f.v2(value.x < this.x ? 0 : 1, value.y < this.y ? 0 : 1);}

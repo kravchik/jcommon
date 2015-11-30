@@ -38,6 +38,14 @@ public class Rgb {
         return packRgb(res, res, res);
     }
 
+    public Vec4f unpack4(int color) {
+        return Vec4f.v4(getR(color), getG(color), getB(color), getA(color));
+    }
+
+    public Vec3f unpack3(int color) {
+        return Vec3f.v3(getR(color), getG(color), getB(color));
+    }
+
     public static float brightness(int value) {
         return (getR(value) + getG(value) + getB(value)) / 3f / 255f;
     }
@@ -51,17 +59,22 @@ public class Rgb {
     }
 
     public static int packRgb(Vec3f v) {
-        int r = Math.max(0, Math.min(255, (int) (v.x * 255f)));
-        int g = Math.max(0, Math.min(255, (int) (v.y * 255f)));
-        int b = Math.max(0, Math.min(255, (int) (v.z * 255f)));
-        return Rgb.packRgb(r, g, b);
+        return packRgb(v.x, v.y, v.z);
     }
 
     public static int packRgb(Vec4f v) {
-        int r = Math.max(0, Math.min(255, (int) (v.x * 255f)));
-        int g = Math.max(0, Math.min(255, (int) (v.y * 255f)));
-        int b = Math.max(0, Math.min(255, (int) (v.z * 255f)));
-        int a = Math.max(0, Math.min(255, (int) (v.w * 255f)));
-        return Rgb.packRgb(r, g, b, a);
+        return packRgb(v.x, v.y, v.z, v.w);
+    }
+
+    public static int packRgb(float r, float g, float b) {
+        return packRgb(r, g, b, 0);
+    }
+
+    public static int packRgb(float r, float g, float b, float a) {
+        int rr = Math.max(0, Math.min(255, (int) (r * 255f)));
+        int gg = Math.max(0, Math.min(255, (int) (g * 255f)));
+        int bb = Math.max(0, Math.min(255, (int) (b * 255f)));
+        int aa = Math.max(0, Math.min(255, (int) (a * 255f)));
+        return Rgb.packRgb(rr, gg, bb, aa);
     }
 }
