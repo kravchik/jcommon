@@ -312,8 +312,8 @@ public class Util {
 
     //TODO move to MyMath
     public static float mixAngle(float a, float b, float mix) {
-        if (b > a) return b - a > PI ? mix((float) (a + 2 * PI), b, mix) : mix(a, b, mix);
-        return a - b > PI ? mix(a, (float) (b + 2 * PI), mix) : mix(a, b, mix);
+        if (b > a) return MyMath.module(b - a > PI ? mix((float) (a + 2 * PI), b, mix) : mix(a, b, mix), 2*PI);
+        return MyMath.module(a - b > PI ? mix(a, (float) (b + 2 * PI), mix) : mix(a, b, mix), 2*PI);
     }
 
     public static float angleDif(float a, float b) {

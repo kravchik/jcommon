@@ -6,14 +6,14 @@ package yk.jcommon.collections;
  * Time: 9:09 PM
  */
 public class Array2<T> {
-    private T[] t;
+    public T[] data;
     public final int width;
     public final int height;
 
     public Array2(int width, int height) {
         this.width = width;
         this.height = height;
-        t = (T[]) new Object[width * height];
+        data = (T[]) new Object[width * height];
 
     }
 
@@ -24,8 +24,8 @@ public class Array2<T> {
 
     public Array2(int width, int height, T defaultValue) {
         this(width, height);
-        for (int i = 0, tLength = t.length; i < tLength; i++) {
-            t[i] = defaultValue;
+        for (int i = 0, tLength = data.length; i < tLength; i++) {
+            data[i] = defaultValue;
         }
     }
 
@@ -44,13 +44,13 @@ public class Array2<T> {
     }
 
     public T get(int x, int y) {
-        return t[getIndex(x, y)];
+        return data[getIndex(x, y)];
     }
 
     public T set(int x, int y, T value) {
         int i = getIndex(x, y);
-        T old = t[i];
-        t[i] = value;
+        T old = data[i];
+        data[i] = value;
         return old;
     }
 

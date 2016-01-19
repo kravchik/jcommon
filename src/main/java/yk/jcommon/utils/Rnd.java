@@ -1,14 +1,18 @@
 package yk.jcommon.utils;
 
 import yk.jcommon.collections.YList;
-import yk.jcommon.fastgeom.*;
+import yk.jcommon.fastgeom.FloatRange;
+import yk.jcommon.fastgeom.IntRange;
+import yk.jcommon.fastgeom.Vec2f;
+import yk.jcommon.fastgeom.Vec3f;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YArrayList.toYList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,6 +85,10 @@ public class Rnd {
 
     public Vec2f nextVec2f() {
         return new Vec2f(nextFloat(), nextFloat());
+    }
+
+    public Vec2f nextVec2f(float r) {
+        return new Vec2f(nextFloat() * r - r / 2, nextFloat() * r - r / 2);
     }
 
     public Vec3f nextVec3f() {

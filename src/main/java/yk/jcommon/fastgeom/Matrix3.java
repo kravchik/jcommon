@@ -29,19 +29,12 @@ public class Matrix3 {
         m.data[0 * S + 0] = 1.0f;
         m.data[0 * S + 1] = 0.0f;
         m.data[0 * S + 2] = 0.0f;
-        m.data[0 * S + 3] = 0.0f;
         m.data[1 * S + 0] = 0.0f;
         m.data[1 * S + 1] = 1.0f;
         m.data[1 * S + 2] = 0.0f;
-        m.data[1 * S + 3] = 0.0f;
         m.data[2 * S + 0] = 0.0f;
         m.data[2 * S + 1] = 0.0f;
         m.data[2 * S + 2] = 1.0f;
-        m.data[2 * S + 3] = 0.0f;
-        m.data[3 * S + 0] = 0.0f;
-        m.data[3 * S + 1] = 0.0f;
-        m.data[3 * S + 2] = 0.0f;
-        m.data[3 * S + 3] = 1.0f;
         return m;
     }
 

@@ -21,6 +21,22 @@ public class Matrix4 {
         return new Matrix4();
     }
 
+    public static Matrix4 scale(float x, float y, float z) {
+        Matrix4 result = identity();
+        result.set(0, 0, x);
+        result.set(1, 1, y);
+        result.set(2, 2, z);
+        return result;
+    }
+
+    public static Matrix4 scale(float s) {
+        Matrix4 result = identity();
+        result.set(0, 0, s);
+        result.set(1, 1, s);
+        result.set(2, 2, s);
+        return result;
+    }
+
     @Deprecated
     public Matrix4() {
     }
