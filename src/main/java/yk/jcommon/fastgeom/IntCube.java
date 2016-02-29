@@ -1,12 +1,15 @@
 package yk.jcommon.fastgeom;
 
+import static yk.jcommon.utils.MyMath.ceil;
+import static yk.jcommon.utils.MyMath.floor;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Yuri Kravchik
  * Date: 22.01.2010
  * Time: 14:11:01
  */
-public class IntCube {
+public class IntCube {//TODO remove this, or IntBox
     //left bottom
     public int l;
     public int b;
@@ -35,7 +38,7 @@ public class IntCube {
     }
 
     public IntCube init(Vec3f center, float r) {
-        return init((int)(center.x - r), (int)(center.y - r), (int)(center.z - r), (int)(center.x + r), (int)(center.y + r), (int)(center.z + r));
+        return init((int)floor(center.x - r), (int)floor(center.y - r), (int)floor(center.z - r), (int)ceil(center.x + r), (int)ceil(center.y + r), (int)ceil(center.z + r));
     }
 
     public IntCube init(Vec3f va, Vec3f vb) {
@@ -44,12 +47,12 @@ public class IntCube {
         //center = center.div(2).add(va);
         //init((int)(center.x - size), (int)(center.y - size), (int)(center.x + size), (int)(center.y + size));
         init(
-                (int)(va.x),
-                (int)(va.y),
-                (int)(va.z),
-                (int)(vb.x - va.x),
-                (int)(vb.y - va.y),
-                (int)(vb.z - va.z)
+                (int)floor(va.x),
+                (int)floor(va.y),
+                (int)floor(va.z),
+                (int)ceil(vb.x),
+                (int)ceil(vb.y),
+                (int)ceil(vb.z)
                 );
         return this;
     }

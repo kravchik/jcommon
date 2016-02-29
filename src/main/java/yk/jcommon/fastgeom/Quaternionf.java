@@ -7,6 +7,7 @@ package yk.jcommon.fastgeom;
 
 import java.io.Serializable;
 
+import static yk.jcommon.utils.MyMath.sqrt;
 import static yk.jcommon.utils.Util.sqr;
 
 /**
@@ -27,6 +28,32 @@ public class Quaternionf implements Serializable {
      */
     public static Quaternionf fromAngleAxisFast(final float angle, final Vec3f axis) {
         return new Quaternionf((float) Math.cos(angle / 2), axis.mul((float) Math.sin(angle / 2)));
+    }
+
+
+    public static Quaternionf fromAxes(Vec3f X, Vec3f Y, Vec3f Z) {
+        return fromAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
+    }
+    public static Quaternionf fromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) {
+        final float trace = xx + yy + zz;
+        if (trace >= 0) {
+            float s1 = sqrt(trace + 1);
+            float s2 = 0.5f / s1;
+            return new Quaternionf(0.5f * s1, (zy - yz) * s2, (xz - zx) * s2, (yx - xy) * s2);
+        } else if (xx > yy && xx > zz) {
+            float s1 = sqrt(1 + xx - yy - zz);
+            float s2 = 0.5f / s1;
+            return new Quaternionf((zy - yz) * s2, s1 * 0.5f, (yx + xy) * s2, (xz + zx) * s2);
+        } else if (yy > zz) {
+            float s1 = sqrt(1 + yy - xx - zz);
+            float s2 = 0.5f / s1;
+            return new Quaternionf((xz - zx) * s2, (yx + xy) * s2, s1 * 0.5f, (zy + yz) * s2);
+        } else {
+            float s1 = sqrt(1 + zz - xx - yy);
+            float s2 = 0.5f / s1;
+            return new Quaternionf((yx - xy) * s2, (xz + zx) * s2, (zy + yz) * s2, s1 * 0.5f);
+        }
+
     }
 
     public final float a, i, j, k;

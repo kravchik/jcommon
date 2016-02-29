@@ -1,12 +1,15 @@
 package yk.jcommon.fastgeom;
 
+import static yk.jcommon.utils.MyMath.max;
+import static yk.jcommon.utils.MyMath.min;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Yuri Kravchik
  * Date: 22.01.2010
  * Time: 14:11:01
  */
-public class IntBox {
+public class IntBox {//TODO rename IntSquare
     //left bottom
     public int l;
     public int b;
@@ -31,6 +34,10 @@ public class IntBox {
         return init((int)(center.x - r), (int)(center.y - r), (int)(center.x + r), (int)(center.y + r));
     }
 
+    public IntBox init(Vec2i center, int r) {
+        return init(center.x - r, center.y - r, center.x + r, center.y + r);
+    }
+
     public IntBox init(Vec2f va, Vec2f vb) {
         Vec2f center = vb.sub(va);
         float size = Math.max(Math.abs(center.x), Math.abs(center.y)) / 2;
@@ -39,7 +46,9 @@ public class IntBox {
         return this;
     }
 
-
+    public IntBox intersection(IntBox other) {
+        return new IntBox().init(max(l, other.l), max(b, other.b), min(r, other.r), min(t, other.t));
+    }
 
     public IntBox init(Vec2f va, Vec2f vb, Vec2f vc) {
         return init((int)Math.min(va.x, Math.min(vb.x, vc.x))

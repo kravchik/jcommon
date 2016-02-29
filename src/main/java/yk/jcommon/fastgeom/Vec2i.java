@@ -64,9 +64,21 @@ public class Vec2i {
         return new Vec2i((int)(x * i), (int)(y * i));
     }
 
+    public Vec2i mul(float ox, float oy) {
+        return new Vec2i((int)(x * ox), (int)(y * oy));
+    }
+
+    public Vec2i div(float i) {
+        return new Vec2i((int)(x / i), (int)(y / i));
+    }
+
     public Vec2i rnd(int radius) {
         return new Vec2i(x + (int) (-radius + Math.random() * radius * 2),
                 y + (int) (-radius + Math.random() * radius * 2));
+    }
+
+    public Vec2f toVec2f() {
+        return new Vec2f(x, y);
     }
 
     public float len() {

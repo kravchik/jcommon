@@ -30,6 +30,8 @@ public class MyMath {
     public static int floorBy(float x, float by) {
         return (int) (Math.floor(x / by) * by);
     }
+    public static int max(int arg0, int arg1) {return Math.max(arg0, arg1);}
+    public static int min(int arg0, int arg1) {return Math.min(arg0, arg1);}
 
 //gglsl auto generated text
 public static Float plus(Float arg0, Float arg1) {return (float)arg0+(float)arg1;}

@@ -8,6 +8,7 @@ immutable empty YList, YSet, YMap
 
 done
 
+zip iterator
 YCollection.mapWith(YCollection, Mapper) - Mapper is function that takes two args - one from each collection
   something artful with maps?
 YMap<K, V2> YMap<K, V>.mapValues(Function<K, V, V2>), instead of current map, maybe

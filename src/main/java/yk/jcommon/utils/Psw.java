@@ -14,7 +14,7 @@ import static yk.jcommon.utils.Util.list;
 public class Psw {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             gen();
             System.out.println();
         }
@@ -26,13 +26,13 @@ public class Psw {
         String numbers = "0123456789";
         //String NUMBERS = "!@#$%^&*()";
         String letters = low();
-        //String LETTERS = high();
+        String LETTERS = high();
 
         List<String> ss = list(
-                numbers,
+//                numbers,
                 //NUMBERS,
-                letters
-                //LETTERS
+                letters,
+                LETTERS
         );
         String s = "";
         for (String sss : ss) s += sss;
@@ -41,31 +41,37 @@ public class Psw {
         for (int i = 0; i < 16; i++) chars.add(s.charAt(rnd.nextInt(s.length())) + "");
 
         System.out.println();
-        for (int i = 0; i < chars.size(); i++) {
-            String c = chars.get(i);
-            if (numbers.contains(c)) {
-                System.out.print("_");
-            } else {
-                System.out.print(" ");
-            }
-            if (i % 4 == 3) System.out.print(" ");
-        }
+//        for (int i = 0; i < chars.size(); i++) {
+//            String c = chars.get(i);
+//            if (numbers.contains(c)) {
+//                System.out.print("_");
+//            } else {
+//                System.out.print(" ");
+//            }
+//            if (i % 4 == 3) System.out.print(" ");
+//        }
         System.out.println();
         for (int i = 0; i < chars.size(); i++) {
             String c = chars.get(i);
             System.out.print(c);
             if (i % 4 == 3) System.out.print(" ");
         }
-        System.out.println();
+        System.out.print("                            ");
         for (int i = 0; i < chars.size(); i++) {
             String c = chars.get(i);
-            if (rnd.nextBoolean()) {
-                System.out.print("*");
-            } else {
-                System.out.print(" ");
-            }
+            System.out.print(c);
             if (i % 4 == 3) System.out.print(" ");
         }
+        System.out.println();
+//        for (int i = 0; i < chars.size(); i++) {
+//            String c = chars.get(i);
+//            if (rnd.nextBoolean()) {
+//                System.out.print("*");
+//            } else {
+//                System.out.print(" ");
+//            }
+//            if (i % 4 == 3) System.out.print(" ");
+//        }
     }
 
     private static String high() {

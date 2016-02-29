@@ -24,6 +24,10 @@ public class MyClassLoader extends URLClassLoader {
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        return (names.contains(name) == statedForReload) ? super.loadClass(name) : parent.loadClass(name);
+        if (statedForReload) {
+            if (names.contains(name)) return super.loadClass(name);
+            if (names.any(n -> name.startsWith(n + "$"))) return super.loadClass(name);//include child classes implicitly
+        }
+        return parent.loadClass(name);
     }
 }

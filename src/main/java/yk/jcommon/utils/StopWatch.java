@@ -13,6 +13,10 @@ public class StopWatch {
         start();
     }
 
+    public int getCurrent() {
+        return (int) (System.currentTimeMillis() - start);
+    }
+
     public void start() {
         start = System.currentTimeMillis();
     }

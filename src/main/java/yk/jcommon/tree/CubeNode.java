@@ -12,7 +12,7 @@ import java.util.List;
  * Date: 22.01.2010
  * Time: 14:14:00
  */
-public class CubeNode<T> extends Poolable<CubeNode> {//factually it is a Map<IntBox, T>
+public class CubeNode<T> extends Poolable<CubeNode> {//factually it is a Map<IntCube, T>
 
     public CubeNode parent;
     public IntCube cube = new IntCube();

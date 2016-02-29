@@ -8,7 +8,7 @@ import yk.jcommon.fastgeom.IntBox;
  * Date: 22.01.2010
  * Time: 14:15:28
  */
-abstract public class AABBoxed extends BaseIdentifiable {
+abstract public class AABBoxed extends BaseIdentifiable {//TODO rename Squared
     public boolean stone = false;//TODO fix! Not tree specific
     public transient IntBox intBox = new IntBox();
     public float z = 1;//TODO fix! Not tree specific

@@ -125,6 +125,14 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return result;
     }
 
+    default void forEachNeighbours(BiConsumer<T, T> consumer) {
+        for (int i = 0; i < this.size(); i++) {
+            T t1 = this.get(MyMath.module(i + 0, this.size()));
+            T t2 = this.get(MyMath.module(i + 1, this.size()));
+            consumer.accept(t1, t2);
+        }
+    }
+
     default void forEachNeighbours(Consumer3<T, T, T> consumer) {
         for (int i = 0; i < this.size(); i++) {
             T t1 = this.get(MyMath.module(i + 0, this.size()));

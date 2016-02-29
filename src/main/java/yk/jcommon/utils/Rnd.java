@@ -30,7 +30,7 @@ public class Rnd {
     }
 
     public Rnd(long seed) {
-        rnd.setSeed(seed);
+        setSeed(seed);
     }
 
     public <T> T from(List<T> f) {
@@ -75,8 +75,14 @@ public class Rnd {
         Collections.shuffle(result, rnd);
     }
 
+    private long seed;
     public void setSeed(long seed) {
+        this.seed = seed;
         rnd.setSeed(seed);
+    }
+
+    public long getSeed() {
+        return seed;
     }
 
     public float nextFloat(float min, float max) {

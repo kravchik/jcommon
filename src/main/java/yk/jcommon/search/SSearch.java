@@ -15,6 +15,7 @@ import static yk.jcommon.collections.YHashMap.hm;
  * Date: 1/3/14
  * Time: 11:58 PM
  */
+//TODO dynamic child counting and parents weight
 abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>, Iterable<SSearch.Node<STATE>>, Iterator<SSearch.Node<STATE>> {
     public YMap<STATE, Node<STATE>> seen = hm();
     //TODO sortedSeen - to find closest not solution
@@ -45,6 +46,29 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
     public boolean hasNext() {
         return !edge.isEmpty();
     }
+
+    public boolean isValid(Node<STATE> node) {
+        return true;
+    }
+
+//    @Override
+//    public Node<STATE> next() {
+//
+//        for (Node<STATE> node : edge) {
+//            if (!seen.containsKey(node.state) && isValid(node)) {
+//                seen.put(node.state, node);
+//                List<STATE> nexts = generate(node);
+//                for (STATE next : nexts) {
+//                    Node newNode = new Node(node, next);
+//                    newNode.value = evaluate(newNode);
+//                    edge.add(newNode);
+//                }
+//                Collections.sort(edge, this);
+//                return node;
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
     public Node<STATE> next() {
