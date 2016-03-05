@@ -11,7 +11,7 @@ import yk.jcommon.utils.Reflector;
 public class Vec2i {
     public static Vec2i ZERO = new Vec2i(0, 0);
 
-    public final int x, y;
+    public int x, y;
 
     public Vec2i() {
         x = 0;

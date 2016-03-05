@@ -1,6 +1,7 @@
 package yk.jcommon.utils;
 
 import java.nio.file.*;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,8 +29,9 @@ public class FileWatcher {
 
 
     public boolean isChanged() {
-        for (WatchEvent<?> event : watchKey.pollEvents()) {
-            if (event.context().toString().contains(fileName)) return true;
+        List<WatchEvent<?>> pollEvents = watchKey.pollEvents();
+        for (int i = 0, pollEventsSize = pollEvents.size(); i < pollEventsSize; i++) {
+            if (pollEvents.get(i).context().toString().contains(fileName)) return true;
         }
         return false;
     }
