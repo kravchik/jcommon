@@ -17,7 +17,11 @@ import static yk.jcommon.collections.YArrayList.al;
  */
 public class ShortNames {
     public static Property p(String name, Object... rest) {
-        return new Property(name, rest);
+        return Property.p(name, rest);
+    }
+
+    public static Property p1(String name, boolean isMethod, Object... rest) {
+        return Property.p1(name, isMethod, rest);
     }
 
     public static Var var(String name) {
@@ -29,7 +33,11 @@ public class ShortNames {
     }
 
     public static Property p(Class c, Object... rest) {
-        return new Property("getClass", al(c).with((List) al(rest)).toArray());
+        return Property.p("getClass", al(c).with((List) al(rest)).toArray());
+    }
+
+    public static Property p1(Class c, Object... rest) {
+        return Property.p1("getClass", true, al(c).with((List) al(rest)).toArray());
     }
 
     public static ByIndex i(Object rest) {
@@ -54,9 +62,9 @@ public class ShortNames {
             if (last == null);
             else if (o instanceof Property) {
                 Property p = (Property) o;
-                Tuple<String, Object> lastPare = p.pp.last();
-                if (lastPare.b != null) BadException.die("last pare in Property must be key to null, but was " + lastPare);
-                p.pp.put(lastPare.a, last);
+                Tuple<String, Property.PropertyDesc> lastPare = p.pp.last();
+                if (lastPare.b.value != null) BadException.die("last pare in Property must be key to null, but was " + lastPare);
+                lastPare.b.value = last;
             } else if (o instanceof ByIndex) {
                 ByIndex bi = (ByIndex) o;
                 if (bi.rest != null) bi.index = bi.rest;

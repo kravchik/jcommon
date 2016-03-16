@@ -148,30 +148,41 @@ public class Matcher {
         return matchProps(data, pattern.pp, cur);
     }
 
-    public static YSet<YMap<String, Object>> matchProps(Object data, YMap<String, Object> pp, YMap<String, Object> cur) {
+    public static YSet<YMap<String, Object>> matchProps(Object data, YMap<String, Property.PropertyDesc> pp, YMap<String, Object> cur) {
         if (pp.isEmpty()) return hs(cur);
-        Tuple<String, Object> car = pp.car();
-        YMap<String, Object> cdr = pp.cdr();
+        Property.PropertyDesc car = pp.car().b;
+        YMap<String, Property.PropertyDesc> cdr = pp.cdr();
         YSet<YMap<String, Object>> result = hs();
 
-        Tuple<Boolean, Object> tuple = getValue(data, car.a);
+        Tuple<Boolean, Object> tuple = car.isMethod == null ? getValue(data, car.name) : car.isMethod ? getMethodValue(data, car.name) : getFieldValue(data, car.name);
         if (!tuple.a) return hs();
-        for (YMap<String, Object> m : match(tuple.b, car.b, cur)) result.addAll(matchProps(data, cdr, m));
+        for (YMap<String, Object> m : match(tuple.b, car.value, cur)) result.addAll(matchProps(data, cdr, m));
         return result;
     }
 
     public static Tuple<Boolean, Object> getValue(Object o, String name) {
-        Field field = Reflector.getField(o.getClass(), name);
+        Field field = getField(o, name);
         if (field != null) return new Tuple<>(true, Reflector.get(o, field));
         try {
-            Method method = o.getClass().getMethod(name);
-            if (method != null) {
-                method.setAccessible(true);
-                Object result = method.invoke(o);
-                return new Tuple<>(true, result);
-            }
+            Method method = getMethod(o, name);
+            if (method != null) return new Tuple<>(true, method.invoke(o));
         } catch (Exception ignore) {
         }
+        return new Tuple<>(false, null);
+    }
+
+    public static Tuple<Boolean, Object> getMethodValue(Object o, String name) {
+        try {
+            Method method = getMethod(o, name);
+            if (method != null) return new Tuple<>(true, method.invoke(o));
+        } catch (Exception ignore) {
+        }
+        return new Tuple<>(false, null);
+    }
+
+    public static Tuple<Boolean, Object> getFieldValue(Object o, String name) {
+        Field field = getField(o, name);
+        if (field != null) return new Tuple<>(true, Reflector.get(o, field));
         return new Tuple<>(false, null);
     }
 
@@ -183,6 +194,33 @@ public class Matcher {
         YMap<String, Object> resMap = cur.with(pattern.name, data);
         if (pattern.rest != null) return match(data, pattern.rest, resMap);
         else return hs(resMap);
+    }
+
+
+
+
+    //OPTIMIZATIONS
+    public static YMap<String, Field> FIELDS = hm();
+    private static Field getField(Object o, String name) {
+        String key = o.getClass().toString() + ":" + name;
+        if (FIELDS.containsKey(key)) return FIELDS.get(key);
+        System.out.println("added field for key: " + key);
+        Field result = Reflector.getField(o.getClass(), name);
+        FIELDS.put(key, result);
+        return result;
+    }
+    public static YMap<String, Method> METHODS = hm();
+    private static Method getMethod(Object o, String name) {
+        String key = o.getClass().toString() + ":" + name;
+        if (METHODS.containsKey(key)) return METHODS.get(key);
+        System.out.println("added method for key: " + key);
+        Method result = null;
+        try {
+            result = o.getClass().getMethod(name);
+        } catch (NoSuchMethodException ignore) {}
+        if (result != null) result.setAccessible(true);
+        METHODS.put(key, result);
+        return result;
     }
 
 }

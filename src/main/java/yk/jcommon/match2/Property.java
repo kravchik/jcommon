@@ -11,13 +11,43 @@ import static yk.jcommon.collections.YHashMap.hm;
  * Time: 17:06
  */
 public class Property {
-    public YMap<String, Object> pp;
+    public YMap<String, PropertyDesc> pp;
 
-    public Property(String name, Object... oo) {
-        pp = hm();
-        pp.put(name, oo.length > 0 ? oo[0] : null);
+    public static Property p1(String name, Boolean isMethod, Object... oo) {
+        Property result= new Property();
+        result.pp = hm();
+        result.pp.put(name, oo.length > 0 ? new PropertyDesc(name, isMethod, oo[0]) : null);
+        for (int i = 1; i < oo.length; i += 3) {
+            String k = (String) oo[i];
+            Boolean isM = (Boolean) oo[i + 1];
+            Object v = i+2 == oo.length ? null : oo[i+2];
+            result.pp.put(k, new PropertyDesc(k, isM, v));
+        }
+        return result;
+    }
+
+    public static Property p(String name, Object... oo) {
+        Property result= new Property();
+        result.pp = hm();
+        result.pp.put(name, new PropertyDesc(name, null, oo.length > 0 ? oo[0] : null));
         for (int i = 1; i < oo.length; i += 2) {
-            pp.put((String) oo[i], i + 1 == oo.length ? null : oo[i + 1]);
+            String k = (String) oo[i];
+            Boolean isM = null;
+            Object v = i+1 == oo.length ? null : oo[i+1];
+            result.pp.put(k, new PropertyDesc(k, isM, v));
+        }
+        return result;
+    }
+
+    public static class PropertyDesc {
+        public String name;
+        public Boolean isMethod;
+        public Object value;
+
+        public PropertyDesc(String name, Boolean isMethod, Object value) {
+            this.name = name;
+            this.isMethod = isMethod;
+            this.value = value;
         }
     }
 }
