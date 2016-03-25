@@ -79,8 +79,8 @@ public class WavefrontObj {
         String[] ss = f.trim().split("/");
         FaceV result = new FaceV();
         result.v = (int) parse(ss[0]) - 1;
-        if (ss[1].length() > 0) result.t = (int) parse(ss[1]) - 1;
-        if (ss[2].length() > 0) result.n = (int) parse(ss[2]) - 1;
+        if (ss.length > 1 && ss[1].length() > 0) result.t = (int) parse(ss[1]) - 1;
+        if (ss.length > 2 && ss[2].length() > 0) result.n = (int) parse(ss[2]) - 1;
         return result;
     }
 

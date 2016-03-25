@@ -204,7 +204,6 @@ public class Matcher {
     private static Field getField(Object o, String name) {
         String key = o.getClass().toString() + ":" + name;
         if (FIELDS.containsKey(key)) return FIELDS.get(key);
-        System.out.println("added field for key: " + key);
         Field result = Reflector.getField(o.getClass(), name);
         FIELDS.put(key, result);
         return result;
@@ -213,7 +212,6 @@ public class Matcher {
     private static Method getMethod(Object o, String name) {
         String key = o.getClass().toString() + ":" + name;
         if (METHODS.containsKey(key)) return METHODS.get(key);
-        System.out.println("added method for key: " + key);
         Method result = null;
         try {
             result = o.getClass().getMethod(name);
