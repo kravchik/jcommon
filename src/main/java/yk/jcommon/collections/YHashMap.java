@@ -116,7 +116,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public V maxValue(Function<V, Float> evaluator) {
-        float maxValue = Float.MIN_VALUE;
+        float maxValue = Float.NEGATIVE_INFINITY;
         V mv = null;
         for (V v : super.values()) {
             float curValue = evaluator.apply(v);

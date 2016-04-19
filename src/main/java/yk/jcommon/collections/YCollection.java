@@ -65,6 +65,11 @@ public interface YCollection<T> extends Collection<T> {
         for (T t : this) if (predicate.test(t)) return t;
         return null;
     }
+    default T last(Predicate<? super T> predicate) {
+        T result = null;
+        for (T t : this) if (predicate.test(t)) result = t;
+        return result;
+    }
 
     default T max() {
         return YCollections.maxFromCollection(this);
@@ -75,6 +80,14 @@ public interface YCollection<T> extends Collection<T> {
     default T max(Function<T, Comparable> evaluator) {
         return YCollections.maxFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
     }
+    default <R extends Comparable> R maxMap(Function<T, R> evaluator) {
+        R max = null;
+        for (T t : this) {
+            R candidate = evaluator.apply(t);
+            max = max == null || max.compareTo(candidate) < 0 ? candidate : max;
+        }
+        return max;
+    }
     default T min() {
         return YCollections.minFromCollection(this);
     }
@@ -83,6 +96,14 @@ public interface YCollection<T> extends Collection<T> {
     }
     default T min(Function<T, Comparable> evaluator) {
         return YCollections.minFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
+    }
+    default <R extends Comparable> R minMap(Function<T, R> evaluator) {
+        R min = null;
+        for (T t : this) {
+            R candidate = evaluator.apply(t);
+            min = min == null || min.compareTo(candidate) > 0 ? candidate : min;
+        }
+        return min;
     }
 
     default YSet<T> toSet() {

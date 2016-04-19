@@ -176,8 +176,13 @@ public class Quaternionf implements Serializable {
      * @param vector
      * @return
      */
-    public Vec3f rotateFast(final Vec3f vector) {
+    @Deprecated
+    public Vec3f rotateFast(final Vec3f vector) {//TODO get rid
         return conjug().mul(new Quaternionf(vector)).mul(this).getXYZ();
+    }
+
+    public Vec3f rotate(final Vec3f vector) {
+        return this.mul(new Quaternionf(vector)).mul(conjug()).getXYZ();
     }
 
     public Quaternionf rotSub(Quaternionf from) {
@@ -199,7 +204,8 @@ public class Quaternionf implements Serializable {
         return sub(other).length();
     }
 
-    public Matrix4 toMatrix4() {
+    @Deprecated
+    public Matrix4 toMatrix4() {//TODO remove
         float x2 = i * i;
         float y2 = j * j;
         float z2 = k * k;
@@ -220,6 +226,53 @@ public class Quaternionf implements Serializable {
         m.set(2, 1, 2.0f * (yz + wx));
         m.set(2, 2, 1.0f - 2.0f * (x2 + y2));
         m.set(3, 3, 1);
+        return m;
+    }
+
+    public Matrix4 toMatrix4Right() {//TODO rename
+        float x2 = i * i;
+        float y2 = j * j;
+        float z2 = k * k;
+        float xy = i * j;
+        float xz = i * k;
+        float yz = j * k;
+        float wx = a * i;
+        float wy = a * j;
+        float wz = a * k;
+        Matrix4 m = new Matrix4();
+        m.set(0, 0, 1.0f - 2.0f * (y2 + z2));
+        m.set(1, 0, 2.0f * (xy - wz));
+        m.set(2, 0, 2.0f * (xz + wy));
+        m.set(0, 1, 2.0f * (xy + wz));
+        m.set(1, 1, 1.0f - 2.0f * (x2 + z2));
+        m.set(2, 1, 2.0f * (yz - wx));
+        m.set(0, 2, 2.0f * (xz - wy));
+        m.set(1, 2, 2.0f * (yz + wx));
+        m.set(2, 2, 1.0f - 2.0f * (x2 + y2));
+        m.set(3, 3, 1);
+        return m;
+    }
+
+    public Matrix3 toMatrix3() {
+        float x2 = i * i;
+        float y2 = j * j;
+        float z2 = k * k;
+        float xy = i * j;
+        float xz = i * k;
+        float yz = j * k;
+        float wx = a * i;
+        float wy = a * j;
+        float wz = a * k;
+        Matrix3 m = new Matrix3();
+        m.set(1, 1, 1.0f - 2.0f * (y2 + z2));
+        m.set(2, 1, 2.0f * (xy - wz));
+        m.set(3, 1, 2.0f * (xz + wy));
+        m.set(1, 2, 2.0f * (xy + wz));
+        m.set(2, 2, 1.0f - 2.0f * (x2 + z2));
+        m.set(3, 2, 2.0f * (yz - wx));
+        m.set(1, 3, 2.0f * (xz - wy));
+        m.set(2, 3, 2.0f * (yz + wx));
+        m.set(3, 3, 1.0f - 2.0f * (x2 + y2));
         return m;
     }
 

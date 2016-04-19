@@ -2,7 +2,7 @@ package yk.jcommon.fastgeom;
 
 public class FloatRange {
     public static FloatRange ZERO = new FloatRange(0);
-    public static FloatRange INFINITY = new FloatRange(Float.MIN_VALUE, Float.MAX_VALUE);
+    public static FloatRange INFINITY = new FloatRange(Float.NEGATIVE_INFINITY, Float.MAX_VALUE);
 
     public float min;
     public float max;

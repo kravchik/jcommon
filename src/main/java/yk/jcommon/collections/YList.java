@@ -152,4 +152,13 @@ public interface YList<T> extends YCollection<T>, List<T> {
         }
     }
 
+    @Override
+    default T last(Predicate<? super T> predicate) {
+        T result = null;
+        for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
+            T t = this.get(i);
+            if (predicate.test(t)) result = t;
+        }
+        return result;
+    }
 }

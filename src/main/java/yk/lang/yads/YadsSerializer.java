@@ -300,6 +300,14 @@ public class YadsSerializer {
             for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
         } else if (clazz == YadsClass.class) {
             instance = new YadsClass(yad.name, tuples.with(array));
+        } else if (clazz == Object.class) {
+            if (tuples.isEmpty() && array.notEmpty()) return array;
+            if (tuples.notEmpty() && array.isEmpty()) {
+                YMap result = hm();
+                for (Tuple t : tuples) result.put(t.a, t.b);
+                return result;
+            }
+            return new Object();
         } else {
             if (!array.isEmpty()) {
                 Constructor constructor = Reflector.getApropriateConstructor(clazz, array.toArray());

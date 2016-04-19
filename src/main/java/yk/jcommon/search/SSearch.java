@@ -24,7 +24,9 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
     abstract public List<STATE> generate(Node<STATE> node);
 
     protected SSearch(STATE first) {
-        edge.add(new Node<>(null, first));
+        Node<STATE> f = new Node<>(null, first);
+        f.value = evaluate(f);
+        edge.add(f);
     }
 
     @Override
@@ -74,16 +76,32 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
     public Node<STATE> next() {
         Node<STATE> node = edge.remove(0);
         List<STATE> nexts = generate(node);
-        for (STATE next : nexts) if (!seen.containsKey(next)) {
+        for (STATE next : nexts) {
             Node newNode = new Node(node, next);
             newNode.value = evaluate(newNode);
-            seen.put(next, newNode);
-            edge.add(newNode);
+            if (!seen.containsKey(next) || seen.get(next).value < newNode.value) {
+                seen.put(next, newNode);
+                edge.add(newNode);
+            }
         }
         Collections.sort(edge, this);
         return node;
     }
 
+//    @Override
+//    public Node<STATE> next() {
+//        Node<STATE> node = edge.remove(0);
+//        List<STATE> nexts = generate(node);
+//        for (STATE next : nexts) if (!seen.containsKey(next)) {
+//            Node newNode = new Node(node, next);
+//            newNode.value = evaluate(newNode);
+//            seen.put(next, newNode);
+//            edge.add(newNode);
+//        }
+//        Collections.sort(edge, this);
+//        return node;
+//    }
+//
     /**
      * bigger - better
      * @param node
