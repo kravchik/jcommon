@@ -174,7 +174,7 @@ public class Vec3f implements Serializable {
     }
 
     public Vec4f toVec4f(float w) {
-        return new Vec4f(w, x, y, z);
+        return new Vec4f(x, y, z, w);
     }
 
 

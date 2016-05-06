@@ -125,6 +125,10 @@ public class Rnd {
         return max > min ? min + rnd.nextInt(max - min + 1) : min;
     }
 
+    public float from(float min, float max) {
+        return nextFloat() * (max - min) + min;
+    }
+
     public int from(IntRange r) {
         return from(r.min, r.max);
     }

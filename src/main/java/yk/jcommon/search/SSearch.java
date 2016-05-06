@@ -27,6 +27,7 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
         Node<STATE> f = new Node<>(null, first);
         f.value = evaluate(f);
         edge.add(f);
+        seen.put(first, f);
     }
 
     @Override

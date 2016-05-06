@@ -35,6 +35,10 @@ public class Matcher {
             return pattern == null ? hs(cur) : hs();
             //TODO variable matches null
         }
+        //TODO list
+        //TODO map
+        //TODO set
+        if (pattern instanceof VarCalc) return ((VarCalc)pattern).calc(cur);
         if (pattern instanceof And) return matchAnd(data, ((And) pattern).elements, cur);
         if (pattern instanceof Not) return match(data, (Not) pattern, cur);
         if (pattern instanceof ByIndex) return match(data, (ByIndex) pattern, cur);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static yk.jcommon.collections.YHashSet.hs;
 import static yk.jcommon.utils.Util.*;
 
 /**
@@ -38,29 +39,32 @@ import static yk.jcommon.utils.Util.*;
 public class JM {
     //TODO use YCollections
 
-    public static final Set emptyList = Collections.emptySet();//TODO rename in emptySet
+    public static final Set emptySet = Collections.emptySet();//TODO rename in emptySet
 
     public static Set<Map<String, Object>> match(Object data, Object pattern) {
-        Set<Map<Object, Object>> match = (Set)match(data, pattern, map());
-        Set<Map<String, Object>> result = set();
-        for (Map<Object, Object> map : match) {
-            Map<String, Object> rr = map();
-            result.add(rr);
-            for (Map.Entry<Object, Object> entry : map.entrySet()) rr.put(((JVar)entry.getKey()).name, entry.getValue());
-        }
-        return result;
+        return (Set)match(data, pattern, map());
+//        Set<Map<Object, Object>> match = (Set)match(data, pattern, map());
+//        Set<Map<String, Object>> result = set();
+//        for (Map<Object, Object> map : match) {
+//            Map<String, Object> rr = map();
+//            result.add(rr);
+//            for (Map.Entry<Object, Object> entry : map.entrySet()) rr.put(((JVar)entry.getKey()).name, entry.getValue());
+//        }
+//        return result;
     }
 
     public static Set<Map> match(Object data, Object pattern, Map current) {
         if (data == pattern) return set(current);
-        if (current.containsKey(pattern)) return match(data, current.get(pattern), current);//TODO match by String?
+//        if (current.containsKey(pattern)) return match(data, current.get(pattern), current);//TODO match by String?
+        if (pattern instanceof Not) return match(data, ((Not) pattern).rest, current).isEmpty() ? hs(current) : emptySet;
         if (isVar(pattern)) {
-            Map<Object, Object> copy = copy(current, pattern, data);
-            Map copy2 = copy(current, pattern, data);
-            return ((JVar)pattern).child == null ? (Set<Map>) (Set)set(copy) : match(data, ((JVar)pattern).child, copy2);
+            if (current.containsKey(((JVar)pattern).name)) return match(data, current.get(((JVar)pattern).name), current);
+            Map<Object, Object> copy = copy(current, ((JVar)pattern).name, data);
+            return ((JVar)pattern).child == null ? (Set<Map>) (Set)set(copy) : match(data, ((JVar)pattern).child, copy);
         }
-        if (data == null || pattern == null) return emptyList;
-        if (Specific.class.isAssignableFrom(pattern.getClass())) return ((Specific)pattern).match(data, current);
+        if (data == null || pattern == null) return emptySet;
+        if (pattern instanceof Specific) return ((Specific)pattern).match(data, current);
+        if (pattern instanceof Specific2) return ((Specific2)pattern).match(current);
         if (pattern instanceof List) return matchList(data, (List) pattern, current);
         if (pattern instanceof Set) return matchSet(data, (Set) pattern, current);
         //TODO IMappable
@@ -68,11 +72,11 @@ public class JM {
         if (pattern instanceof Map) return matchMap(data, (Map) pattern, current);
         //TODO consider moving up
         if (data.equals(pattern)) return set(current);
-        return emptyList;
+        return emptySet;
     }
 
     public static boolean isVar(Object o) {
-        return o != null && JVar.class.isAssignableFrom(o.getClass());
+        return o != null && o instanceof JVar;
     }
 
     public static Object resolve(Object pattern, Map mapping) {
@@ -100,24 +104,24 @@ public class JM {
     }
 
     public static Set<Map> matchSet(Object od, Set pattern, Map current) {
-        if (!(od instanceof Set)) return emptyList;
+        if (!(od instanceof Set)) return emptySet;
         if (pattern.isEmpty()) return set(current);
         Set<Map> result = set();
         Set data = (Set) od;
         Object p = car(pattern);
-        for (Object d : data) for (Map mm : match(d, p, current)) result.addAll(matchSet(sub(data, d), sub(pattern, p), mm));
+        for (Object d : data) for (Map mm : match(d, p, current)) result.addAll(match(sub(data, d), sub(pattern, p), mm));//not matchSet to handle Specific2
         return result;
     }
 
     private static Set<Map> matchMap(Object od, Map pattern, Map current) {
-        if (!(od instanceof Map)) return emptyList;
+        if (!(od instanceof Map)) return emptySet;
         if (pattern.isEmpty()) return set(current);
         Set<Map> result = set();
         Map data = (Map) od;
         Object ppkey = car(pattern.keySet());
         Object pkeyR = resolve(ppkey, current);
         //TODO consider not sub-ing 'od'
-        for (Map mmm : match(data.get(pkeyR), pattern.get(ppkey), current)) result.addAll(matchMap(sub(data, pkeyR), sub(pattern, ppkey), mmm));
+        for (Map mmm : match(data.get(pkeyR), pattern.get(ppkey), current)) result.addAll(match(sub(data, pkeyR), sub(pattern, ppkey), mmm));//not matchSet to handle Specific2
         return result;
     }
 
@@ -126,15 +130,16 @@ public class JM {
         Set<Map> result = set();
         Object ppkey = car(pattern.keySet());
         Object pkeyR = resolve(ppkey, current);
-        for (Map mmm : match(Reflector.get(od, (String) pkeyR), pattern.get(ppkey), current)) result.addAll(matchObject(od, sub(pattern, ppkey), mmm));
+        for (Map mmm : match(Reflector.get(od, (String) pkeyR), pattern.get(ppkey), current)) result.addAll(match(od, sub(pattern, ppkey), mmm));//not matchSet to handle Specific2
         return result;
     }
 
     private static Set<Map> matchList(Object d, List pattern, Map current) {
-        if (!(d instanceof List)) return emptyList;
+        if (!(d instanceof List)) return emptySet;
         List data = (List) d;
-        if (data.size() != pattern.size()) return emptyList;
+        if (data.size() != pattern.size()) return emptySet;
         Set<Map> result = set(current);
+        //TODO handle Specific2
         for (int i = 0; i < data.size(); i++) {
             Set<Map> curRes = set();
             for (Map map : result) curRes.addAll(match(data.get(i), pattern.get(i), map));
@@ -178,6 +183,10 @@ public class JM {
 
     public static interface Specific<T> {
         Set<Map> match(T data, Map current);//TODO automatically check T (somehow)
+        //TODO implement class matcher
+    }
+    public static interface Specific2<T> {
+        Set<Map> match(Map current);//TODO automatically check T (somehow)
         //TODO implement class matcher
     }
 }

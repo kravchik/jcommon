@@ -13,18 +13,19 @@ import java.io.Serializable;
  * @author Yuri Kravchik Created 16.10.2008
  */
 public class Vec4f implements Serializable {
-    public float w, x, y, z;
+    public float x, y, z, w;
 
     public static final Vec4f ZERO = new Vec4f(0, 0, 0, 0);
 
-    public Vec4f(final float w, final float x, final float y, final float z) {//TODO replace with x y z w ?
+    @Deprecated //remove deprecated later
+    public Vec4f(final float x, final float y, final float z, final float w) {
         this.w = w;
         this.x = x;this.y = y;
         this.z = z;
     }
 
     public static Vec4f v4(final float x, final float y, final float z, final float w) {
-        return new Vec4f(w, x, y, z);
+        return new Vec4f(x, y, z, w);
     }
 
     public static Vec4f v34(Vec3f v3, final float w) {
@@ -32,7 +33,7 @@ public class Vec4f implements Serializable {
     }
 
     public Vec4f(Vec3f v, float w) {
-        this(w, v.x, v.y, v.z);
+        this(v.x, v.y, v.z, w);
     }
 
     public Vec4f(Vec4f from) {
@@ -43,11 +44,11 @@ public class Vec4f implements Serializable {
     }
 
     public Vec4f add(final Vec4f b) {
-        return new Vec4f(w + b.w, x + b.x, y + b.y, z + b.z);
+        return new Vec4f(x + b.x, y + b.y, z + b.z, w + b.w);
     }
 
     public Vec4f add(float w, float x, float y, float z) {
-        return new Vec4f(this.w + w, this.x + x, this.y + y, this.z + z);
+        return new Vec4f(this.x + x, this.y + y, this.z + z, this.w + w);
     }
 
 //    public Vec4f crossProduct(final Vec4f b) {
@@ -55,15 +56,15 @@ public class Vec4f implements Serializable {
 //    }
 
     public Vec4f mul(final float b) {
-        return new Vec4f(w * b, x * b, y * b, z * b);
+        return new Vec4f(x * b, y * b, z * b, w * b);
     }
 
     public Vec4f mul(final Vec4f b) {
-        return new Vec4f(w * b.w, x * b.x, y * b.y, z * b.z);
+        return new Vec4f(x * b.x, y * b.y, z * b.z, w * b.w);
     }
 
     public Vec4f mul(float w, float x, float y, float z) {
-        return new Vec4f(this.w * w, this.x * x, this.y * y, this.z * z);
+        return new Vec4f(this.x * x, this.y * y, this.z * z, this.w * w);
     }
 
     public Vec4f normalized() {
@@ -72,7 +73,7 @@ public class Vec4f implements Serializable {
 
     public Vec4f normalized(float r) {
         final float m = r / length();
-        return new Vec4f(w * m, x * m, y * m, z * m);
+        return new Vec4f(x * m, y * m, z * m, w * m);
     }
 
 //    public float scalarProduct(final Vec4f b) {
@@ -80,11 +81,11 @@ public class Vec4f implements Serializable {
 //    }
 
     public Vec4f sub(final Vec4f b) {
-        return new Vec4f(w - b.w, x - b.x, y - b.y, z - b.z);
+        return new Vec4f(x - b.x, y - b.y, z - b.z, w - b.w);
     }
 
     public Vec4f sub(float w, float x, float y, float z) {
-        return new Vec4f(this.w - w, this.x - x, this.y - y, this.z - z);
+        return new Vec4f(this.x - x, this.y - y, this.z - z, this.w - w);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class Vec4f implements Serializable {
             y += vv[i].y;
             z += vv[i].z;
         }
-        return new Vec4f(w, x, y, z);
+        return new Vec4f(x, y, z, w);
     }
 
     /**

@@ -16,6 +16,7 @@ import static yk.jcommon.match2.ShortNames.var;
  * Time: 17:02
  */
 public class Test1 {
+    //todo test deeper with 0 deepness
 
     @Test
     public void test1() {
@@ -28,6 +29,12 @@ public class Test1 {
                 Matcher.match(al("a", "b"), new And(i(var("iFirst"), "a"), i(var("iSecond"), var("$a")))));
     }
 
-    //todo test deeper with 0 deepness
+    @Test
+    public void testVarCalc() {
+//        assertEquals(
+//                hs(hm("a", 3)),
+//                Matcher.match(al(3, 4), new And(i(var("a")), i((VarCalc) cur -> ((Integer)cur.get("a")) + 1)))
+//                );
+    }
 
 }

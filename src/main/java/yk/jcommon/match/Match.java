@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.utils.Util.*;
 
 /**
@@ -63,14 +64,18 @@ public class Match {
             if (old == null) old = data;
             if (!old.equals(data)) return emptyList;
             Map<Object, Object> copy = copy(current, pattern, data);
-            return (List<Map>)(List)list(copy);
+            return (List<Map>) (List) list(copy);
+        } else if (pattern instanceof Not) {
+            return match(data, ((Not) pattern).rest, current).isEmpty() ? al(current) : emptyList;
         } else if (pattern instanceof Ptr) {
             Ptr ptr = (Ptr) pattern;
             return match(current.get(ptr.var), ptr.path, current);
-        } else if (data instanceof Specific) {
-            return ((Specific)data).match(pattern, current);
+//        } else if (data instanceof Specific) {
+//            return ((Specific)data).match(pattern, current);
+//        } else if (pattern instanceof Specific) {
+//            return ((Specific)pattern).match(data, current);
         } else if (pattern instanceof Specific) {
-            return ((Specific)pattern).match(data, current);
+            return ((Specific)pattern).match(current);
         } else if (!pattern.getClass().equals(data.getClass())) return emptyList;
         if (pattern instanceof List) {
             return matchList(data, (List) pattern, current);
@@ -232,7 +237,7 @@ public class Match {
     }
 
     public static interface Specific {
-        List<Map> match(Object o, Map current);
+        List<Map> match(Map current);
         Object resolve(Object p, Map current);
     }
 

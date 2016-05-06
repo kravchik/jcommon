@@ -14,14 +14,14 @@ public class FileWatcher {
     private WatchKey watchKey;
     private String fileName;
 
-    public FileWatcher(String p) {
+    public FileWatcher(String path) {
         try {
-            int sepIndex = p.lastIndexOf(FileSystems.getDefault().getSeparator());
-            String dir = p.substring(0, sepIndex);
-            fileName = p.substring(sepIndex + 1);
-            Path path = FileSystems.getDefault().getPath(dir);
+            int sepIndex = path.lastIndexOf(FileSystems.getDefault().getSeparator());
+            String dir = path.substring(0, sepIndex);
+            fileName = path.substring(sepIndex + 1);
+            Path pPath = FileSystems.getDefault().getPath(dir);
             WatchService watchService = FileSystems.getDefault().newWatchService();
-            watchKey = path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+            watchKey = pPath.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
         } catch (Exception e) {
             BadException.die(e);
         }

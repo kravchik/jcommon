@@ -44,7 +44,7 @@ public class JMGetter<T> implements JM.Specific {
 
     @Override
     public Set<Map> match(Object data, Map current) {
-        if (!(c.isAssignableFrom(data.getClass()))) return JM.emptyList;
+        if (!(c.isAssignableFrom(data.getClass()))) return JM.emptySet;
         return JM.match(f.apply((T) data), pattern, current);
     }
 }

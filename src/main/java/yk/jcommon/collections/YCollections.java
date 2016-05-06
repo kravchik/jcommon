@@ -113,7 +113,7 @@ public class YCollections {
     }
 
     static <T> T minFromCollection(Collection<T> source, Comparator<? super T> comparator) {
-        if (source.isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        if (source.isEmpty()) throw new RuntimeException("can't get min on empty collection");
         T result = null;
         for (T t : source) {
             if (result == null || comparator.compare(t, result) < 0) result = t;
