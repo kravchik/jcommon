@@ -9,4 +9,10 @@ package yk.jcommon.match2;
 public class Not {
     public Object rest;
 
+    public Not() {
+    }
+
+    public Not(Object rest) {
+        this.rest = rest;
+    }
 }

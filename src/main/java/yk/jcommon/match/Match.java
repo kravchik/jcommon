@@ -1,5 +1,6 @@
 package yk.jcommon.match;
 
+import yk.jcommon.match2.Not;
 import yk.jcommon.utils.Util;
 
 import java.util.List;
