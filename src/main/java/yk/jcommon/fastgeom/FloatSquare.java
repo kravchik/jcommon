@@ -1,11 +1,13 @@
 package yk.jcommon.fastgeom;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Yuri Kravchik
  * Date: 03.02.2016
  */
-public class FloatSquare {
+public class FloatSquare implements Serializable {
     //left bottom
     public float l;
     public float b;
@@ -39,5 +41,17 @@ public class FloatSquare {
         w = r - l;
         h = t - b;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FloatSquare{" +
+               "l=" + l +
+               ", b=" + b +
+               ", r=" + r +
+               ", t=" + t +
+               ", w=" + w +
+               ", h=" + h +
+               '}';
     }
 }

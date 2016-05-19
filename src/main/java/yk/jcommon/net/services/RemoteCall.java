@@ -1,8 +1,6 @@
 package yk.jcommon.net.services;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import static yk.jcommon.utils.Util.list;
@@ -20,19 +18,16 @@ public class RemoteCall {
                 if (Service.class.isAssignableFrom(field.getType())) {
                     field.set(this, Proxy.newProxyInstance(field.getType().getClassLoader(),
                             new Class<?>[]{field.getType()},
-                            new InvocationHandler() {
-                                @Override
-                                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                                    if (method.getName().equals("toString")) return null;
-                                    Command command = new Command(method.getDeclaringClass().getSimpleName(), method.getName(), args == null ? list() : list(args));
-                                    //System.out.println("sending " + command);
-                                    try {
-                                        sender.send(command);
-                                    } catch (Exception e) {
-                                        throw new Error(e);
-                                    }
-                                    return null;
+                            (proxy, method, args) -> {
+                                if (method.getName().equals("toString")) return null;
+                                Command command = new Command(method.getDeclaringClass().getSimpleName(), method.getName(), args == null ? list() : list(args));
+//                                System.out.println("sending " + command);
+                                try {
+                                    sender.send(command);
+                                } catch (Exception e) {
+                                    throw new Error(e);
                                 }
+                                return null;
                             }));
                 }
             }

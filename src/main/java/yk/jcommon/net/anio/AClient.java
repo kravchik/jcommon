@@ -40,7 +40,7 @@ public class AClient {
         }
         Object c = outCommands.remove(0);
         byte[] bytes = serializer.serialize(c);//TODO serialize on send
-        System.out.println("command: " + c + " serialized: " + bytes.length);
+//        System.out.println("command: " + c + " serialized: " + bytes.length);
         outBuffer.put(ByteBuffer.allocate(4).putInt(bytes.length).array());
         outBuffer.put(bytes);
     }

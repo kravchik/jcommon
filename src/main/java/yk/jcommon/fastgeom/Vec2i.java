@@ -3,12 +3,14 @@ package yk.jcommon.fastgeom;
 import yk.jcommon.collections.YList;
 import yk.jcommon.utils.Reflector;
 
+import java.io.Serializable;
+
 /**
 * User: Yuri Kravchik
 * Date: 30.08.2010
 * Time: 18:32:56
 */
-public class Vec2i {
+public class Vec2i implements Serializable {
     public static Vec2i ZERO = new Vec2i(0, 0);
 
     public int x, y;
@@ -21,6 +23,11 @@ public class Vec2i {
     public Vec2i(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Vec2i(Vec2i other) {
+        x = other.x;
+        y = other.y;
     }
 
     public float disSquared(Vec2i b) {

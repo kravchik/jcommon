@@ -1,6 +1,8 @@
 package yk.jcommon.fastgeom;
 
-public class FloatRange {
+import java.io.Serializable;
+
+public class FloatRange implements Serializable {
     public static FloatRange ZERO = new FloatRange(0);
     public static FloatRange INFINITY = new FloatRange(Float.NEGATIVE_INFINITY, Float.MAX_VALUE);
 

@@ -40,13 +40,13 @@ public class TestService {
     }
 
 
-    public static interface ClientService {
-        public void clientCall(String s);
-        public void receiveConfig(String s);
+    public interface ClientService {
+        void clientCall(String s);
+        void receiveConfig(String s);
     }
 
-    public static interface ServerService {
-        public void serverCall(String s);
+    public interface ServerService {
+        void serverCall(String s);
     }
 
     public static class ClientServiceImpl implements ClientService {

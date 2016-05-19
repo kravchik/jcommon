@@ -1,6 +1,8 @@
 package yk.jcommon.fastgeom;
 
-public class IntRange {
+import java.io.Serializable;
+
+public class IntRange implements Serializable {
     public static IntRange ZERO = new IntRange(0);
     public static IntRange INFINITY = new IntRange(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
