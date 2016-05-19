@@ -5,6 +5,8 @@
  */
 package yk.jcommon.fastgeom;
 
+import yk.jcommon.utils.BadException;
+
 import java.io.Serializable;
 
 /**
@@ -81,6 +83,7 @@ public class Vec3f implements Serializable {
 
     public Vec3f normalized(float r) {
         final float m = r / length();
+        if (Float.isNaN(m)) BadException.die("NaN for " + this);
         return new Vec3f(x * m, y * m, z * m);
     }
 

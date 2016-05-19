@@ -5,6 +5,8 @@
  */
 package yk.jcommon.fastgeom;
 
+import yk.jcommon.utils.BadException;
+
 import java.io.Serializable;
 
 /**
@@ -73,6 +75,7 @@ public class Vec4f implements Serializable {
 
     public Vec4f normalized(float r) {
         final float m = r / length();
+        if (Float.isNaN(m)) BadException.die("NaN for " + this);
         return new Vec4f(x * m, y * m, z * m, w * m);
     }
 

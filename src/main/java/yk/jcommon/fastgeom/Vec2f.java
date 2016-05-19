@@ -5,6 +5,8 @@
  */
 package yk.jcommon.fastgeom;
 
+import yk.jcommon.utils.BadException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -117,6 +119,7 @@ public class Vec2f implements Serializable {
 
     public Vec2f normalized(float len) {
         float m = len / length();
+        if (Float.isNaN(m)) BadException.die("NaN for " + this);
         return new Vec2f(x * m, y * m);
     }
 
