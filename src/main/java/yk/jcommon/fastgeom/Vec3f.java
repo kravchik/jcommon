@@ -84,6 +84,7 @@ public class Vec3f implements Serializable {
     public Vec3f normalized(float r) {
         final float m = r / length();
         if (Float.isNaN(m)) BadException.die("NaN for " + this);
+        if (Float.isInfinite(m)) BadException.die("Infinite for " + this);
         return new Vec3f(x * m, y * m, z * m);
     }
 
