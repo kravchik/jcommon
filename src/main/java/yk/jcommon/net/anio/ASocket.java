@@ -1,5 +1,7 @@
 package yk.jcommon.net.anio;
 
+import yk.jcommon.utils.BadException;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
@@ -79,11 +81,11 @@ public class ASocket {
                 SelectionKey key = (SelectionKey) selectedKeys.next();
                 selectedKeys.remove();
 
-                if (!key.isValid()) continue;
-                if (key.isConnectable()) this.connect(key);
-                if (key.isAcceptable()) this.accept(key);
-                if (key.isReadable()) this.read(key);
-                if (key.isWritable()) this.write(key);
+                if (!key.isValid()) System.out.println("WARNING: not valid key");
+                if (key.isValid() && key.isConnectable()) this.connect(key);
+                if (key.isValid() && key.isAcceptable()) this.accept(key);
+                if (key.isValid() && key.isReadable()) this.read(key);
+                if (key.isValid() && key.isWritable()) this.write(key);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,26 +126,24 @@ public class ASocket {
             ticket.inBuffer.flip();
             ticket.workRead();
             ticket.inBuffer.compact();
-
-            if (numRead == -1) {
-                if (ticket.onDisconnect != null) ticket.onDisconnect.call();
-                ticket.closed = true;
-                if (ticket.onDisconnect != null) ticket.onDisconnect.call();
-                key.channel().close();
-                key.cancel();
-            }
+            if (numRead == -1) closeChannel(key, ticket);
         } catch (Exception e) {
-            e.printStackTrace();//TODO fix
-            //TODO merge with numRead == -1
-            ticket.closed = true;
-            if (ticket.onDisconnect != null) ticket.onDisconnect.call();
-            try {
-                key.channel().close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            key.cancel();
+            closeChannel(key, ticket);
+
         }
+    }
+
+    private void closeChannel(SelectionKey key, AClient ticket) {
+        //            e.printStackTrace();
+        ticket.closed = true;
+        if (ticket.onDisconnect != null) ticket.onDisconnect.call();
+        try {
+            key.channel().close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            BadException.die("error while closing key.channel " + e1);
+        }
+        key.cancel();
     }
 
     public void write(SelectionKey key) throws IOException {
@@ -159,7 +159,7 @@ public class ASocket {
             if (!ticket.outBuffer.hasRemaining()) break;
 
             int numWrite = socketChannel.write(ticket.outBuffer);
-            if (ticket.outBuffer.hasRemaining() || ticket.outCommands.isEmpty()) break;
+            if (ticket.outBuffer.hasRemaining() || ticket.outBytes.isEmpty()) break;
         }
     }
 }

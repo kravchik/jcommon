@@ -2,8 +2,9 @@ package yk.jcommon.net.anio;
 
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.function.BiConsumer;
 
-import static yk.jcommon.utils.Util.list;
+import static yk.jcommon.collections.YArrayList.al;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,18 +16,21 @@ public class AClient {
     public static final int BUFFER_SIZE = 1000000;
     public OnData onData;
     public OnDisconnect onDisconnect;
+    public BiConsumer<Object, Integer> onStats;
 
     public boolean closed;
 
     public void send(Object data) {
-        outCommands.add(data);
+        byte[] bytes = serializer.serialize(data);
+        if (onStats != null) onStats.accept(data, bytes.length);
+        outBytes.add(bytes);
     }
 
     final ASerializer serializer;
-    public List<Object> outCommands = list();
+    public List<byte[]> outBytes = al();
     ByteBuffer outBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
-    List<Object> inCommands = list();
+    List<Object> inCommands = al();
     int nextInSize = -1;
     ByteBuffer inBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
@@ -35,12 +39,8 @@ public class AClient {
     }
     void workWrite() {
         outBuffer.clear();
-        if (outCommands.isEmpty()) {
-            return;
-        }
-        Object c = outCommands.remove(0);
-        byte[] bytes = serializer.serialize(c);//TODO serialize on send
-//        System.out.println("command: " + c + " serialized: " + bytes.length);
+        if (outBytes.isEmpty()) return;
+        byte[] bytes = outBytes.remove(0);
         outBuffer.put(ByteBuffer.allocate(4).putInt(bytes.length).array());
         outBuffer.put(bytes);
     }
