@@ -23,11 +23,13 @@ public class AClient {
     public void send(Object data) {
         byte[] bytes = serializer.serialize(data);
         if (onStats != null) onStats.accept(data, bytes.length);
-        outBytes.add(bytes);
+        synchronized (outBytes) {
+            outBytes.add(bytes);
+        }
     }
 
     final ASerializer serializer;
-    public List<byte[]> outBytes = al();
+    public final List<byte[]> outBytes = al();
     ByteBuffer outBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
     List<Object> inCommands = al();
@@ -40,7 +42,10 @@ public class AClient {
     void workWrite() {
         outBuffer.clear();
         if (outBytes.isEmpty()) return;
-        byte[] bytes = outBytes.remove(0);
+        byte[] bytes;
+        synchronized (outBytes) {
+            bytes = outBytes.remove(0);
+        }
         outBuffer.put(ByteBuffer.allocate(4).putInt(bytes.length).array());
         outBuffer.put(bytes);
     }
