@@ -32,6 +32,13 @@ public class MyMath {
     }
     public static int max(int arg0, int arg1) {return Math.max(arg0, arg1);}
     public static int min(int arg0, int arg1) {return Math.min(arg0, arg1);}
+    public static float to01(float value, float from, float to) {return (value - from) / (to - from);}
+
+    public static void mix(Vec3f from, Vec3f to, float progress, Vec3f res) {
+        res.x = mix(from.x, to.x, progress);
+        res.y = mix(from.y, to.y, progress);
+        res.z = mix(from.z, to.z, progress);
+    }
 
 //gglsl auto generated text
 public static Float plus(Float arg0, Float arg1) {return (float)arg0+(float)arg1;}

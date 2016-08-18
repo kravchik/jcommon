@@ -1,8 +1,12 @@
 package yk.jcommon.net.services;
 
+import yk.jcommon.collections.YMap;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import static yk.jcommon.collections.YHashMap.hm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,11 +49,32 @@ public class LocalCall {
     }
 
     private Method findMethod(Object service, Command command) throws IllegalArgumentException {
-        for (Method m : service.getClass().getMethods()) {
-            if (m.getName().equals(command.getMethodName())) {
-                return m;
-            }
+        Method method = getMethod(service, command.getMethodName());
+        if (method == null) throw new IllegalArgumentException("Could not invoke service: method " + command.getServiceName() + "." + command.getMethodName() + " not found");
+        return method;
+//        for (Method m : service.getClass().getMethods()) {
+//            if (m.getName().equals(command.getMethodName())) {
+//                return m;
+//            }
+//        }
+//        throw new IllegalArgumentException("Could not invoke service: method " + command.getServiceName() + "." + command.getMethodName() + " not found");
+    }
+
+
+    //OPTIMIZATIONS
+
+    public static YMap<String, Method> METHODS = hm();
+    public static Method getMethod(Object o, String name) {
+        String key = o.getClass().toString() + ":" + name;
+        if (METHODS.containsKey(key)) return METHODS.get(key);
+        Method result = null;
+        Method[] methods = o.getClass().getMethods();
+        for (int i = 0, methodsLength = methods.length; i < methodsLength; i++) {
+            Method m = methods[i];
+            if (m.getName().equals(name)) result = m;
         }
-        throw new IllegalArgumentException("Could not invoke service: method " + command.getServiceName() + "." + command.getMethodName() + " not found");
+        if (result != null) result.setAccessible(true);
+        METHODS.put(key, result);
+        return result;
     }
 }

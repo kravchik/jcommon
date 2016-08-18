@@ -31,6 +31,18 @@ sort map and set while serializing
 
 //TODO
 
+
+[] - for arrays
+{} - for maps
+() - for classes
+new class is the same as function call, so () is for classes
+"abs((a + b) + abs(c + d))" - need to handle parentheses ("classes without name")
+[abc (def)] - array of string and nameless class or abc-class?
+  must have a priority - classes first. If rare need string+class - use ["abc" (def)]
+
+// Set {} for sets, HashMap {} for specific map class, etc...
+references (^?)
+
 move 'class name' to serialization level
   leave parser level with just curly braces
 -line numbers in errors

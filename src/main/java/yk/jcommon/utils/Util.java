@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import static java.lang.Math.*;
+import static yk.jcommon.fastgeom.Vec2f.v2;
 
 /**
  * Kravchik Yuri
@@ -65,6 +66,8 @@ public class Util {
     }
 
     public static void main(String[] args) {
+        System.out.println(v2(0, -1).getAngle());
+        System.out.println(mix(-0.1f, -0.1f, 0.1f));
 //        testCrossing();
         testMixAngle();
     }
@@ -78,6 +81,9 @@ public class Util {
         System.out.println(new Vec2f(0, -1).getAngle() / PI);
         System.out.println(new Vec2f(0, 1).getAngle() / PI);
         System.out.println(mixAngle(-PI / 2, PI * 0.9f, 0.5f) / PI);
+
+        System.out.println(mixAngle(-0.1f, -0.1f, 0.1f));
+        System.out.println(mixAngle(5.9f, -0.3f, 0.5f));
     }
 
     public static void testScramble() {
@@ -312,10 +318,18 @@ public class Util {
 
     //TODO move to MyMath
     public static float mixAngle(float a, float b, float mix) {
-        if (b > a) return MyMath.module(b - a > PI ? mix((float) (a + 2 * PI), b, mix) : mix(a, b, mix), 2*PI);
-        return MyMath.module(a - b > PI ? mix(a, (float) (b + 2 * PI), mix) : mix(a, b, mix), 2*PI);
+        if (b > a) return angleMod(b - a > PI ? mix((float) (a + 2 * PI), b, mix) : mix(a, b, mix));
+        return angleMod(a - b > PI ? mix(a, (float) (b + 2 * PI), mix) : mix(a, b, mix));
     }
 
+    //TODO move to MyMath
+    public static float angleMod(float a) {//-PI : +PI
+        float res = MyMath.module(a, 2 * PI);
+        if (res > PI) res = - (2 * PI - res);
+        return res;
+    }
+
+    //TODO move to MyMath
     public static float angleDif(float a, float b) {
         if (b > a) return b - a > PI ? (float) (a + 2 * PI - b) : b - a;
         return a - b > PI ? (float) (b + 2 * PI - a) : a - b;

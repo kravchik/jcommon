@@ -213,7 +213,7 @@ public class Matcher {
         return result;
     }
     public static YMap<String, Method> METHODS = hm();
-    private static Method getMethod(Object o, String name) {
+    public static Method getMethod(Object o, String name) {
         String key = o.getClass().toString() + ":" + name;
         if (METHODS.containsKey(key)) return METHODS.get(key);
         Method result = null;

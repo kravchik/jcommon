@@ -21,14 +21,14 @@ public class Scripts {
 
         List<String> lines = al();
         String t = clazz.getSimpleName();
-        lines.add("public " + t + " copy(){");
-        lines.add("    " + t + " result = new " + t + "();");
+        lines.add("/*auto*/public " + t + " copy(){");
+        lines.add("/*auto*/    " + t + " result = new " + t + "();");
         for (Field field : clazz.getDeclaredFields()) {
             String fieldName = field.getName();
-            lines.add("    result." + fieldName + " = " + fieldName + ";");
+            lines.add("/*auto*/    result." + fieldName + " = " + fieldName + ";");
         }
-        lines.add("    return result;");
-        lines.add("}");
+        lines.add("/*auto*/    return result;");
+        lines.add("/*auto*/}");
 
         for (String line : lines) {
             System.out.println(line);

@@ -1,10 +1,6 @@
 package yk.jcommon.utils;
 
-import yk.jcommon.utils.ErrorAlert;
-
 import java.util.List;
-
-import static yk.jcommon.utils.Util.list;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,17 +36,35 @@ public class Threads {
                         Thread.sleep(sleepMs);
                     }
                 } catch (Throwable t) {
-                    new ErrorAlert(t);
-                    t.printStackTrace();
+                    throw new RuntimeException(t);
+//                    new ErrorAlert(t);
+//                    t.printStackTrace();
 //                    System.exit(1);
                 }
             }
         }).start();
     }
 
+    public static void thread(long sleepMs, boolean daemon, final Foo executable) {
+        Thread thread = new Thread(() -> {
+            try {
+                while (executable.execute()) {
+                    Thread.sleep(sleepMs);
+                }
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+//                    new ErrorAlert(t);
+//                    t.printStackTrace();
+//                    System.exit(1);
+            }
+        });
+        thread.setDaemon(daemon);
+        thread.start();
+    }
+
     //TODO rename
-    public static interface Foo {
-        public boolean execute() throws Exception;
+    public interface Foo {
+        boolean execute() throws Exception;
     }
 
     public static void tick(Tickable t, long dt, Object... other) {
@@ -78,8 +92,9 @@ public class Threads {
                             try {
                                 tickable.get(i).tick((curTime - lastTick[i]) / 1000f);
                             } catch (Exception e) {
+                                throw new RuntimeException(e);
                                 //new ErrorAlert(e);
-                                e.printStackTrace();
+//                                e.printStackTrace();
                             }
                             lastTick[i] = curTime;
                         }

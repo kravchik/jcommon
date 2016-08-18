@@ -144,6 +144,4 @@ public class Rnd {
     public float from(FloatRange r, float minLimit, float maxLimit) {
         return Math.min(minLimit, Math.max(maxLimit, nextFloat(r.min, r.max)));
     }
-
-
 }

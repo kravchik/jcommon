@@ -9,6 +9,8 @@ import yk.jcommon.utils.BadException;
 
 import java.io.Serializable;
 
+import static yk.jcommon.utils.Util.sqr;
+
 /**
  * Vec3
  *
@@ -88,6 +90,12 @@ public class Vec3f implements Serializable {
         return new Vec3f(x * m, y * m, z * m);
     }
 
+    public void copyFrom(Vec3f b) {
+        x = b.x;
+        y = b.y;
+        z = b.z;
+    }
+
     public float scalarProduct(final Vec3f b) {
         return x * b.x + y * b.y + z * b.z;
     }
@@ -114,46 +122,19 @@ public class Vec3f implements Serializable {
     }
 
     public float dist(Vec3f b) {
-        return sub(b).length();
+        return (float) Math.sqrt(sqr(b.x - x) + sqr(b.y - y) + sqr(b.z - z));
     }
 
     public float length() {
         return (float) Math.sqrt(x*x+y*y+z*z);
     }
 
-    public static Vec3f mean(Vec3f... vv) {
-        return sum(vv).div(vv.length);
-    }
-
-    public static Vec3f sum(Vec3f... vv) {
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        for (int i = 0; i < vv.length; i++) {
-            x += vv[i].x;
-            y += vv[i].y;
-            z += vv[i].z;
-        }
-        return new Vec3f(x, y, z);
+    public float lengthSquared() {
+        return x*x+y*y+z*z;
     }
 
     public Vec3f mirror(Vec3f around) {
         return sub(around).mul(-1).add(around);
-    }
-
-    /**
-     * this 0 -> 1 to
-     * @param to
-     * @param blend
-     * @return
-     */
-    public Vec3f lerp(Vec3f to, float blend) {
-        return mix(this, to, blend);
-    }
-
-    //0 - a, 1 - b
-    public static Vec3f mix(Vec3f a, Vec3f b, float ab) {
-        return b.sub(a).mul(ab).add(a);
     }
 
     public Vec2f getXy() {
@@ -181,9 +162,7 @@ public class Vec3f implements Serializable {
         return new Vec4f(x, y, z, w);
     }
 
-
-
-//gglsl auto generated text
+    //gglsl auto generated text
 public Vec3f plus(Vec3f arg1) {return Vec3f.v3((float)this.x+(float)arg1.x, (float)this.y+(float)arg1.y, (float)this.z+(float)arg1.z);}
 public Vec3f plus(float arg1) {return Vec3f.v3((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1);}
 public Vec3f plus(Float arg1) {return Vec3f.v3((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1);}

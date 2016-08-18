@@ -15,6 +15,21 @@ import java.util.function.Predicate;
  * Time: 3:26 PM
  */
 public class YArrayList<T> extends ArrayList<T> implements YList<T> {
+    @Override
+    public boolean any(Predicate<? super T> predicate) {
+        for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
+            if (predicate.test(this.get(i))) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean all(Predicate<? super T> predicate) {
+        for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
+            if (!predicate.test(this.get(i))) return false;
+        }
+        return true;
+    }
 
     public YArrayList() {
     }

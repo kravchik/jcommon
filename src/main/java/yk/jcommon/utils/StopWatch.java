@@ -33,6 +33,10 @@ public class StopWatch {
         return toString();
     }
 
+    public long getCount() {
+        return count;
+    }
+
     @Override
     public String toString() {
         return "" + count / 1000f;
