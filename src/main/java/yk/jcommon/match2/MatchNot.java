@@ -6,13 +6,13 @@ package yk.jcommon.match2;
  * Date: 28/10/15
  * Time: 16:49
  */
-public class Not {
+public class MatchNot {
     public Object rest;
 
-    public Not() {
+    public MatchNot() {
     }
 
-    public Not(Object rest) {
+    public MatchNot(Object rest) {
         this.rest = rest;
     }
 }

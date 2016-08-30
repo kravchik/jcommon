@@ -10,11 +10,11 @@ import static yk.jcommon.collections.YHashMap.hm;
  * Date: 28/10/15
  * Time: 17:06
  */
-public class Property {
+public class MatchProperty {
     public YMap<String, PropertyDesc> pp;
 
-    public static Property p1(String name, Boolean isMethod, Object... oo) {
-        Property result= new Property();
+    public static MatchProperty p1(String name, Boolean isMethod, Object... oo) {
+        MatchProperty result= new MatchProperty();
         result.pp = hm();
         result.pp.put(name, oo.length > 0 ? new PropertyDesc(name, isMethod, oo[0]) : null);
         for (int i = 1; i < oo.length; i += 3) {
@@ -26,8 +26,8 @@ public class Property {
         return result;
     }
 
-    public static Property p(String name, Object... oo) {
-        Property result= new Property();
+    public static MatchProperty p(String name, Object... oo) {
+        MatchProperty result= new MatchProperty();
         result.pp = hm();
         result.pp.put(name, new PropertyDesc(name, null, oo.length > 0 ? oo[0] : null));
         for (int i = 1; i < oo.length; i += 2) {

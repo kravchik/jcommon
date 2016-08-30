@@ -1,6 +1,6 @@
 package yk.jcommon.match;
 
-import yk.jcommon.match2.Not;
+import yk.jcommon.match2.MatchNot;
 import yk.jcommon.utils.Util;
 
 import java.util.List;
@@ -66,8 +66,8 @@ public class Match {
             if (!old.equals(data)) return emptyList;
             Map<Object, Object> copy = copy(current, pattern, data);
             return (List<Map>) (List) list(copy);
-        } else if (pattern instanceof Not) {
-            return match(data, ((Not) pattern).rest, current).isEmpty() ? al(current) : emptyList;
+        } else if (pattern instanceof MatchNot) {
+            return match(data, ((MatchNot) pattern).rest, current).isEmpty() ? al(current) : emptyList;
         } else if (pattern instanceof Ptr) {
             Ptr ptr = (Ptr) pattern;
             return match(current.get(ptr.var), ptr.path, current);

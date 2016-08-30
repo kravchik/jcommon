@@ -10,10 +10,10 @@ import static yk.jcommon.collections.YArrayList.al;
  * Date: 28/10/15
  * Time: 17:43
  */
-public class And {
+public class MatchAnd {
     public YList elements;
 
-    public And(Object... elements) {
+    public MatchAnd(Object... elements) {
         this.elements = al(elements);
     }
 }

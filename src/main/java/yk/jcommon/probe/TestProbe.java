@@ -8,7 +8,7 @@ import yk.jcommon.search.SSearch;
 import static junit.framework.TestCase.assertEquals;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YHashMap.hm;
-import static yk.jcommon.match2.ShortNames.p;
+import static yk.jcommon.match2.MatcherShortNames.p;
 
 /**
  * Created with IntelliJ IDEA.

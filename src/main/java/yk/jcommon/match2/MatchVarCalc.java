@@ -9,6 +9,6 @@ import yk.jcommon.collections.YSet;
  * Date: 04/05/16
  * Time: 09:45
  */
-public interface VarCalc {
+public interface MatchVarCalc {
     YSet<YMap<String, Object>> calc(YMap<String, Object> cur);
 }

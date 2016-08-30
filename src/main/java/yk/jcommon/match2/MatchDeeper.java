@@ -8,17 +8,17 @@ import yk.jcommon.collections.YList;
  * Date: 31/10/15
  * Time: 11:46
  */
-public class Deeper {
+public class MatchDeeper {
     public YList<Object> accessorPatterns;
     public Object rest;
 
     //TODO assert one var with name "access" (?)
-    public Deeper(YList<Object> accessorPatterns, Object rest) {
+    public MatchDeeper(YList<Object> accessorPatterns, Object rest) {
         this.accessorPatterns = accessorPatterns;
         this.rest = rest;
     }
 
-    public Deeper(YList<Object> accessorPatterns) {
+    public MatchDeeper(YList<Object> accessorPatterns) {
         this.accessorPatterns = accessorPatterns;
     }
 }

@@ -1,6 +1,6 @@
 package yk.jcommon.match;
 
-import yk.jcommon.match2.Not;
+import yk.jcommon.match2.MatchNot;
 import yk.jcommon.utils.Reflector;
 import yk.jcommon.utils.Util;
 
@@ -57,7 +57,7 @@ public class JM {
     public static Set<Map> match(Object data, Object pattern, Map current) {
         if (data == pattern) return set(current);
 //        if (current.containsKey(pattern)) return match(data, current.get(pattern), current);//TODO match by String?
-        if (pattern instanceof Not) return match(data, ((Not) pattern).rest, current).isEmpty() ? hs(current) : emptySet;
+        if (pattern instanceof MatchNot) return match(data, ((MatchNot) pattern).rest, current).isEmpty() ? hs(current) : emptySet;
         if (isVar(pattern)) {
             if (current.containsKey(((JVar)pattern).name)) return match(data, current.get(((JVar)pattern).name), current);
             Map<Object, Object> copy = copy(current, ((JVar)pattern).name, data);

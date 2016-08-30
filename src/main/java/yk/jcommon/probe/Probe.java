@@ -57,7 +57,7 @@ public class Probe extends SSearch<State> {
 
     @Override
     public boolean isSolution(Node<State> node) {
-        YSet<YMap<String, Object>> match = Matcher.match(node.state.data, pattern);
+        YSet<YMap<String, Object>> match = new Matcher().match(node.state.data, pattern);
         if (match.notEmpty()) {
             node.state.match = match;
             return true;
