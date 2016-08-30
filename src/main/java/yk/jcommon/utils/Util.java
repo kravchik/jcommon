@@ -12,6 +12,7 @@ import java.util.*;
 
 import static java.lang.Math.*;
 import static yk.jcommon.fastgeom.Vec2f.v2;
+import static yk.jcommon.utils.MyMath.clamp;
 
 /**
  * Kravchik Yuri
@@ -308,7 +309,7 @@ public class Util {
      * Converts 'progress [0-1]' to hemicircle with top on 0.5 and bots at 0 and 1
      */
     public static float circleCurve(float progress) {
-        return (float) sin(acos(progress * 2 - 1));
+        return (float) sin(acos(clamp(progress, 0, 1) * 2 - 1));
     }
 
     //TODO move to MyMath

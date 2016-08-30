@@ -39,6 +39,6 @@ public class StopWatch {
 
     @Override
     public String toString() {
-        return "" + count / 1000f;
+        return "" + count / 1000f + "s";
     }
 }
