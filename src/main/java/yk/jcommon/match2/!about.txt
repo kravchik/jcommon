@@ -1,7 +1,7 @@
 
 
 //TODO
-list, set, map
+set
 
 OneOf(...) - choose one of the values, for ex:
   p(IfStatement, new OneOf("ifBlock", "elseBlock", "booleanBlock"), "access")
@@ -12,6 +12,10 @@ NotEquals, for ex:
 
 
 //DONE
+list
+list with filler
+map
+map with other
 breadth first search Probe
 probe - find stacktrace to some pattern, for ex:
   Probe(p(var("fieldName"), "lookingFor"))
