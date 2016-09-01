@@ -162,6 +162,9 @@ public class TestMatcher {
         assertEquals("[{$after=[c], $v1=a, $mid=[], $v2=b}]",
                 new Matcher().match(al(al("c"), al("a", "b", "c")), al(var("$after"), ml(var("$v1"),listFiller("$mid"), var("$v2"), listFiller("$after")))) + "");
 
+        assertEquals("[{$common=[]}, {$common=[b]}, {$common=[b, c]}, {$common=[c]}]",
+                new Matcher().match(al(al("a", "b", "c"), al("b", "c", "d")), al(ml(listFiller(), listFiller("$common"), listFiller()), ml(listFiller(), listFiller("$common"), listFiller()))) + "");
+
 
 
 
