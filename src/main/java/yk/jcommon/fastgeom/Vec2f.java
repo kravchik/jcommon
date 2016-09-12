@@ -133,16 +133,16 @@ public class Vec2f implements Serializable {
         dos.writeFloat(y);
     }
 
-    public Vec2f quaternionDiv(Vec2f by) {
+    public Vec2f complexDiv(Vec2f by) {
         float len = 1 / by.length();
         return new Vec2f(x * by.x + y * by.y, -x * by.y + y * by.x).mul(len);
     }
 
-    public Vec2f quaternionDiv1(Vec2f by) {
+    public Vec2f complexDiv1(Vec2f by) {
         return new Vec2f(x * by.x + y * by.y, -x * by.y + y * by.x);
     }
 
-    public Vec2f quaternionMul(Vec2f by) {
+    public Vec2f complexMul(Vec2f by) {
         return new Vec2f(x * by.x - y * by.y, x * by.y + y * by.x);
     }
 
@@ -154,7 +154,7 @@ public class Vec2f implements Serializable {
         return new Vec2f(y, -x);
     }
 
-    public float cross(Vec2f other) {
+    public float cross  (Vec2f other) {
         return x * other.y - y * other.x;
     }
 

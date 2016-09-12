@@ -38,7 +38,15 @@ public class MatchList implements MatchCustom {
             YSet<YMap<String, Object>> result = hs();
             int max = data.size();
             if (f.maxLength != null && f.maxLength < max) max = f.maxLength;
-            for (int i = f.minLength; i < max + 1; i++) {
+            int min = f.minLength;
+
+            //is this optimization necessary?
+            if (pattern.size() == 1) {//if filler is last, it must fill all the rest
+                if (data.size() < min) return hs();//already not enough data
+                min = data.size();
+            }
+
+            for (int i = min; i < max + 1; i++) {
                 YList forFiller = data.subList(0, i);
                 YSet<YMap<String, Object>> fillerMappings = f.x == null ? hs(cur) : matcher.match(forFiller, f.x, cur);
                 for (YMap<String, Object> map : fillerMappings) result.addAll(matchRest(matcher, data.subList(i, data.size()), pattern.cdr(), map));
