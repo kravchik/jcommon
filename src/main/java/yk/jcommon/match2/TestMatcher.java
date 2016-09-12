@@ -165,9 +165,13 @@ public class TestMatcher {
         assertEquals("[{$common=[]}, {$common=[b]}, {$common=[b, c]}, {$common=[c]}]",
                 new Matcher().match(al(al("a", "b", "c"), al("b", "c", "d")), al(ml(listFiller(), listFiller("$common"), listFiller()), ml(listFiller(), listFiller("$common"), listFiller()))) + "");
 
+    }
 
-
-
+    @Test
+    public void testMatchOr() {
+        assertEquals("[{1=a, 2=b}]", new Matcher().match(al("a", "b", "b"), new MatchOr(al(var("x"), var("y"), var("x")), al(var("1"), var("2"), var("2")))) + "");
+        assertEquals("[]",           new Matcher().match(al("a", "a", "b"), new MatchOr(al(var("x"), var("y"), var("x")), al(var("1"), var("2"), var("2")))) + "");
+        assertEquals("[{x=a, y=b}]", new Matcher().match(al("a", "b", "a"), new MatchOr(al(var("x"), var("y"), var("x")), al(var("1"), var("2"), var("2")))) + "");
     }
 
     @Test
