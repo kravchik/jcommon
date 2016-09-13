@@ -63,7 +63,11 @@ public class MatcherShortNames {
     }
 
     public static MatchList.Filler listFiller(String varName) {
-        return new MatchList.Filler().setVar(var(varName));
+        return new MatchList.Filler().setInside(var(varName));
+    }
+
+    public static MatchList.Filler listFiller(Object inside) {
+        return new MatchList.Filler().setInside(inside);
     }
 
     public static MatchDeeper deeper(YList<Object> accessorPatterns) {

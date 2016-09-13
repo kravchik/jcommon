@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static yk.jcommon.collections.YArrayList.al;
-import static yk.jcommon.collections.YHashMap.hm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,21 +31,6 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
-
-    //TODO same for sets
-    default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
-        YMap<K, YList<T>> result = hm();
-        for (T t : this) {
-            K group = grouper.apply(t);
-            YList<T> gg = result.get(group);
-            if (gg == null) {
-                gg = al();
-                result.put(group, gg);
-            }
-            gg.add(t);
-        }
-        return result;
-    }
 
     default <K> YList<YList<T>> splitByDif(BiFunction<T, T, Boolean> splitter) {
         T last = null;

@@ -18,6 +18,20 @@ public interface YCollection<T> extends Collection<T> {
     YCollection<T> filter(Predicate<? super T> predicate);
     <R extends T> YCollection<R> filterByClass(Class<R> clazz);
 
+    default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
+        YMap<K, YList<T>> result = hm();
+        for (T t : this) {
+            K group = grouper.apply(t);
+            YList<T> gg = result.get(group);
+            if (gg == null) {
+                gg = al();
+                result.put(group, gg);
+            }
+            gg.add(t);
+        }
+        return result;
+    }
+
     default boolean any(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.test(t)) return true;
         return false;

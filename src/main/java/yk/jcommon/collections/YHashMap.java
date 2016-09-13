@@ -250,30 +250,6 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
-    @Override
-    public String toString(String elementsInfix, String kvInfix) {
-        boolean was = false;
-        StringBuilder sb = new StringBuilder("");
-        for (K k : keySet()) {
-            if (was) sb.append(elementsInfix);
-            sb.append(k).append(kvInfix).append(get(k));
-            was = true;
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction) {
-        boolean was = false;
-        StringBuilder sb = new StringBuilder("");
-        for (K k : keySet()) {
-            if (was) sb.append(elementsInfix);
-            sb.append(toStringFunction.apply(k, get(k)));
-            was = true;
-        }
-        return sb.toString();
-    }
-
     private static class Temp<K, V> implements Comparable<Temp<K, V>> {
         Comparable evaluation;
         Map.Entry<K, V> entry;

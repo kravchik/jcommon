@@ -53,8 +53,6 @@ public interface YMap<K, V> extends Map<K, V> {
     YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator);
 
     YMap<K, V> take(int n);
-    String toString(String elementsInfix, String kvInfix);
-    String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction);
 
     default boolean containsAll(Map<K, V> whom) {
         for (Map.Entry<K, V> entry : whom.entrySet()) {
@@ -66,4 +64,31 @@ public interface YMap<K, V> extends Map<K, V> {
     default boolean notEmpty() {
         return !isEmpty();
     }
+
+    default String toString(String elementsInfix) {
+        return toString(elementsInfix, ":");
+    }
+
+    default String toString(String elementsInfix, String kvInfix) {
+        boolean was = false;
+        StringBuilder sb = new StringBuilder("");
+        for (K k : keySet()) {
+            if (was) sb.append(elementsInfix);
+            sb.append(k).append(kvInfix).append(get(k));
+            was = true;
+        }
+        return sb.toString();
+    }
+
+    default String toString(String elementsInfix, BiFunction<K, V, String> toStringFunction) {
+        boolean was = false;
+        StringBuilder sb = new StringBuilder("");
+        for (K k : keySet()) {
+            if (was) sb.append(elementsInfix);
+            sb.append(toStringFunction.apply(k, get(k)));
+            was = true;
+        }
+        return sb.toString();
+    }
+
 }

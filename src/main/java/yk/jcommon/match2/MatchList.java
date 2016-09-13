@@ -48,7 +48,7 @@ public class MatchList implements MatchCustom {
 
             for (int i = min; i < max + 1; i++) {
                 YList forFiller = data.subList(0, i);
-                YSet<YMap<String, Object>> fillerMappings = f.x == null ? hs(cur) : matcher.match(forFiller, f.x, cur);
+                YSet<YMap<String, Object>> fillerMappings = f.inside == null ? hs(cur) : matcher.match(forFiller, f.inside, cur);
                 for (YMap<String, Object> map : fillerMappings) result.addAll(matchRest(matcher, data.subList(i, data.size()), pattern.cdr(), map));
             }
             return result;
@@ -65,7 +65,7 @@ public class MatchList implements MatchCustom {
     }
 
     public static class Filler {
-        public MatchVar x;
+        public Object inside;
         public int minLength = 0;
         public Integer maxLength;
 
@@ -79,8 +79,8 @@ public class MatchList implements MatchCustom {
             return this;
         }
 
-        public Filler setVar(MatchVar v) {
-            this.x = v;
+        public Filler setInside(Object inside) {
+            this.inside = inside;
             return this;
         }
     }
