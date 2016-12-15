@@ -162,8 +162,8 @@ super server"
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.117</version>
+    <version>0.119</version>
 </dependency>
 ```
-(current dev version is 0.118-SNAPSHOT)
+(current dev version is 0.120-SNAPSHOT)
 
