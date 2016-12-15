@@ -11,9 +11,9 @@ import java.util.List;
  * Time: 11:48 PM
  */
 public class Command implements Serializable {
-    private String serviceName;
-    private String methodName;
-    private List params;
+    public String serviceName;
+    public String methodName;
+    public List params;
 
     transient public Field service;
     transient public Field method;

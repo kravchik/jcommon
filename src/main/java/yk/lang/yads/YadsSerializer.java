@@ -33,7 +33,19 @@ public class YadsSerializer {
     public static String serialize(Object o) {
         YSet<String> namespaces = hs();
         String result = serialize(namespaces, false, o);
-        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n") + result;
+        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n\n") + result;
+    }
+
+    public static String serializeList(List o) {
+        YSet<String> namespaces = hs();
+        String result = serializeListImpl(namespaces, o);
+        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n\n") + result;
+    }
+
+    public static String serializeMap(Map o) {
+        YSet<String> namespaces = hs();
+        String result = serializeMapImpl(namespaces, o);
+        return (namespaces.isEmpty() ? "" : "import= " + Util.join(namespaces, ", ") + "\n\n") + result;
     }
 
     public static String serializeInner(Object o) {
@@ -78,9 +90,7 @@ public class YadsSerializer {
             List serialized = ((YadsAwareConstructor) o).genConstructorArguments();
             if (serialized == null) return serializeClass(namespaces, o, typeIsKnown);
             String result = (typeIsKnown ? "" : addImport(namespaces, o)) + " {\n";
-            tab.inc();
-            for (Object el : serialized) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";//TODO type is known?
-            tab.dec();
+            result += serializeListImpl(namespaces, serialized);
             result += tab + "}\n";
             return possiblyCompact(result);
         }
@@ -115,19 +125,31 @@ public class YadsSerializer {
         String result = "";
         result += "{\n";
         tab.inc();
-        for (Object key : o.keySet()) result += tab + serialize(namespaces, false, key) + "= " + possiblyCompact(serialize(namespaces, false, o.get(key))) + "\n";
+        result += serializeMapImpl(namespaces, o);
         tab.dec();
         result += tab + "}\n";
+        return result;
+    }
+
+    private static String serializeMapImpl(YSet<String> namespaces, Map o) {
+        String result = "";
+        for (Object key : o.keySet()) result += tab + serialize(namespaces, false, key) + "= " + possiblyCompact(serialize(namespaces, false, o.get(key))) + "\n";
         return result;
     }
 
     private static String serializeList(YSet<String> namespaces, List o) {//TODO add specific List type if not just ArrayList or YArrayList
         String result = "";
         result += "{\n";
+        result += serializeListImpl(namespaces, o);
+        result += tab + "}\n";
+        return result;
+    }
+
+    private static String serializeListImpl(YSet<String> namespaces, List o) {
+        String result = "";
         tab.inc();
         for (Object el : o) result += tab + possiblyCompact(serialize(namespaces, false, el)) + "\n";
         tab.dec();
-        result += tab + "}\n";
         return result;
     }
 
@@ -299,7 +321,12 @@ public class YadsSerializer {
             else instance = Reflector.newInstance(clazz);
             for (Tuple t : tuples) ((Map)instance).put(t.a, t.b);
         } else if (clazz == YadsClass.class) {
-            instance = new YadsClass(yad.name, tuples.with(array));
+            if (array.isEmpty()) {
+                instance = new NamedMap(yad.name);
+                for (Tuple t : tuples) ((NamedMap)instance).map.put(t.a, t.b);
+            } else {
+                instance = new YadsClass(yad.name, tuples.with(array));
+            }
         } else if (clazz == Object.class) {
             if (tuples.isEmpty() && array.notEmpty()) return array;
             if (tuples.notEmpty() && array.isEmpty()) {

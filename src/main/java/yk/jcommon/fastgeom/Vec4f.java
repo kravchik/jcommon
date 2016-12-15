@@ -14,10 +14,13 @@ import java.io.Serializable;
  *
  * @author Yuri Kravchik Created 16.10.2008
  */
-public class Vec4f implements Serializable {
+public final class Vec4f implements Serializable {
     public float x, y, z, w;
 
     public static final Vec4f ZERO = new Vec4f(0, 0, 0, 0);
+
+    public Vec4f() {
+    }
 
     @Deprecated //remove deprecated later
     public Vec4f(final float x, final float y, final float z, final float w) {
@@ -105,23 +108,23 @@ public class Vec4f implements Serializable {
         return (float) Math.sqrt(w*w+x*x+y*y+z*z);
     }
 
-    public static Vec4f mean(Vec4f... vv) {
-        return sum(vv).div(vv.length);
-    }
+//    public static Vec4f mean(Vec4f... vv) {
+//        return sum(vv).div(vv.length);
+//    }
 
-    public static Vec4f sum(Vec4f... vv) {
-        float w = 0;
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        for (int i = 0; i < vv.length; i++) {
-            w += vv[i].w;
-            x += vv[i].x;
-            y += vv[i].y;
-            z += vv[i].z;
-        }
-        return new Vec4f(x, y, z, w);
-    }
+//    public static Vec4f sum(Vec4f... vv) {
+//        float w = 0;
+//        float x = 0;
+//        float y = 0;
+//        float z = 0;
+//        for (int i = 0; i < vv.length; i++) {
+//            w += vv[i].w;
+//            x += vv[i].x;
+//            y += vv[i].y;
+//            z += vv[i].z;
+//        }
+//        return new Vec4f(x, y, z, w);
+//    }
 
     /**
      * this 0 -> 1 to

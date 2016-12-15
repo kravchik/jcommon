@@ -1,9 +1,13 @@
 package yk.jcommon.utils;
 
+import yk.jcommon.collections.YList;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
+
+import static yk.jcommon.collections.YArrayList.al;
 
 /**
  * Kravchik Yuri
@@ -38,17 +42,51 @@ public class IO {
 
     public static String readFile(String file) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String l;
-            StringBuilder sb = new StringBuilder();
-            while((l = br.readLine()) != null) {
-                sb.append(l).append("\n");
-            }
-            return sb.toString();
-
+            return readFile(new FileReader(file));
         } catch (IOException e) {
             throw new Error(e);
         }
+    }
+
+    public static String readFile(File file) {
+        try {
+            return readFile(new FileReader(file));
+        } catch (IOException e) {
+            throw new Error(e);
+        }
+    }
+
+    public static YList<String> readStrings(String file) {
+        try {
+            return readStrings(new FileReader(file));
+        } catch (IOException e) {
+            throw new Error(e);
+        }
+    }
+    private static String readFile(FileReader fileReader) throws IOException {BufferedReader br = new BufferedReader(fileReader);
+        String l;
+        StringBuilder sb = new StringBuilder();
+        while((l = br.readLine()) != null) {
+            sb.append(l).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public static YList<String> readStrings(File file) {
+        try {
+            return readStrings(new FileReader(file));
+        } catch (IOException e) {
+            throw new Error(e);
+        }
+    }
+
+    private static YList<String> readStrings(FileReader fileReader) throws IOException {BufferedReader br = new BufferedReader(fileReader);
+        YList<String> result = al();
+        String l;
+        while((l = br.readLine()) != null) {
+            result.add(l);
+        }
+        return result;
     }
 
     public static void writeFile(String file, String u) {

@@ -18,6 +18,7 @@ public class MyMath {
         return res < 0 ? res + m : res;
     }
 
+    //POSITIVE remainder of the division
     public static float module(float v, float m) {
         float res = v % m;
         return res < 0 ? res + m : res;
@@ -40,7 +41,42 @@ public class MyMath {
         res.z = mix(from.z, to.z, progress);
     }
 
-//gglsl auto generated text
+    //make angle [0..2PI)
+    public static float angleNormalize02PI(float a) {
+        return module(a, 2 * PI);
+    }
+
+    //make angle (-PI..PI]
+    public static float angleNormalizeSigned(float a) {
+        a = angleNormalize02PI(a);
+        if (a > PI) a -= 2 * PI;
+        return a;
+    }
+
+    //only [0..2PI) angles are accepted
+    public static float mixAngle02PI(float a, float b, float mix) {
+        if (b > a) return b - a > PI ? angleNormalize02PI(mix(a + 2 * PI, b, mix)) : mix(a, b, mix);
+        return a - b > PI ? angleNormalize02PI(mix(a, b + 2 * PI, mix)) : mix(a, b, mix);
+    }
+
+    //only [0..2PI) angles are accepted
+    public static float angleDif02PI(float a, float b) {
+        if (b > a) return b - a > PI ? a + 2 * PI - b : b - a;
+        return a - b > PI ? b + 2 * PI - a : a - b;
+    }
+
+    /**
+     * Converts 'progress [0-1]' to hemicircle with top on 0.5 and bots at 0 and 1
+     */
+    public static float circleCurve(float progress) {
+        return (float) sin(acos(clamp(progress, 0, 1) * 2 - 1));
+    }
+
+
+
+
+
+    //gglsl auto generated text
 public static Float plus(Float arg0, Float arg1) {return (float)arg0+(float)arg1;}
 public static Vec2f plus(Vec2f arg0, Vec2f arg1) {return Vec2f.v2((float)arg0.x+(float)arg1.x, (float)arg0.y+(float)arg1.y);}
 public static Vec3f plus(Vec3f arg0, Vec3f arg1) {return Vec3f.v3((float)arg0.x+(float)arg1.x, (float)arg0.y+(float)arg1.y, (float)arg0.z+(float)arg1.z);}

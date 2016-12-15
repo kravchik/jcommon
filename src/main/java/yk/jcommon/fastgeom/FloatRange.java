@@ -9,6 +9,9 @@ public class FloatRange implements Serializable {
     public float min;
     public float max;
 
+    public FloatRange() {
+    }
+
     public FloatRange(float value) {
         this(value, value);
     }

@@ -177,30 +177,48 @@ public interface YCollection<T> extends Collection<T> {
         return false;
     }
 
-    default public String toString(String separator) {
+    default String toString(String infix) {
         StringBuilder sb = new StringBuilder("");
         boolean was = false;
         for (Object o : this) {
-            if (was) sb.append(separator);
+            if (was) sb.append(infix);
             sb.append(o);
             was = true;
         }
         return sb.toString();
+    }
+
+    default String toStringSuffix(String suffix) {
+        StringBuilder sb = new StringBuilder("");
+        for (Object o : this) sb.append(o).append(suffix);
+        return sb.toString();
 
     }
 
-    default public String toString(String prefix, String appender) {
+    default String toStringInfix(String infix) {
+        return toString(infix);
+    }
+
+    default String toStringPrefixInfix(String prefix, String infix) {
         boolean first = true;
         StringBuilder sb = new StringBuilder();
         for (Object o : this) {
             if (first) first = false;
-            else sb.append(appender);
+            else sb.append(infix);
             sb.append(prefix).append(o == null ? "null" : o.toString());
         }
         return sb.toString();
     }
 
-    default public <V> YMap<T, V> toMapKeys(Function<T, V> f) {
+    default String toStringPrefixSuffix(String prefix, String suffix) {
+        StringBuilder sb = new StringBuilder();
+        for (Object o : this) {
+            sb.append(prefix).append(o == null ? "null" : o.toString()).append(suffix);
+        }
+        return sb.toString();
+    }
+
+    default <V> YMap<T, V> toMapKeys(Function<T, V> f) {
         YMap<T, V> result = hm();
         for (T k : this) result.put(k, f.apply(k));
         return result;
@@ -215,4 +233,10 @@ public interface YCollection<T> extends Collection<T> {
     default boolean notEmpty() {
         return !isEmpty();
     }
+
+    default boolean contains(Function<T, Boolean> predicate) {
+        for (T t : this) if (predicate.apply(t)) return true;
+        return false;
+    }
+
 }

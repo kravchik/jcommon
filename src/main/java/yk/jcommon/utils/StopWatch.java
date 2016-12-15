@@ -28,9 +28,14 @@ public class StopWatch {
         return result;
     }
 
+    @Deprecated
     public String stop() {
         count += System.currentTimeMillis() - start;
-        return toString();
+        return null;
+    }
+
+    public void justStop() {
+        count += System.currentTimeMillis() - start;
     }
 
     public long getCount() {

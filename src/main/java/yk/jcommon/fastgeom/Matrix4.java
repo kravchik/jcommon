@@ -91,13 +91,150 @@ public class Matrix4 {
         return result;
     }
 
+    public void multiplySe(Matrix4 by, Matrix4 result) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                float r = 0;
+                for (int k = 0; k < 4; k++) r += get(k, i) * by.get(j, k);
+                result.set(j, i, r);
+            }
+        }
+    }
+
+    //WARNING, result can't be '==' neither a, nor b
+    public static void staticMultiply(Matrix4 a, Matrix4 b, Matrix4 result) {
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 4; j++) {
+//                float r = 0;
+//                for (int k = 0; k < 4; k++) r += a.get(k, i) * b.get(j, k);
+//                result.set(j, i, r);
+//            }
+//        }
+
+        //optimized
+        float i12_r = 0;
+        i12_r = (i12_r + (a.data[0] * b.data[0]));
+        i12_r = (i12_r + (a.data[4] * b.data[1]));
+        i12_r = (i12_r + (a.data[8] * b.data[2]));
+        i12_r = (i12_r + (a.data[12] * b.data[3]));
+        result.data[0] = i12_r;
+        float i13_r = 0;
+        i13_r = (i13_r + (a.data[0] * b.data[4]));
+        i13_r = (i13_r + (a.data[4] * b.data[5]));
+        i13_r = (i13_r + (a.data[8] * b.data[6]));
+        i13_r = (i13_r + (a.data[12] * b.data[7]));
+        result.data[4] = i13_r;
+        float i14_r = 0;
+        i14_r = (i14_r + (a.data[0] * b.data[8]));
+        i14_r = (i14_r + (a.data[4] * b.data[9]));
+        i14_r = (i14_r + (a.data[8] * b.data[10]));
+        i14_r = (i14_r + (a.data[12] * b.data[11]));
+        result.data[8] = i14_r;
+        float i15_r = 0;
+        i15_r = (i15_r + (a.data[0] * b.data[12]));
+        i15_r = (i15_r + (a.data[4] * b.data[13]));
+        i15_r = (i15_r + (a.data[8] * b.data[14]));
+        i15_r = (i15_r + (a.data[12] * b.data[15]));
+        result.data[12] = i15_r;
+        float i16_r = 0;
+        i16_r = (i16_r + (a.data[1] * b.data[0]));
+        i16_r = (i16_r + (a.data[5] * b.data[1]));
+        i16_r = (i16_r + (a.data[9] * b.data[2]));
+        i16_r = (i16_r + (a.data[13] * b.data[3]));
+        result.data[1] = i16_r;
+        float i17_r = 0;
+        i17_r = (i17_r + (a.data[1] * b.data[4]));
+        i17_r = (i17_r + (a.data[5] * b.data[5]));
+        i17_r = (i17_r + (a.data[9] * b.data[6]));
+        i17_r = (i17_r + (a.data[13] * b.data[7]));
+        result.data[5] = i17_r;
+        float i18_r = 0;
+        i18_r = (i18_r + (a.data[1] * b.data[8]));
+        i18_r = (i18_r + (a.data[5] * b.data[9]));
+        i18_r = (i18_r + (a.data[9] * b.data[10]));
+        i18_r = (i18_r + (a.data[13] * b.data[11]));
+        result.data[9] = i18_r;
+        float i19_r = 0;
+        i19_r = (i19_r + (a.data[1] * b.data[12]));
+        i19_r = (i19_r + (a.data[5] * b.data[13]));
+        i19_r = (i19_r + (a.data[9] * b.data[14]));
+        i19_r = (i19_r + (a.data[13] * b.data[15]));
+        result.data[13] = i19_r;
+        float i20_r = 0;
+        i20_r = (i20_r + (a.data[2] * b.data[0]));
+        i20_r = (i20_r + (a.data[6] * b.data[1]));
+        i20_r = (i20_r + (a.data[10] * b.data[2]));
+        i20_r = (i20_r + (a.data[14] * b.data[3]));
+        result.data[2] = i20_r;
+        float i21_r = 0;
+        i21_r = (i21_r + (a.data[2] * b.data[4]));
+        i21_r = (i21_r + (a.data[6] * b.data[5]));
+        i21_r = (i21_r + (a.data[10] * b.data[6]));
+        i21_r = (i21_r + (a.data[14] * b.data[7]));
+        result.data[6] = i21_r;
+        float i22_r = 0;
+        i22_r = (i22_r + (a.data[2] * b.data[8]));
+        i22_r = (i22_r + (a.data[6] * b.data[9]));
+        i22_r = (i22_r + (a.data[10] * b.data[10]));
+        i22_r = (i22_r + (a.data[14] * b.data[11]));
+        result.data[10] = i22_r;
+        float i23_r = 0;
+        i23_r = (i23_r + (a.data[2] * b.data[12]));
+        i23_r = (i23_r + (a.data[6] * b.data[13]));
+        i23_r = (i23_r + (a.data[10] * b.data[14]));
+        i23_r = (i23_r + (a.data[14] * b.data[15]));
+        result.data[14] = i23_r;
+        float i24_r = 0;
+        i24_r = (i24_r + (a.data[3] * b.data[0]));
+        i24_r = (i24_r + (a.data[7] * b.data[1]));
+        i24_r = (i24_r + (a.data[11] * b.data[2]));
+        i24_r = (i24_r + (a.data[15] * b.data[3]));
+        result.data[3] = i24_r;
+        float i25_r = 0;
+        i25_r = (i25_r + (a.data[3] * b.data[4]));
+        i25_r = (i25_r + (a.data[7] * b.data[5]));
+        i25_r = (i25_r + (a.data[11] * b.data[6]));
+        i25_r = (i25_r + (a.data[15] * b.data[7]));
+        result.data[7] = i25_r;
+        float i26_r = 0;
+        i26_r = (i26_r + (a.data[3] * b.data[8]));
+        i26_r = (i26_r + (a.data[7] * b.data[9]));
+        i26_r = (i26_r + (a.data[11] * b.data[10]));
+        i26_r = (i26_r + (a.data[15] * b.data[11]));
+        result.data[11] = i26_r;
+        float i27_r = 0;
+        i27_r = (i27_r + (a.data[3] * b.data[12]));
+        i27_r = (i27_r + (a.data[7] * b.data[13]));
+        i27_r = (i27_r + (a.data[11] * b.data[14]));
+        i27_r = (i27_r + (a.data[15] * b.data[15]));
+        result.data[15] = i27_r;
+
+    }
+
+    public static void copy(Matrix4 from, Matrix4 to) {
+        for (int i = 0; i < from.data.length; i++) {
+            to.data[i] = from.data[i];
+        }
+    }
+
     public Matrix4 translate(Vec3f v) {
         Matrix4 result = Matrix4.zero();
-        System.arraycopy(data, 0, result.data, 0, data.length);
+        result.copyFrom(this);
+//        System.arraycopy(data, 0, result.data, 0, data.length);
         result.set(3, 0, result.get(3, 0) + v.x);
         result.set(3, 1, result.get(3, 1) + v.y);
         result.set(3, 2, result.get(3, 2) + v.z);
         return result;
+    }
+
+    public void translateSe(Vec3f v) {
+        set(3, 0, get(3, 0) + v.x);
+        set(3, 1, get(3, 1) + v.y);
+        set(3, 2, get(3, 2) + v.z);
+    }
+
+    public void copyFrom(Matrix4 other) {
+        for (int i = 0; i < data.length; i++) data[i] = other.data[i];
     }
 
     public static Matrix4 ortho(float l, float r, float b, float t, float n, float f) {

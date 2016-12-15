@@ -20,7 +20,7 @@ import static yk.jcommon.utils.Util.sqr;
  * @author Yuri Kravchik Created 04.01.2009
  */
 @SuppressWarnings("unused")
-public class Vec2f implements Serializable {
+public final class Vec2f implements Serializable {
     public static final Vec2f ZERO = new Vec2f();
     public float x, y;//TODO final
 

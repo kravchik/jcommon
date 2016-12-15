@@ -23,7 +23,7 @@ public class FileWatcher {
             WatchService watchService = FileSystems.getDefault().newWatchService();
             watchKey = pPath.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
         } catch (Exception e) {
-            BadException.die(e);
+            throw new BadException(e);
         }
     }
 

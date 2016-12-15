@@ -38,7 +38,7 @@ public class CubeNode<T> extends Poolable<CubeNode> {//factually it is a Map<Int
         CubeNode result = pool.borrow();
         //result.init(this, newL, newB, newN, newL + cube.size / 2, newB + cube.size / 2, newN + cube.size / 2);
         result.init(this, newL, newB, newN, newL + cube.size / 2-1, newB + cube.size / 2-1, newN + cube.size / 2-1);
-        //System.out.println(result.cube.toString());
+        //System.out.println(result.cube.toStringPrefixInfix());
         return result;
     }
 

@@ -10,7 +10,7 @@ import java.io.Serializable;
 * Date: 30.08.2010
 * Time: 18:32:56
 */
-public class Vec2i implements Serializable {
+public final class Vec2i implements Serializable {
     public static Vec2i ZERO = new Vec2i(0, 0);
 
     public int x, y;

@@ -5,8 +5,6 @@
  */
 package yk.jcommon.fastgeom;
 
-import yk.jcommon.utils.BadException;
-
 import java.io.Serializable;
 
 import static yk.jcommon.utils.Util.sqr;
@@ -16,7 +14,7 @@ import static yk.jcommon.utils.Util.sqr;
  *
  * @author Yuri Kravchik Created 16.10.2008
  */
-public class Vec3f implements Serializable {
+public final class Vec3f implements Serializable {
     public float x, y, z;
 
     public static final Vec3f ZERO = new Vec3f(0, 0, 0);
@@ -26,6 +24,9 @@ public class Vec3f implements Serializable {
     public static final Vec3f AXISY = new Vec3f(0, 1, 0);
 
     public static final Vec3f AXISZ = new Vec3f(0, 0, 1);
+
+    public Vec3f() {
+    }
 
     public Vec3f(float x, float y, float z) {
         this.x = x;
@@ -85,8 +86,8 @@ public class Vec3f implements Serializable {
 
     public Vec3f normalized(float r) {
         final float m = r / length();
-        if (Float.isNaN(m)) BadException.die("NaN for " + this);
-        if (Float.isInfinite(m)) BadException.die("Infinite for " + this);
+//        if (Float.isNaN(m)) BadException.die("NaN for " + ("x: " + x + " y: " + y + " z: " + z));
+//        if (Float.isInfinite(m)) BadException.die("Infinite for " + ("x: " + x + " y: " + y + " z: " + z));
         return new Vec3f(x * m, y * m, z * m);
     }
 
@@ -160,6 +161,12 @@ public class Vec3f implements Serializable {
 
     public Vec4f toVec4f(float w) {
         return new Vec4f(x, y, z, w);
+    }
+
+    public void setXyz(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     //gglsl auto generated text

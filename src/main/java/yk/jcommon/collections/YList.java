@@ -32,6 +32,10 @@ public interface YList<T> extends YCollection<T>, List<T> {
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
+    default T cadr() {
+        return get(1);
+    }
+
     default <K> YList<YList<T>> splitByDif(BiFunction<T, T, Boolean> splitter) {
         T last = null;
         YList<T> cur = null;
@@ -144,5 +148,16 @@ public interface YList<T> extends YCollection<T>, List<T> {
             if (predicate.test(t)) result = t;
         }
         return result;
+    }
+
+    @Override
+    default T max(Function<T, Comparable> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T t2 = null;
+        for (int i = 0; i < this.size(); i++) {
+            T t1 = this.get(i);
+            if (t2 == null || evaluator.apply(t1).compareTo(evaluator.apply(t2)) > 0) t2 = t1;
+        }
+        return t2;
     }
 }

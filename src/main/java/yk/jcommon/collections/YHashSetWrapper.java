@@ -119,7 +119,7 @@ public class YHashSetWrapper<T> implements YSet<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw BadException.die("cannot modify wrapper");
+        return original.removeAll(c);
     }
 
     @Override

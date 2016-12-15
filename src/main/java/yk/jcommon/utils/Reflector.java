@@ -2,6 +2,7 @@ package yk.jcommon.utils;
 
 import sun.reflect.ReflectionFactory;
 import yk.jcommon.collections.YList;
+import yk.jcommon.collections.YMap;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -106,13 +107,13 @@ public class Reflector {
 
     public static <T> void set(T result, Field field, Object data) {
         try {
-            field.set(result, data);
+            field.set(result, autoCast(data, field));
         } catch (IllegalAccessException e) {
             BadException.die(e);
         }
     }
 
-    public static void set(final Object target, String fieldName, Object value) {
+    public static Object set(final Object target, String fieldName, Object value) {
         Class clazz = target instanceof Class ? (Class) target : target.getClass();
         try {
             while (clazz != Object.class) {
@@ -134,8 +135,8 @@ public class Reflector {
                         }
 
                         // setting the value
-                        f.set(target instanceof Class ? null : target, value);
-                        return;
+                        f.set(target instanceof Class ? null : target, autoCast(value, f));
+                        return target;
                     }
                 }
                 clazz = clazz.getSuperclass();
@@ -144,6 +145,17 @@ public class Reflector {
             throw new RuntimeException("Error setting field: " + clazz.getName() + "." + fieldName, e);
         }
         throw new RuntimeException("There is no such field: " + clazz.getName() + "." + fieldName);
+    }
+
+    private static Object autoCast(Object value, Field f) {
+        if (value instanceof Number && value.getClass() != f.getType()) {
+            if (f.getType() == Short.class && (value instanceof Byte)) value = ((Number)value).shortValue();
+            if (f.getType() == Integer.class && (value instanceof Byte || value instanceof Short)) value = ((Number)value).intValue();
+            if (f.getType() == Long.class && (value instanceof Integer || value instanceof Byte || value instanceof Short)) value = ((Number)value).longValue();
+            if (f.getType() == Float.class && (value instanceof Integer || value instanceof Byte || value instanceof Short)) value = ((Number)value).floatValue();
+            if (f.getType() == Double.class && (value instanceof Float || value instanceof Integer || value instanceof Byte || value instanceof Short)) value = ((Number)value).doubleValue();
+        }
+        return value;
     }
 
     public static Object invokeMethod(Object target, String methodName, Object... params) {
@@ -178,13 +190,13 @@ public class Reflector {
         return result;
     }
 
-    //TODO YMap
-    public static Map<String, Field> getAllNonStaticFields(Class clazz) {
-        Map<String, Field> result = new LinkedHashMap<>();
+    public static YMap<String, Field> getAllNonStaticFields(Class clazz) {
+        YMap<String, Field> result = hm();
         while (clazz != Object.class) {
             for (Field f : clazz.getDeclaredFields()) {
                 int modifiers = f.getModifiers();
                 if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
+                    f.setAccessible(true);
                     result.put(f.getName(), f);
                 }
             }
@@ -313,6 +325,7 @@ public class Reflector {
         while (source != null) {
             for (Field f : source.getDeclaredFields()) {
                 if (!Modifier.isStatic(f.getModifiers()) && !(skipTransient && Modifier.isTransient(f.getModifiers()))) {
+                    f.setAccessible(true);
                     result.add(f);
                 }
             }

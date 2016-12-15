@@ -76,15 +76,16 @@ public class Threads {
 
         for (int i = 0; i < other.length; i += 2) {
             tickable.add((Tickable) other[i]);
-            dts[i/2+1] = ((Number) other[i+1]).longValue();
-            lastTick[i/2+1] = System.currentTimeMillis();
+            dts[i / 2 + 1] = ((Number) other[i + 1]).longValue();
+            lastTick[i / 2 + 1] = System.currentTimeMillis();
         }
 
-        new Thread(new Runnable() {
+        Thread result = new Thread(new Runnable() {
             boolean exit;
+
             @Override
             public void run() {
-                while(!exit) {
+                while (!exit) {
                     long curTime = System.currentTimeMillis();
                     for (int i = 0; i < dts.length; i++) {
                         if (tickable.get(i).exit) exit = true;//TODO beautify
@@ -103,12 +104,40 @@ public class Threads {
                     sleep(10);
                 }
             }
-        }).start();
+        });
+        result.start();
+    }
 
+    public static void tick(long dt, boolean daemon, Tickable t) {
+        final long[] lastTick = {System.currentTimeMillis()};
+
+        Thread result = new Thread(new Runnable() {
+            boolean exit;
+
+            @Override
+            public void run() {
+                while (!exit) {
+                    long curTime = System.currentTimeMillis();
+                    if (t.exit) exit = true;//TODO beautify
+                    if (lastTick[0] + dt <= curTime) {
+                        try {
+                            t.tick((curTime - lastTick[0]) / 1000f);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        lastTick[0] = curTime;
+                    }
+                    sleep(dt / 2);
+                }
+            }
+        });
+        result.setDaemon(daemon);
+        result.start();
     }
 
     public static abstract class Tickable {
         public boolean exit;
+
         abstract public void tick(float dt) throws Exception;
     }
 

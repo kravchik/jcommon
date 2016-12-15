@@ -27,7 +27,10 @@ public class Quaternionf implements Serializable {
      * @return
      */
     public static Quaternionf fromAngleAxisFast(final float angle, final Vec3f axis) {
-        return new Quaternionf((float) Math.cos(angle / 2), axis.mul((float) Math.sin(angle / 2)));
+        float forPare_12 = angle / 2;
+        float as = (float)(Math.sin(forPare_12));
+        return new Quaternionf((float)(Math.cos(forPare_12)), (axis.x * as), (axis.y * as), (axis.z * as));
+//        return new Quaternionf((float) Math.cos(angle / 2), axis.mul((float) Math.sin(angle / 2)));
     }
 
 
@@ -56,7 +59,7 @@ public class Quaternionf implements Serializable {
 
     }
 
-    public final float a, i, j, k;
+    public float a, i, j, k;
 
     public Quaternionf(final float a, final float i, final float j, final float k) {
         this.a = a;
@@ -86,8 +89,15 @@ public class Quaternionf implements Serializable {
         k = vector.z;
     }
 
+    public Quaternionf(final Quaternionf other) {
+        a = other.a;
+        i = other.i;
+        j = other.j;
+        k = other.k;
+    }
+
     public Quaternionf(
-            float m00, float m01, float m02, 
+            float m00, float m01, float m02,
             float m10, float m11, float m12, 
             float m20, float m21, float m22) {
         a = (float) (Math.sqrt(1.0 + m00 + m11 + m22) / 2.0);
@@ -164,11 +174,13 @@ public class Quaternionf implements Serializable {
         float dot = dot(to);
         float blendI = 1.0f - blend;
 
+        Quaternionf result = new Quaternionf();
         if (dot < 0.0f) {
-            return new Quaternionf(a * blendI - to.a * blend, i * blendI - to.i * blend, j * blendI - to.j * blend, k * blendI - to.k * blend).normalized();
+            result.setAijk(a * blendI - to.a * blend, i * blendI - to.i * blend, j * blendI - to.j * blend, k * blendI - to.k * blend);
         } else {
-            return new Quaternionf(a * blendI + to.a * blend, i * blendI + to.i * blend, j * blendI + to.j * blend, k * blendI + to.k * blend).normalized();
+            result.setAijk(a * blendI + to.a * blend, i * blendI + to.i * blend, j * blendI + to.j * blend, k * blendI + to.k * blend);
         }
+        return result.normalized();
     }
 
     /**
@@ -182,7 +194,20 @@ public class Quaternionf implements Serializable {
     }
 
     public Vec3f rotate(final Vec3f vector) {
-        return this.mul(new Quaternionf(vector)).mul(conjug()).getXYZ();
+
+        float newVar_7 = (-(this.i * vector.x) + -(this.j * vector.y) + -(this.k * vector.z));
+        float newVar_22 = ((this.a * vector.x) + (this.j * vector.z) + -(this.k * vector.y));
+        float newVar_37 = ((this.a * vector.y) + (this.k * vector.x) + -(this.i * vector.z));
+        float newVar_52 = ((this.a * vector.z) + (this.i * vector.y) + -(this.j * vector.x));
+        float newVar_69 = -this.i;
+        float newVar_71 = -this.j;
+        float newVar_73 = -this.k;
+        return new Vec3f(
+                ((newVar_7 * newVar_69) + (newVar_22 * this.a) + (newVar_37 * newVar_73) + -(newVar_52 * newVar_71)),
+                ((newVar_7 * newVar_71) + (newVar_37 * this.a) + (newVar_52 * newVar_69) + -(newVar_22 * newVar_73)),
+                ((newVar_7 * newVar_73) + (newVar_52 * this.a) + (newVar_22 * newVar_71) + -(newVar_37 * newVar_69)));
+
+//        return this.mul(new Quaternionf(vector)).mul(conjug()).getXYZ();
     }
 
     public Quaternionf rotSub(Quaternionf from) {
@@ -204,32 +229,7 @@ public class Quaternionf implements Serializable {
         return sub(other).length();
     }
 
-    @Deprecated
-    public Matrix4 toMatrix4() {//TODO remove
-        float x2 = i * i;
-        float y2 = j * j;
-        float z2 = k * k;
-        float xy = i * j;
-        float xz = i * k;
-        float yz = j * k;
-        float wx = a * i;
-        float wy = a * j;
-        float wz = a * k;
-        Matrix4 m = new Matrix4();
-        m.set(0, 0, 1.0f - 2.0f * (y2 + z2));
-        m.set(0, 1, 2.0f * (xy - wz));
-        m.set(0, 2, 2.0f * (xz + wy));
-        m.set(1, 0, 2.0f * (xy + wz));
-        m.set(1, 1, 1.0f - 2.0f * (x2 + z2));
-        m.set(1, 2, 2.0f * (yz - wx));
-        m.set(2, 0, 2.0f * (xz - wy));
-        m.set(2, 1, 2.0f * (yz + wx));
-        m.set(2, 2, 1.0f - 2.0f * (x2 + y2));
-        m.set(3, 3, 1);
-        return m;
-    }
-
-    public Matrix4 toMatrix4Right() {//TODO rename
+    public Matrix4 toMatrix4() {
         float x2 = i * i;
         float y2 = j * j;
         float z2 = k * k;
@@ -251,6 +251,28 @@ public class Quaternionf implements Serializable {
         m.set(2, 2, 1.0f - 2.0f * (x2 + y2));
         m.set(3, 3, 1);
         return m;
+    }
+
+    public void fillMatrix4(Matrix4 m) {
+        float x2 = i * i;
+        float y2 = j * j;
+        float z2 = k * k;
+        float xy = i * j;
+        float xz = i * k;
+        float yz = j * k;
+        float wx = a * i;
+        float wy = a * j;
+        float wz = a * k;
+        m.set(0, 0, 1.0f - 2.0f * (y2 + z2));
+        m.set(1, 0, 2.0f * (xy - wz));
+        m.set(2, 0, 2.0f * (xz + wy));
+        m.set(0, 1, 2.0f * (xy + wz));
+        m.set(1, 1, 1.0f - 2.0f * (x2 + z2));
+        m.set(2, 1, 2.0f * (yz - wx));
+        m.set(0, 2, 2.0f * (xz - wy));
+        m.set(1, 2, 2.0f * (yz + wx));
+        m.set(2, 2, 1.0f - 2.0f * (x2 + y2));
+        m.set(3, 3, 1);
     }
 
     public Matrix3 toMatrix3() {
@@ -284,5 +306,26 @@ public class Quaternionf implements Serializable {
                 ", j=" + j +
                 ", k=" + k +
                 '}';
+    }
+
+    public static void copy(Quaternionf from, Quaternionf to) {
+        to.a = from.a;
+        to.i = from.i;
+        to.j = from.j;
+        to.k = from.k;
+    }
+
+    public void copyFrom(Quaternionf from) {
+        this.a = from.a;
+        this.i = from.i;
+        this.j = from.j;
+        this.k = from.k;
+    }
+
+    public void setAijk(float a, float i, float j, float k) {
+        this.a = a;
+        this.i = i;
+        this.j = j;
+        this.k = k;
     }
 }

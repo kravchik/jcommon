@@ -153,7 +153,8 @@ TOKEN : /* IDENTIFIERS */
        "\u3400"-"\u3d2d",
        "\u4e00"-"\u9fff",
        "\uf900"-"\ufaff",
-       "."
+       ".",
+       "^"
       ]
   >
 |

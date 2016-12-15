@@ -1,6 +1,7 @@
 package yk.jcommon.fastgeom;
 
 import yk.jcommon.utils.BadException;
+import yk.jcommon.utils.MyMath;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,20 +10,26 @@ import yk.jcommon.utils.BadException;
  * Time: 11:49
  */
 public class Vec3fStatic {
-    public static Vec3f mean(Vec3f... vv) {
-        return sum(vv).div(vv.length);
-    }
+//    public static Vec3f mean(Vec3f... vv) {
+//        return sum(vv).div(vv.length);
+//    }
+//
+//    public static Vec3f sum(Vec3f... vv) {
+//        float x = 0;
+//        float y = 0;
+//        float z = 0;
+//        for (int i = 0; i < vv.length; i++) {
+//            x += vv[i].x;
+//            y += vv[i].y;
+//            z += vv[i].z;
+//        }
+//        return new Vec3f(x, y, z);
+//    }
 
-    public static Vec3f sum(Vec3f... vv) {
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        for (int i = 0; i < vv.length; i++) {
-            x += vv[i].x;
-            y += vv[i].y;
-            z += vv[i].z;
-        }
-        return new Vec3f(x, y, z);
+    public static void copy(Vec3f from, Vec3f to) {
+        to.x = from.x;
+        to.y = from.y;
+        to.z = from.z;
     }
 
     public static void sub(Vec3f a, Vec3f b, Vec3f result) {
@@ -95,6 +102,12 @@ public class Vec3fStatic {
         a.x = a.x * b;
         a.y = a.y * b;
         a.z = a.z * b;
+    }
+
+    public static void mix(Vec3f a, Vec3f b, float progress, Vec3f result) {
+        result.x = MyMath.mix(a.x, b.x, progress);
+        result.y = MyMath.mix(a.y, b.y, progress);
+        result.z = MyMath.mix(a.z, b.z, progress);
     }
 
     public static void div(Vec3f a, Vec3f b, Vec3f result) {

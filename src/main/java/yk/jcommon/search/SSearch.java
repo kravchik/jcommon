@@ -80,6 +80,7 @@ abstract public class SSearch<STATE> implements Comparator<SSearch.Node<STATE>>,
         for (STATE next : nexts) {
             Node newNode = new Node(node, next);
             newNode.value = evaluate(newNode);
+            if (!isValid(newNode)) continue;
             if (!seen.containsKey(next) || seen.get(next).value < newNode.value) {
                 seen.put(next, newNode);
                 edge.add(newNode);

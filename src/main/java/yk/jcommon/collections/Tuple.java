@@ -30,16 +30,27 @@ public class Tuple<A, B> {
 
         Tuple tuple = (Tuple) o;
 
-        if (a != null ? !a.equals(tuple.a) : tuple.a != null) return false;
-        if (b != null ? !b.equals(tuple.b) : tuple.b != null) return false;
+        if (a != null) {
+            if (!a.equals(tuple.a)) return false;
+        } else {
+            if (tuple.a != null) return false;
+        }
+        if (b != null) {
+            if (!b.equals(tuple.b)) return false;
+        } else {
+            if (tuple.b != null) return false;
+        }
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = a != null ? a.hashCode() : 0;
-        result = 31 * result + (b != null ? b.hashCode() : 0);
+        int result;
+        if (a != null) result = a.hashCode();
+        else result = 0;
+        if (b != null) result = 31 * result + b.hashCode();
+        else result = 31 * result + 0;
         return result;
     }
 }

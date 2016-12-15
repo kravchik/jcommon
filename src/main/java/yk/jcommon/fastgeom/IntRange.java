@@ -9,6 +9,9 @@ public class IntRange implements Serializable {
     public int min;
     public int max;
 
+    public IntRange() {
+    }
+
     public IntRange(int value) {
         this(value, value);
     }

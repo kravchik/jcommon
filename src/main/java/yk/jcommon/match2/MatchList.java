@@ -15,7 +15,7 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Date: 28/08/16
  * Time: 11:14
  */
-public class MatchList implements MatchCustom {
+public class MatchList implements MatchCustom {//TODO rename?
     public YList pattern;
 
     public MatchList(YList pattern) {

@@ -2,8 +2,8 @@ package yk.jcommon.collections;
 
 import org.junit.Test;
 
-import static yk.jcommon.collections.YArrayList.al;
 import static junit.framework.Assert.assertEquals;
+import static yk.jcommon.collections.YArrayList.al;
 
 public class TestCollections {
 
@@ -11,7 +11,7 @@ public class TestCollections {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         System.out.println(all.shuffle(all)
                 .map(p -> p.toSet().toList().sorted().toString())
-                .toSet().toList().sorted().toString("", "\n"));
+                .toSet().toList().sorted().toStringPrefixInfix("", "\n"));
     }
 
     @Test
