@@ -23,9 +23,9 @@ public class MatchList implements MatchCustom {//TODO rename?
     }
 
     @Override
-    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, YMap<String, Object> cur) {
+    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, Object pattern, YMap<String, Object> cur) {
         if (!(data instanceof List)) return hs();
-        return matchRest(matcher, data instanceof YList ? (YList) data : toYList((List) data), pattern, cur);
+        return matchRest(matcher, data instanceof YList ? (YList) data : toYList((List) data), this.pattern, cur);
     }
 
     public static YSet<YMap<String, Object>> matchRest(Matcher matcher, YList data, YList pattern, YMap<String, Object> cur) {

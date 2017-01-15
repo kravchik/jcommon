@@ -54,9 +54,9 @@ public class MyMath {
     }
 
     //only [0..2PI) angles are accepted
-    public static float mixAngle02PI(float a, float b, float mix) {
-        if (b > a) return b - a > PI ? angleNormalize02PI(mix(a + 2 * PI, b, mix)) : mix(a, b, mix);
-        return a - b > PI ? angleNormalize02PI(mix(a, b + 2 * PI, mix)) : mix(a, b, mix);
+    public static float mixAngle02PI(float a, float b, float progress) {
+        if (b > a) return b - a > PI ? angleNormalize02PI(mix(a + 2 * PI, b, progress)) : mix(a, b, progress);
+        return a - b > PI ? angleNormalize02PI(mix(a, b + 2 * PI, progress)) : mix(a, b, progress);
     }
 
     //only [0..2PI) angles are accepted

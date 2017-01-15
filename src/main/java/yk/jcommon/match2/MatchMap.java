@@ -25,14 +25,14 @@ public class MatchMap implements MatchCustom {
     }
 
     @Override
-    public YSet<YMap<String, Object>> match(Matcher matcher, Object dObj, YMap<String, Object> cur) {
+    public YSet<YMap<String, Object>> match(Matcher matcher, Object dObj, Object pattern, YMap<String, Object> cur) {
         if (!(dObj instanceof Map)) return hs();
         Map data = (Map) dObj;
-        if (!data.keySet().containsAll(pattern.keySet())) return hs();
+        if (!data.keySet().containsAll(this.pattern.keySet())) return hs();
 
         YSet<YMap<String, Object>> last = hs(cur);
-        for (Object pk : pattern.keySet()) {
-            Object pv = pattern.get(pk);
+        for (Object pk : this.pattern.keySet()) {
+            Object pv = this.pattern.get(pk);
             Object dv = data.get(pk);
 
             YSet<YMap<String, Object>> newResult = hs();
@@ -41,7 +41,7 @@ public class MatchMap implements MatchCustom {
         }
         YSet<YMap<String, Object>> result = hs();
         if (other != null) {
-            YMap otherData = toYMap(data).without(pattern.keySet());
+            YMap otherData = toYMap(data).without(this.pattern.keySet());
             for (YMap<String, Object> map : last) {
                 result.addAll(matcher.match(otherData, other, map));
             }

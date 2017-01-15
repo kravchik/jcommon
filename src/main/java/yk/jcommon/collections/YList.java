@@ -23,6 +23,9 @@ import static yk.jcommon.collections.YArrayList.al;
 public interface YList<T> extends YCollection<T>, List<T> {
     //TODO nTimes
 
+    @Override//TODO remove (currently needed for cs translator)
+    T get(int index);
+
     YList<T> filter(Predicate<? super T> predicate);
     @Override
     default <R extends T> YList<R> filterByClass(Class<R> clazz) {

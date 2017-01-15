@@ -37,6 +37,8 @@ public class Quaternionf implements Serializable {
     public static Quaternionf fromAxes(Vec3f X, Vec3f Y, Vec3f Z) {
         return fromAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
     }
+    //works like rotation FROM this basis, not TO this basis
+    //use conjug() after this to get TO this basis
     public static Quaternionf fromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) {
         final float trace = xx + yy + zz;
         if (trace >= 0) {
@@ -56,7 +58,20 @@ public class Quaternionf implements Serializable {
             float s2 = 0.5f / s1;
             return new Quaternionf((yx - xy) * s2, (xz + zx) * s2, (zy + yz) * s2, s1 * 0.5f);
         }
+    }
 
+    //http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
+    public static Quaternionf fromTwoVectors(Vec3f u, Vec3f v) {
+        Vec3f w = u.crossProduct(v);
+        Quaternionf result = new Quaternionf(u.dot(v), w.x, w.y, w.z);
+        result.a += result.length();
+        return result.normalized();
+    }
+
+    public static Quaternionf fromTwoUnitVectors(Vec3f u, Vec3f v) {
+        float m = sqrt(2.f + 2.f * u.dot(v));
+        Vec3f w = u.crossProduct(v).mul(1f / m);
+        return new Quaternionf(0.5f * m, w.x, w.y, w.z);
     }
 
     public float a, i, j, k;
@@ -142,6 +157,17 @@ public class Quaternionf implements Serializable {
                 a * q.k + k * q.a + i * q.j - j * q.i);
     }
 
+    public void mulSe(final Quaternionf q) {
+        float newA = a * q.a - i * q.i - j * q.j - k * q.k;
+        float newI = a * q.i + i * q.a + j * q.k - k * q.j;
+        float newJ = a * q.j + j * q.a + k * q.i - i * q.k;
+        float newK = a * q.k + k * q.a + i * q.j - j * q.i;
+        this.a = newA;
+        this.i = newI;
+        this.j = newJ;
+        this.k = newK;
+    }
+
     public float dot(final Quaternionf q) {
         return a * q.a + i * q.i + j * q.j + k * q.k;
     }
@@ -219,9 +245,8 @@ public class Quaternionf implements Serializable {
         return new Quaternionf(a - other.a, i - other.i, j - other.j, k - other.k);
     }
 
-    @Deprecated
     public float length() {
-        return (float) Math.sqrt(a*a+i*i+j*j + k*k);
+        return magnitude();
     }
 
     @Deprecated

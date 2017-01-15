@@ -25,6 +25,9 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Time: 16:54
  */
 public class Matcher {
+    public YMap<Class, MatchCustom> classMatchers = hm();
+    public Matcher() {
+    }
 
     public YSet<YMap<String, Object>> match(Object data, Object pattern) {
         return match(data, pattern, hm());
@@ -36,20 +39,24 @@ public class Matcher {
             return pattern == null ? hs(cur) : hs();
             //TODO variable matches null
         }
+        if (pattern instanceof MatchVar) return match(data, (MatchVar) pattern, cur);
+        if (pattern instanceof MatchVarCalc) return ((MatchVarCalc)pattern).calc(cur);
+        if (pattern instanceof MatchAnd) return matchAnd(data, ((MatchAnd) pattern).elements, cur);
+        if (pattern instanceof MatchNot) return match(data, (MatchNot) pattern, cur);
+        if (pattern instanceof MatchProperty) return match(data, (MatchProperty) pattern, cur);
+        if (pattern instanceof MatchDeeper) return match(data, (MatchDeeper) pattern, cur);
+        if (pattern instanceof MatchAny) return hs(cur);
+        if (pattern instanceof MatchCustom) return ((MatchCustom) pattern).match(this, data, pattern, cur);
+
+        MatchCustom classMatcher = classMatchers.get(data.getClass());
+        if (classMatcher != null) {
+            return classMatcher.match(this, data, pattern, cur);
+        }
         //TODO replace everything with CustomMatch
         //TODO array
         //TODO set
         if (pattern instanceof List) return matchList(data, (List) pattern, cur);
         if (pattern instanceof Map) return matchMap(data, (Map) pattern, cur);
-
-        if (pattern instanceof MatchVarCalc) return ((MatchVarCalc)pattern).calc(cur);
-        if (pattern instanceof MatchAnd) return matchAnd(data, ((MatchAnd) pattern).elements, cur);
-        if (pattern instanceof MatchNot) return match(data, (MatchNot) pattern, cur);
-        if (pattern instanceof MatchVar) return match(data, (MatchVar) pattern, cur);
-        if (pattern instanceof MatchProperty) return match(data, (MatchProperty) pattern, cur);
-        if (pattern instanceof MatchDeeper) return match(data, (MatchDeeper) pattern, cur);
-        if (pattern instanceof MatchAny) return hs(cur);
-        if (pattern instanceof MatchCustom) return ((MatchCustom) pattern).match(this, data, cur);
 
         if (Util.equalsWithNull(data, pattern)) return hs(cur);
         return hs();

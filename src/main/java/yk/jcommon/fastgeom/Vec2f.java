@@ -230,6 +230,11 @@ public final class Vec2f implements Serializable {
         return new Vec2f(x, y);
     }
 
+    public void copyFrom(Vec2f other) {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
     public float dist(Vec2f b) {
         return sub(b).length();
     }

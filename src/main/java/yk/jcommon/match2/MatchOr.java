@@ -21,7 +21,7 @@ public class MatchOr implements MatchCustom {
     }
 
     @Override
-    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, YMap<String, Object> cur) {
+    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, Object pattern, YMap<String, Object> cur) {
         for (Object variant : variants) {
             YSet<YMap<String, Object>> result = matcher.match(data, variant, cur);
             if (result.notEmpty()) return result;

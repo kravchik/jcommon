@@ -43,16 +43,18 @@ Yads2
   () - for classes
   new class is the same as function call, so () is for classes
   "abs((a + b) + abs(c + d))" - need to handle parentheses ("classes without name")
-  [abc (def)] - array of string and nameless class or abc-class?
+    [abc (def)] - array of string and nameless class or abc-class?
     must have a priority - classes first. If in rare need string+class - use ["abc" (def)]... not obvious
     or can we ever have nameless classes? Maybe when we know type by context
   better YadsClass - separate list and map
   more symbols as identifiers
 
+??  {ClassName key:value}
+
 // Set {} for sets, HashMap {} for specific map class, etc...
 references (^?)
-
 "." in name
+
 detect unused imports
 
 move 'class name' to serialization level

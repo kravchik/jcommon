@@ -10,5 +10,5 @@ import yk.jcommon.collections.YSet;
  * Time: 11:02
  */
 public interface MatchCustom {
-    YSet<YMap<String, Object>> match(Matcher matcher, Object data, YMap<String, Object> cur);
+    YSet<YMap<String, Object>> match(Matcher matcher, Object data, Object pattern, YMap<String, Object> cur);
 }

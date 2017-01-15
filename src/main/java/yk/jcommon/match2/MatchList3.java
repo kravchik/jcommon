@@ -36,7 +36,7 @@ public class MatchList3 implements MatchCustom {
     }
 
     @Override
-    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, YMap<String, Object> cur) {
+    public YSet<YMap<String, Object>> match(Matcher matcher, Object data, Object pattern, YMap<String, Object> cur) {
         if (data instanceof List) {
             List l = (List) data;
             Object index = matcher.resolve(this.index, cur);

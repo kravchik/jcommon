@@ -233,6 +233,12 @@ public class Matrix4 {
         set(3, 2, get(3, 2) + v.z);
     }
 
+    public void setTranslation(Vec3f v) {
+        set(3, 0, v.x);
+        set(3, 1, v.y);
+        set(3, 2, v.z);
+    }
+
     public void copyFrom(Matrix4 other) {
         for (int i = 0; i < data.length; i++) data[i] = other.data[i];
     }

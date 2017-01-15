@@ -17,13 +17,10 @@ import static yk.jcommon.utils.Util.sqr;
 public final class Vec3f implements Serializable {
     public float x, y, z;
 
-    public static final Vec3f ZERO = new Vec3f(0, 0, 0);
-
-    public static final Vec3f AXISX = new Vec3f(1, 0, 0);
-
-    public static final Vec3f AXISY = new Vec3f(0, 1, 0);
-
-    public static final Vec3f AXISZ = new Vec3f(0, 0, 1);
+    public static Vec3f ZERO() {return new Vec3f(0, 0, 0);}
+    public static Vec3f AXISX() {return new Vec3f(1, 0, 0);}
+    public static Vec3f AXISY() {return new Vec3f(0, 1, 0);}
+    public static Vec3f AXISZ() {return new Vec3f(0, 0, 1);}
 
     public Vec3f() {
     }
@@ -136,6 +133,22 @@ public final class Vec3f implements Serializable {
 
     public Vec3f mirror(Vec3f around) {
         return sub(around).mul(-1).add(around);
+    }
+
+    public Vec3f getXFor(Vec3f normalizedAxis) {
+        return normalizedAxis.mul(normalizedAxis.scalarProduct(this));
+    }
+
+    public Vec3f getYFor(Vec3f normalizedAxis) {
+        return this.sub(getXFor(normalizedAxis));
+    }
+
+    public Vec3f normalTo(Vec3f normalizedAxis) {
+        Vec3f normal = getYFor(normalizedAxis);
+        if (normal.lengthSquared() > 0.00001f) {
+            return normal.normalized();
+        }
+        return null;
     }
 
     public Vec2f getXy() {

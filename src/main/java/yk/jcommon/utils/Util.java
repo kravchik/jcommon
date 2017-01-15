@@ -396,4 +396,16 @@ public class Util {
     public static String capitalize(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
+
+    public static String getSrcFile(String dir, Class c) {
+        return dir + c.getCanonicalName().replace(".", "/") + ".java";
+    }
+
+    public static String getSrcFile_src(Class c) {
+        return getSrcFile("src/", c);
+    }
+
+    public static String getSrcFile_src_main_java(Class c) {
+        return getSrcFile("src/main/java/", c);
+    }
 }
