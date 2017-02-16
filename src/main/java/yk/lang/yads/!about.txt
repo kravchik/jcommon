@@ -42,13 +42,25 @@ Yads2
   {} - for maps
   () - for classes
   new class is the same as function call, so () is for classes
-  "abs((a + b) + abs(c + d))" - need to handle parentheses ("classes without name")
-    [abc (def)] - array of string and nameless class or abc-class?
-    must have a priority - classes first. If in rare need string+class - use ["abc" (def)]... not obvious
+  "abs((a + b) + abs(c + d))" - need to handle parentheses ("classes without name"?)
+  [abc (def)] - array of string and nameless class or array with instance of abc class?
+    must have a priority - classes first. If in rare need string+nameless-class - use ["abc" (def)]... not obvious
     or can we ever have nameless classes? Maybe when we know type by context
+    or can we ever have nameless classes IN ARRAYS? only for strict-type arrays
+  Class(x): x is pares? list of args?
+    Vec3f(x y) is args for constructor
+      Some(x y (z)) "x, y(z)" or "x, y, (z)"?
+  ? Class{} - for fields values
+  ? Class[] - for "setList" (some default function for GUI)
+  ? Class() - for constructor args
+  ? VBox{width=10 height=10}[element1 element2]
+    [VBox(){}[]] is [class, array] or [class] or [class, map, array]?
+
   better YadsClass - separate list and map
   more symbols as identifiers
+  parentheses
 
+?? [:] - map  (or (:) )
 ??  {ClassName key:value}
 
 // Set {} for sets, HashMap {} for specific map class, etc...
