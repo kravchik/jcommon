@@ -1,0 +1,3 @@
+
+06.03.17
+FileWatcher2 - more stable simple file watching
