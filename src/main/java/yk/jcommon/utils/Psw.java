@@ -1,9 +1,12 @@
 package yk.jcommon.utils;
 
-import java.util.List;
-import java.util.Random;
+import yk.jcommon.collections.YList;
 
-import static yk.jcommon.utils.Util.list;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.List;
+
+import static yk.jcommon.collections.YArrayList.al;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,80 +14,66 @@ import static yk.jcommon.utils.Util.list;
  * Date: 8/11/14
  * Time: 3:18 PM
  */
+//https://security.stackexchange.com/questions/15653/recommend-length-for-wi-fi-psk
+//One very important caveat: There are other issues as well, beyond password length.
+// It is very important that you turn off WPS, as WPS has major security holes.
+// Also, I recommend that you use WPA2; avoid WPA-TKIP, and never use WEP.
 public class Psw {
+    public static YList<String> EXCLUDE = al("O", "0", "I", "l");
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        //numbers + letters + LETTERS
+        //    8 symbols = good for wifi, reasonable for desktop
+        //   12 symbols = too good for wifi, good for desktop
+        //   16 symbols = too good for wifi, good for big finances
+
+        //Random rnd = new Random(System.nanoTime());
+        SecureRandom rnd = new SecureRandom();
+        //SecureRandom rnd = SecureRandom.getInstanceStrong();// hangs on my system
         for (int i = 0; i < 5; i++) {
-            gen();
+            gen(rnd, 8, ".");
             System.out.println();
         }
     }
 
-    private static void gen() {
-        Random rnd = new Random(System.nanoTime());
+    private static void gen(SecureRandom random, int length, String separator) throws NoSuchAlgorithmException {
+
 
         String numbers = "0123456789";
-        //String NUMBERS = "!@#$%^&*()";
-        String letters = low();
-        String LETTERS = high();
+        String NUMBERS = "!@#$%^&*()";
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        String LETTERS = letters.toUpperCase();
 
-        List<String> ss = list(
-//                numbers,
+        List<String> ss = al(
+                numbers,
                 //NUMBERS,
                 letters,
                 LETTERS
         );
         String s = "";
         for (String sss : ss) s += sss;
+        for (String e : EXCLUDE) s = s.replace(e, "");
 
-        List<String> chars = list();
-        for (int i = 0; i < 16; i++) chars.add(s.charAt(rnd.nextInt(s.length())) + "");
+        List<String> chars = al();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(s.length());
+            chars.add(s.charAt(index) + "");
+        }
 
-        System.out.println();
-//        for (int i = 0; i < chars.size(); i++) {
-//            String c = chars.get(i);
-//            if (numbers.contains(c)) {
-//                System.out.print("_");
-//            } else {
-//                System.out.print(" ");
-//            }
-//            if (i % 4 == 3) System.out.print(" ");
-//        }
-        System.out.println();
+        System.out.print(toString(chars, separator));
+//        System.out.println();
+//        System.out.print(toString(chars, separator) + "                            " + toString(chars, separator));
+//        System.out.println();
+    }
+    private static String toString(List<String> chars, String separator) {
+        String result = "";
         for (int i = 0; i < chars.size(); i++) {
             String c = chars.get(i);
-            System.out.print(c);
-            if (i % 4 == 3) System.out.print(" ");
+            result += c;
+            if (i % 4 == 3 && i < chars.size() - 1) result += separator;
         }
-        System.out.print("                            ");
-        for (int i = 0; i < chars.size(); i++) {
-            String c = chars.get(i);
-            System.out.print(c);
-            if (i % 4 == 3) System.out.print(" ");
-        }
-        System.out.println();
-//        for (int i = 0; i < chars.size(); i++) {
-//            String c = chars.get(i);
-//            if (rnd.nextBoolean()) {
-//                System.out.print("*");
-//            } else {
-//                System.out.print(" ");
-//            }
-//            if (i % 4 == 3) System.out.print(" ");
-//        }
+        return result;
     }
-
-    private static String high() {
-        String s = "";
-        for (char ch = 'A'; ch <= 'Z'; ++ch) s += ch;
-        return s;
-    }
-
-    private static String low() {
-        String s = "";
-        for (char ch = 'a'; ch <= 'z'; ++ch) s += ch;
-        return s;
-    }
-
 
 }
