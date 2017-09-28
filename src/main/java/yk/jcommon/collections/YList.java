@@ -67,6 +67,12 @@ public interface YList<T> extends YCollection<T>, List<T> {
     YList<T> cdr();
     YList<T> with(Collection<T> c);
     YList<T> with(T t);
+    default YList<T> withAt(int index, T t) {
+        YList<T> result = al();
+        result.addAll(this);
+        result.set(index, t);
+        return result;
+    }
     @SuppressWarnings("unchecked")
     YList<T> with(T... t);
     YList<T> without(Collection<T> c);
