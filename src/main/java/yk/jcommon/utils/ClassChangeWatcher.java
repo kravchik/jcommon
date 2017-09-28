@@ -16,7 +16,7 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Time: 20:27
  */
 public class ClassChangeWatcher<T> {
-    public YList<FileWatcher> fileWatchers = al();
+    public YList<FileWatcher2> fileWatchers = al();
     public T dst;
     public String path;
     private YSet<String> classes;
@@ -29,7 +29,7 @@ public class ClassChangeWatcher<T> {
         ClassChangeWatcher<T> result = new ClassChangeWatcher<>();
         result.classes = hs(o.getClass().getName());
         result.classes.addAll(al(otherClasses).map(Class::getName));
-        for (String c : result.classes) result.fileWatchers.add(new FileWatcher(path + c.replace(".", "/") + ".class"));
+        for (String c : result.classes) result.fileWatchers.add(new FileWatcher2(path + c.replace(".", "/") + ".class"));
         result.path = path;
         result.dst = o;
         return result;
@@ -37,7 +37,7 @@ public class ClassChangeWatcher<T> {
 
     public boolean reload() {
         File oldJar = new File(path);
-        boolean changed = fileWatchers.reduce(false, (a, b) -> b.isChanged() || a);
+        boolean changed = fileWatchers.reduce(false, (a, b) -> b.isJustChanged() || a);
         //TODO wait timeout if many files?
         if (changed) {
             try {
