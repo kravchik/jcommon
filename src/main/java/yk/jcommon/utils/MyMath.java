@@ -72,8 +72,9 @@ public class MyMath {
         return (float) sin(acos(clamp(progress, 0, 1) * 2 - 1));
     }
 
-
-
+    public static float sqr(float v) {
+        return v * v;
+    }
 
 
     //gglsl auto generated text
