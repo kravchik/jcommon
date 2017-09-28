@@ -7,7 +7,7 @@ package yk.jcommon.utils;
  * Time: 20:29
  */
 public class Tab {
-    private String incer;
+    public String incer;
     private String tab = "";
 
     public Tab() {
@@ -36,15 +36,6 @@ public class Tab {
     }
 
     public void dec() {
-        tab = tab.substring(0, tab.length() - incer.length());
-    }
-
-    //WARNING! use dec with the same value!
-    public void inc(String incer) {
-        tab += incer;
-    }
-
-    public void dec(String incer) {
         tab = tab.substring(0, tab.length() - incer.length());
     }
 
