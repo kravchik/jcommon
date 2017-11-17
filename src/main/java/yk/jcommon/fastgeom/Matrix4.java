@@ -250,8 +250,8 @@ public class Matrix4 {
         result.set(2, 2, -2/(f-n));
         result.set(3, 3, 1);
 
-        result.set(3, 0, -(r+l)/(r-l));
-        result.set(3, 1, -(t+b)/(t-b));
+        result.set(3, 0, -(r+l-1)/(r-l));//-1 is to make pixel coordinates [0, w) instead of (0, w]
+        result.set(3, 1, -(t+b-1)/(t-b));
         result.set(3, 2, -(f+n)/(f-n));
         return result;
     }
