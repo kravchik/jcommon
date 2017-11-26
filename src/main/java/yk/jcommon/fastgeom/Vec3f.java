@@ -182,6 +182,43 @@ public final class Vec3f implements Serializable {
         this.z = z;
     }
 
+    public Vec3f getXForHorizontalAxis(Vec3f normalizedAxis) {
+        return normalizedAxis.mul(normalizedAxis.scalarProduct(this));
+    }
+
+    public Vec3f getYForHorizontalAxis(Vec3f normalizedAxis) {
+        return this.sub(this.getXForHorizontalAxis(normalizedAxis));
+    }
+
+    public Vec3f getXForVerticalAxis(Vec3f normal) {
+        return this.getYForHorizontalAxis(normal);
+    }
+
+    public Vec3f getYForVerticalAxis(Vec3f normal) {
+        return this.getXForHorizontalAxis(normal);
+    }
+
+    public Vec3f withSetX(float value) {
+        return new Vec3f(value, y, z);
+    }
+    public Vec3f withSetY(float value) {
+        return new Vec3f(x, value, z);
+    }
+    public Vec3f withSetZ(float value) {
+        return new Vec3f(x, y, value);
+    }
+
+    public Vec3f limit(float max) {
+        float l = this.length();
+        return l > max ? this.normalized(max) : this;
+    }
+
+    public Vec3f limit(Vec3f center, float max) {
+        return (this.sub(center)).limit(max).add(center);
+    }
+
+
+
     //gglsl auto generated text
 public Vec3f plus(Vec3f arg1) {return Vec3f.v3((float)this.x+(float)arg1.x, (float)this.y+(float)arg1.y, (float)this.z+(float)arg1.z);}
 public Vec3f plus(float arg1) {return Vec3f.v3((float)this.x+(float)arg1, (float)this.y+(float)arg1, (float)this.z+(float)arg1);}
