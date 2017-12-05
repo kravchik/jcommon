@@ -31,6 +31,17 @@ public class Tab {
         this.incer = incer;
     }
 
+    public String preInc() {
+        String result = tab;
+        inc();
+        return result;
+    }
+
+    public String postDec() {
+        dec();
+        return tab;
+    }
+
     public void inc() {
         tab += incer;
     }
