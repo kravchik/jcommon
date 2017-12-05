@@ -6,44 +6,38 @@ package yk.jcommon.utils;
  * Time: 11:28 PM
  */
 public class StopWatch {
-    private long count;
+    private long lastCount;
     private long start;
 
     public StopWatch() {
         start();
     }
 
-    public int getCurrent() {
-        return (int) (System.currentTimeMillis() - start);
-    }
-
     public void start() {
         start = System.currentTimeMillis();
     }
 
-    public String restart() {
-        String result = stop();
-        count = 0;
-        start();
-        return result;
+    public void stop() {
+        lastCount = System.currentTimeMillis() - start;
     }
 
-    @Deprecated
-    public String stop() {
-        count += System.currentTimeMillis() - start;
-        return null;
+    public void restart() {
+        long cur = System.currentTimeMillis();
+        lastCount = cur - start;
+        start = cur;
     }
 
-    public void justStop() {
-        count += System.currentTimeMillis() - start;
+    public long getLastCount() {
+        return lastCount;
     }
 
-    public long getCount() {
-        return count;
+    public String getCurrentTime() {
+        return "" + (System.currentTimeMillis() - start) / 1000f + "s";
     }
 
     @Override
     public String toString() {
-        return "" + count / 1000f + "s";
+        return "" + lastCount / 1000f + "s";
     }
+
 }
