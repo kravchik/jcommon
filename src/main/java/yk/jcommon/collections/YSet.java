@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YHashSet.*;
+import static yk.jcommon.collections.YHashSet.hs;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +37,12 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
     @SuppressWarnings("unchecked")
     default YSet<T> without(T... tt) {
         return without(hs(tt));
+    }
+
+    default YSet<T> intersection(YSet<T> other) {
+        YSet<T> result = hs();
+        for (T t : this) if (other.contains(t))result.add(t);
+        return result;
     }
 
     @Override
