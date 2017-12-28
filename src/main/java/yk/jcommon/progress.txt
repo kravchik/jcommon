@@ -8,7 +8,7 @@ password tuning (exception characters, refactoring, info)
 18.07.17
 password tuning (secure random)
 
-
+28.12.17
+separated yincubator
 
 //TODO
-extract collections into different lib
