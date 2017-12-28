@@ -4,7 +4,7 @@
 
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.120-SNAPSHOT</version>
+    <version>0.121</version>
 
     <packaging>jar</packaging>
     <name>jcommon</name>
@@ -112,7 +112,7 @@
 
         <repository>
             <id>snapshot</id>
-            <url>file://${basedir}/../mvn-repo</url>
+            <url>file://${basedir}/../../../2/public/mvn-repo</url>
         </repository>
     </distributionManagement>
 

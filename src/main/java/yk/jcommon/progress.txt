@@ -1,3 +1,14 @@
 
 06.03.17
 FileWatcher2 - more stable simple file watching
+
+18.07.17
+password tuning (exception characters, refactoring, info)
+
+18.07.17
+password tuning (secure random)
+
+
+
+//TODO
+extract collections into different lib

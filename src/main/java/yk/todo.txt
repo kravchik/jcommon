@@ -1,0 +1,5 @@
+
+
+expose ASerializer
+don't generate empty serealize/deserialize methods
+implement ABroadSerializer
