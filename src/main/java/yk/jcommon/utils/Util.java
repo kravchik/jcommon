@@ -1,7 +1,6 @@
 package yk.jcommon.utils;
 
 import org.apache.commons.lang3.text.translate.*;
-import yk.jcommon.fastgeom.Vec2f;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -297,34 +296,6 @@ public class Util {
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    //TODO move to MyMath
-    public static Vec2f cross(Vec2f A, Vec2f B) {
-        if (A == null || B == null) return null;
-        float a = A.x;
-        float c = A.y;
-        float b = B.x;
-        float d = B.y;
-        if (a - b == 0) return null;
-        float ra = (d - c) / (a - b);
-        float rb = a * ra + c;
-        return new Vec2f(ra, rb);
-    }
-
-    //TODO move to MyMath
-    /*
-     * Convert line stated as point and normal to y=ax+b form
-     */
-    public static Vec2f pn2ab(Vec2f p, Vec2f n) {
-        if (n.y == 0) return null;
-        return new Vec2f(-n.x / n.y, n.x/n.y*p.x + p.y);
-    }
-
-    private static void testCrossing() {
-        System.out.println(cross(pn2ab(new Vec2f(-1, 0), new Vec2f(-1, 1).normalized()), pn2ab(new Vec2f(1, 0), new Vec2f(1, 1).normalized())));
-        System.out.println(cross(pn2ab(new Vec2f(0, 1), new Vec2f(0, 1).normalized()), pn2ab(new Vec2f(1, 0), new Vec2f(1, 1).normalized())));
-
     }
 
     private static final String s = " auto generated text";
