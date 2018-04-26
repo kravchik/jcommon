@@ -198,4 +198,19 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         for (int i = this.size() - 1; i >= 0; i--) result.add(get(i));
         return result;
     }
+
+    /**
+     * Removes last component and sets it in place of required. It allows to make remove without array copy.
+     */
+    public T removeFast(int i) {
+        if (i < 0 || i >= size()) throw new IndexOutOfBoundsException(i + " (list size: "+ size() + ")");
+        T old = get(i);
+        if (i < size() - 1) {
+            T last = remove(size() - 1);
+            set(i, last);
+        } else {
+            remove(i);
+        }
+        return old;
+    }
 }
