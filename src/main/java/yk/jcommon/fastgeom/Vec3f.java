@@ -5,9 +5,9 @@
  */
 package yk.jcommon.fastgeom;
 
-import java.io.Serializable;
+import yk.jcommon.utils.MyMath;
 
-import static yk.jcommon.utils.Util.sqr;
+import java.io.Serializable;
 
 /**
  * Vec3
@@ -25,15 +25,196 @@ public final class Vec3f implements Serializable {
     public Vec3f() {
     }
 
+    //common auto generated text
     public Vec3f(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public static Vec3f v3(final float x, final float y, final float z) {
+    public static Vec3f v3(float x, float y, float z) {
         return new Vec3f(x, y, z);
     }
+
+    public Vec3f(Vec3f other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
+    }
+
+    public void copyFrom(Vec3f other) {
+        x = other.x;
+        y = other.y;
+        z = other.z;
+    }
+
+    public Vec3f add(Vec3f other) {
+        return new Vec3f(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
+
+    public Vec3f add(float scalar) {
+        return new Vec3f(x + scalar, y + scalar, z + scalar);
+    }
+
+    public Vec3f add(float x, float y, float z) {
+        return new Vec3f(this.x + x, this.y + y, this.z + z);
+    }
+
+    public void seAdd(Vec3f other) {
+        x = x + other.x;
+        y = y + other.y;
+        z = z + other.z;
+    }
+
+    public void seAdd(float scalar) {
+        x = x + scalar;
+        y = y + scalar;
+        z = z + scalar;
+    }
+
+    public void seAdd(float x, float y, float z) {
+        this.x = this.x + x;
+        this.y = this.y + y;
+        this.z = this.z + z;
+    }
+
+    public Vec3f sub(Vec3f other) {
+        return new Vec3f(this.x - other.x, this.y - other.y, this.z - other.z);
+    }
+
+    public Vec3f sub(float scalar) {
+        return new Vec3f(x - scalar, y - scalar, z - scalar);
+    }
+
+    public Vec3f sub(float x, float y, float z) {
+        return new Vec3f(this.x - x, this.y - y, this.z - z);
+    }
+
+    public void seSub(Vec3f other) {
+        x = x - other.x;
+        y = y - other.y;
+        z = z - other.z;
+    }
+
+    public void seSub(float scalar) {
+        x = x - scalar;
+        y = y - scalar;
+        z = z - scalar;
+    }
+
+    public void seSub(float x, float y, float z) {
+        this.x = this.x - x;
+        this.y = this.y - y;
+        this.z = this.z - z;
+    }
+
+    public Vec3f mul(Vec3f other) {
+        return new Vec3f(this.x * other.x, this.y * other.y, this.z * other.z);
+    }
+
+    public Vec3f mul(float scalar) {
+        return new Vec3f(x * scalar, y * scalar, z * scalar);
+    }
+
+    public Vec3f mul(float x, float y, float z) {
+        return new Vec3f(this.x * x, this.y * y, this.z * z);
+    }
+
+    public void seMul(Vec3f other) {
+        x = x * other.x;
+        y = y * other.y;
+        z = z * other.z;
+    }
+
+    public void seMul(float scalar) {
+        x = x * scalar;
+        y = y * scalar;
+        z = z * scalar;
+    }
+
+    public void seMul(float x, float y, float z) {
+        this.x = this.x * x;
+        this.y = this.y * y;
+        this.z = this.z * z;
+    }
+
+    public Vec3f div(Vec3f other) {
+        return new Vec3f(this.x / other.x, this.y / other.y, this.z / other.z);
+    }
+
+    public Vec3f div(float scalar) {
+        return new Vec3f(x / scalar, y / scalar, z / scalar);
+    }
+
+    public Vec3f div(float x, float y, float z) {
+        return new Vec3f(this.x / x, this.y / y, this.z / z);
+    }
+
+    public void seDiv(Vec3f other) {
+        x = x / other.x;
+        y = y / other.y;
+        z = z / other.z;
+    }
+
+    public void seDiv(float scalar) {
+        x = x / scalar;
+        y = y / scalar;
+        z = z / scalar;
+    }
+
+    public void seDiv(float x, float y, float z) {
+        this.x = this.x / x;
+        this.y = this.y / y;
+        this.z = this.z / z;
+    }
+
+    public Vec3f normalized() {
+        float m = 1f / (float)Math.sqrt(x * x + y * y + z * z);
+        return new Vec3f(x * m, y * m, z * m);
+    }
+
+    public Vec3f normalized(float len) {
+        float m = len / (float)Math.sqrt(x * x + y * y + z * z);
+        return new Vec3f(x * m, y * m, z * m);
+    }
+
+    public void seNormalized() {
+        float m = 1f / (float)Math.sqrt(x * x + y * y + z * z);
+        seMul(m);
+    }
+
+    public void seNormalized(float len) {
+        float m = len / (float)Math.sqrt(x * x + y * y + z * z);
+        seMul(m);
+    }
+
+    public float dist(Vec3f other) {
+        return (float)Math.sqrt(MyMath.sqr(other.x - this.x) + MyMath.sqr(other.y - this.y) + MyMath.sqr(other.z - this.z));
+    }
+
+    public float length() {
+        return (float)Math.sqrt(x * x + y * y + z * z);
+    }
+
+    public float lengthSquared() {
+        return x * x + y * y + z * z;
+    }
+
+    public float scalarProduct(Vec3f other) {
+        return x * other.x + y * other.y + z * other.z;
+    }
+
+    public float dot(Vec3f other) {
+        return x * other.x + y * other.y + z * other.z;
+    }
+
+    public String toString() {
+        return "" + x + " " + y + " " + z;
+    }
+
+
+//common auto generated text
+
 
     public static Vec3f v23(Vec2f v, float z) {
         return new Vec3f(v, z);
@@ -43,92 +224,8 @@ public final class Vec3f implements Serializable {
         this(v.x, v.y, z);
     }
 
-    public Vec3f(Vec3f from) {
-        this.x = from.x;
-        this.y = from.y;
-        this.z = from.z;
-    }
-
-    public Vec3f add(final Vec3f b) {
-        return new Vec3f(x + b.x, y + b.y, z + b.z);
-    }
-
-    public Vec3f add(float x, float y, float z) {
-        return new Vec3f(this.x + x, this.y + y, this.z + z);
-    }
-
-    public Vec3f add(float v) {
-        return add(v, v, v);
-    }
-
     public Vec3f crossProduct(final Vec3f b) {
         return new Vec3f(y * b.z - z * b.y, z * b.x - x * b.z, x * b.y - y * b.x);
-    }
-
-    public Vec3f mul(final float b) {
-        return new Vec3f(x * b, y * b, z * b);
-    }
-
-    public Vec3f mul(final Vec3f b) {
-        return new Vec3f(x * b.x, y * b.y, z * b.z);
-    }
-
-    public Vec3f mul(float x, float y, float z) {
-        return new Vec3f(this.x * x, this.y * y, this.z * z);
-    }
-
-    public Vec3f normalized() {
-        return normalized(1);
-    }
-
-    public Vec3f normalized(float r) {
-        final float m = r / length();
-//        if (Float.isNaN(m)) BadException.die("NaN for " + ("x: " + x + " y: " + y + " z: " + z));
-//        if (Float.isInfinite(m)) BadException.die("Infinite for " + ("x: " + x + " y: " + y + " z: " + z));
-        return new Vec3f(x * m, y * m, z * m);
-    }
-
-    public void copyFrom(Vec3f b) {
-        x = b.x;
-        y = b.y;
-        z = b.z;
-    }
-
-    public float scalarProduct(final Vec3f b) {
-        return x * b.x + y * b.y + z * b.z;
-    }
-
-    public float dot(final Vec3f b) {
-        return x * b.x + y * b.y + z * b.z;
-    }
-
-    public Vec3f sub(final Vec3f b) {
-        return new Vec3f(x - b.x, y - b.y, z - b.z);
-    }
-
-    public Vec3f sub(float x, float y, float z) {
-        return new Vec3f(this.x - x, this.y - y, this.z - z);
-    }
-
-    public Vec3f sub(float v) {
-        return sub(v, v, v);
-    }
-
-    @Override
-    public String toString() {
-        return "x: " + x + " y: " + y + " z: " + z;
-    }
-
-    public float dist(Vec3f b) {
-        return (float) Math.sqrt(sqr(b.x - x) + sqr(b.y - y) + sqr(b.z - z));
-    }
-
-    public float length() {
-        return (float) Math.sqrt(x*x+y*y+z*z);
-    }
-
-    public float lengthSquared() {
-        return x*x+y*y+z*z;
     }
 
     public Vec3f mirror(Vec3f around) {
@@ -182,20 +279,12 @@ public final class Vec3f implements Serializable {
         this.z = z;
     }
 
-    public Vec3f getXForHorizontalAxis(Vec3f normalizedAxis) {
+    public Vec3f projectOnAxis(Vec3f normalizedAxis) {
         return normalizedAxis.mul(normalizedAxis.scalarProduct(this));
     }
 
-    public Vec3f getYForHorizontalAxis(Vec3f normalizedAxis) {
-        return this.sub(this.getXForHorizontalAxis(normalizedAxis));
-    }
-
-    public Vec3f getXForVerticalAxis(Vec3f normal) {
-        return this.getYForHorizontalAxis(normal);
-    }
-
-    public Vec3f getYForVerticalAxis(Vec3f normal) {
-        return this.getXForHorizontalAxis(normal);
+    public Vec3f projectOnPlane(Vec3f normalizedAxis) {
+        return this.sub(this.projectOnAxis(normalizedAxis));
     }
 
     public Vec3f withSetX(float value) {
@@ -232,8 +321,8 @@ public Vec3f multiply(Vec3f arg1) {return Vec3f.v3((float)this.x*(float)arg1.x, 
 public Vec3f multiply(float arg1) {return Vec3f.v3((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1);}
 public Vec3f multiply(Float arg1) {return Vec3f.v3((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1);}
 public Vec3f multiply(Number arg1) {return Vec3f.v3((float)this.x*(float)arg1, (float)this.y*(float)arg1, (float)this.z*(float)arg1);}
-public Vec3f div(Vec3f arg1) {return Vec3f.v3((float)this.x/(float)arg1.x, (float)this.y/(float)arg1.y, (float)this.z/(float)arg1.z);}
-public Vec3f div(float arg1) {return Vec3f.v3((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1);}
+//public Vec3f div(Vec3f arg1) {return Vec3f.v3((float)this.x/(float)arg1.x, (float)this.y/(float)arg1.y, (float)this.z/(float)arg1.z);}
+//public Vec3f div(float arg1) {return Vec3f.v3((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1);}
 public Vec3f div(Float arg1) {return Vec3f.v3((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1);}
 public Vec3f div(Number arg1) {return Vec3f.v3((float)this.x/(float)arg1, (float)this.y/(float)arg1, (float)this.z/(float)arg1);}
 public Vec3f radians() {return Vec3f.v3((float)(this.x/180f*Math.PI), (float)(this.y/180f*Math.PI), (float)(this.z/180f*Math.PI));}
