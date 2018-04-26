@@ -33,7 +33,7 @@ public final class Vec4f implements Serializable {
         return new Vec4f(x, y, z, w);
     }
 
-    public static Vec4f v34(Vec3f v3, final float w) {
+    public static Vec4f v4(Vec3f v3, final float w) {
         return new Vec4f(v3, w);
     }
 

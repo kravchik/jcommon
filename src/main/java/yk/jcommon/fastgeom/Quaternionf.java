@@ -79,6 +79,36 @@ public class Quaternionf implements Serializable {
         return qToAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
     }
 
+    //Just the same as qToAxesXY, but Y is main here (Y don't changes direction and X used only for Z calculation)
+    public static Quaternionf qToAxesYX(Vec3f Y, Vec3f X) {
+        Y = Y.normalized();
+        Vec3f Z = X.crossProduct(Y).normalized();
+        X = Y.crossProduct(Z).normalized();
+        return qToAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
+    }
+
+    public static Quaternionf qToAxesXZ(Vec3f X, Vec3f Z) {
+        X = X.normalized();
+        Vec3f Y = Z.crossProduct(X).normalized();
+        Z = X.crossProduct(Y).normalized();
+        return qToAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
+    }
+
+    public static Quaternionf qToAxesYZ(Vec3f Y, Vec3f Z) {
+        Y = Y.normalized();
+        Vec3f X = Y.crossProduct(Z).normalized();
+        Z = X.crossProduct(Y).normalized();
+        return qToAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
+    }
+
+    public static Quaternionf qToAxesZX(Vec3f Z, Vec3f X) {
+        Z = Z.normalized();
+        Vec3f Y = Z.crossProduct(X).normalized();
+        X = Y.crossProduct(Z).normalized();
+        return qToAxes(X.x, X.y, X.z, Y.x, Y.y, Y.z, Z.x, Z.y, Z.z);
+    }
+
+
     public static Quaternionf qToAxesZY(Vec3f Z, Vec3f Y) {
         Z = Z.normalized();
         Vec3f X = Y.crossProduct(Z).normalized();

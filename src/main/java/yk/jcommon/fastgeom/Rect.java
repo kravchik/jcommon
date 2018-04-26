@@ -23,4 +23,12 @@ public class Rect {
     public boolean isInside(int x, int y) {
         return x >= l && x < r && y >= b && y < t;
     }
+
+    public int getWidth() {
+        return r - l;
+    }
+
+    public int getHeight() {
+        return b - t;
+    }
 }

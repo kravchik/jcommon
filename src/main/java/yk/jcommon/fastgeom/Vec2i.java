@@ -20,6 +20,10 @@ public final class Vec2i implements Serializable {
         y = 0;
     }
 
+    public static Vec2i v2i(int x, int y) {
+        return new Vec2i(x, y);
+    }
+
     public Vec2i(int x, int y) {
         this.x = x;
         this.y = y;
