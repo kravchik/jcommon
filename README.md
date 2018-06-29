@@ -2,6 +2,8 @@ jcommon
 =======
 Common utils, abstractions, and tools that I use in my projects. They make Java pleasant.
 
+_There was more code here but it has been moved to [yincubator]()_
+
 ## YCollections
 **yk.jcommon.collections**
 
@@ -44,8 +46,6 @@ Gives result:
 * very convenient
 * resulting code is looking like Xtend's or Scala's but with pure java
 * java8's .stream() I consider not usable
-
-There was more code here but it has been moved to [yincubator]()
 
 ## mvn artifact
 ```xml
