@@ -2,7 +2,7 @@ jcommon
 =======
 Common utils, abstractions, and tools that I use in my projects. They make Java pleasant.
 
-_There was more code here but it has been moved to [yincubator]()_
+_There was more code here but it has been moved to [yincubator](https://github.com/kravchik/yincubator)_
 
 ## YCollections
 **yk.jcommon.collections**
