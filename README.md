@@ -50,7 +50,7 @@ Gives result:
 ## mvn artifact
 ```xml
 <repository>
-   <id>yk.jcommon</id>
+   <id>yk</id>
    <url>https://github.com/kravchik/mvn-repo/raw/master</url>
 </repository>
 
