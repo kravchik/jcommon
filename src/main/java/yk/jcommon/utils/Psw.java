@@ -28,44 +28,53 @@ public class Psw {
         //   12 symbols = too good for wifi, good for desktop
         //   16 symbols = too good for wifi, good for big finances
 
-        //Random rnd = new Random(System.nanoTime());
-        SecureRandom rnd = new SecureRandom();
-        //SecureRandom rnd = SecureRandom.getInstanceStrong();// hangs on my system
-        for (int i = 0; i < 5; i++) {
-            gen(rnd, 8, ".");
-            System.out.println();
-        }
-    }
-
-    private static void gen(SecureRandom random, int length, String separator) throws NoSuchAlgorithmException {
-
-
         String numbers = "0123456789";
         String NUMBERS = "!@#$%^&*()";
         String letters = "abcdefghijklmnopqrstuvwxyz";
         String LETTERS = letters.toUpperCase();
 
-        List<String> ss = al(
+        YList<String> classes = al(
                 numbers,
                 //NUMBERS,
                 letters,
                 LETTERS
         );
-        String s = "";
-        for (String sss : ss) s += sss;
-        for (String e : EXCLUDE) s = s.replace(e, "");
+
+        //Random rnd = new Random(System.nanoTime());
+        SecureRandom rnd = new SecureRandom();
+        //SecureRandom rnd = SecureRandom.getInstanceStrong();// hangs on my system
+        for (int i = 0; i < 5; i++) {
+            gen(rnd, 8, ".", classes);
+            System.out.println();
+        }
+    }
+
+    private static void gen(SecureRandom random, int length, String separator, YList<String> classes) {
+
+        String allSymbols = "";
+        for (String c : classes) allSymbols += c;
+        for (String e : EXCLUDE) allSymbols = allSymbols.replace(e, "");
 
         List<String> chars = al();
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(s.length());
-            chars.add(s.charAt(index) + "");
-        }
+        do {
+            chars.clear();
+            for (int i = 0; i < length; i++) {
+                int index = random.nextInt(allSymbols.length());
+                chars.add(allSymbols.charAt(index) + "");
+
+            }
+        } while(classes.any(s1->!contains(chars, s1)));
 
         System.out.print(toString(chars, separator));
 //        System.out.println();
 //        System.out.print(toString(chars, separator) + "                            " + toString(chars, separator));
 //        System.out.println();
     }
+
+    public static boolean contains(List<String> line, String symbols) {
+        return symbols.chars().anyMatch(c -> line.contains((char) c + ""));
+    }
+
     private static String toString(List<String> chars, String separator) {
         String result = "";
         for (int i = 0; i < chars.size(); i++) {

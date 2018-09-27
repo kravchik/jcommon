@@ -1,7 +1,5 @@
 package yk.jcommon.collections;
 
-import yk.jcommon.utils.BadException;
-
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -35,7 +33,6 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     public static <K, V> YHashMap<K, V> hm(K k, V v, Object... oo) {
         YHashMap result = new YHashMap();
-        if (result.containsKey(k)) BadException.die("repeating key: " + k);
         result.put(k, v);
         for (int i = 0; i < oo.length; i += 2) result.put(oo[i], oo[i + 1]);
         return result;
