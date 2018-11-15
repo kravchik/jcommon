@@ -50,9 +50,10 @@ Gives result:
 ## Changes
 
 ### 15.11.18
-  removed apache commons dependency
 
 ## mvn artifact
+  Removed apache commons dependency!
+
 ```xml
 <repository>
    <id>yk</id>
