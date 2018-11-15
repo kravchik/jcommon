@@ -191,8 +191,8 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
 
     @Override
     public YMap<K, V> with(K k, V v, Object... other) {
-        YMap<K, V> result = with(k, v);
-        for (int i = 0; i < other.length; i += 2) result.put((K) other[i], (V) other[i + 1]);
+        YMap<K, V> result = hm();
+        result.putAll(k, v, other);
         return result;
     }
 

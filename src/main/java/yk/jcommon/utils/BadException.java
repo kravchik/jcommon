@@ -38,6 +38,10 @@ public class BadException extends RuntimeException {
         throw die("not implemented");
     }
 
+    public static BadException notImplemented(String cause) {
+        throw die("not implemented: " + cause);
+    }
+
     public static BadException shouldNeverReachHere() {
         return shouldNeverReachHere("");
     }

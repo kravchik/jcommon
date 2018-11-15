@@ -54,6 +54,11 @@ public interface YMap<K, V> extends Map<K, V> {
 
     YMap<K, V> take(int n);
 
+    default void putAll(K k, V v, Object... other) {
+        put(k, v);
+        for (int i = 0; i < other.length; i += 2) put((K) other[i], (V) other[i + 1]);
+    }
+
     default boolean containsAll(Map<K, V> whom) {
         for (Map.Entry<K, V> entry : whom.entrySet()) {
             if (!containsKey(entry.getKey()) || !get(entry.getKey()).equals(entry.getValue())) return false;

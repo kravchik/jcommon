@@ -1,7 +1,5 @@
 package yk.jcommon.utils;
 
-import org.apache.commons.lang3.text.translate.*;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -314,35 +312,6 @@ public class Util {
     public static <T> T last(List<T> c) {
         return c.get(c.size() - 1);
     }
-
-    public static final CharSequenceTranslator UNESCAPE_YADS_SINGLE_QUOTES =
-     new AggregateTranslator(
-                             new OctalUnescaper(),     // .between('\1', '\377'),
-                             new UnicodeUnescaper(),
-                             new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
-                             new LookupTranslator(
-                                                  new String[][] {
-                                                                  {"\\\\", "\\"},
-                                                                  {"\\'", "'"},
-                                                                  {"\\", ""}
-                                                  })
-     );
-
-    public static final CharSequenceTranslator UNESCAPE_YADS_DOUBLE_QUOTES =
-     new AggregateTranslator(
-                             new OctalUnescaper(),     // .between('\1', '\377'),
-                             new UnicodeUnescaper(),
-                             new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
-                             new LookupTranslator(
-                                                  new String[][] {
-                                                                  {"\\\\", "\\"},
-                                                                  {"\\\"", "\""},
-                                                                  {"\\", ""}
-                                                  })
-     );
-
-    public static final AggregateTranslator ESCAPE_YADS_SINGLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"'", "\\'"}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
-    public static final AggregateTranslator ESCAPE_YADS_DOUBLE_QUOTES = new AggregateTranslator(new LookupTranslator(new String[][]{{"\"", "\\\""}, {"\\", "\\\\"}}), new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE()));
 
     public static boolean equalsWithNull(Object a, Object b) {
         return a == null ? b == null : a.equals(b);
