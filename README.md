@@ -47,10 +47,6 @@ Gives result:
 * resulting code is looking like Xtend's or Scala's but with pure java
 * java8's .stream() I consider not usable
 
-## Changes
-
-### 15.11.18
-
 ## mvn artifact
   Removed apache commons dependency!
 
