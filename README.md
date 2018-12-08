@@ -4,6 +4,9 @@ Common utils, abstractions, and tools that I use in my projects. They make Java 
 
 _There was more code here but it has been moved to [yincubator](https://github.com/kravchik/yincubator)_
 
+_Now, without apache commons dependency!_
+
+
 ## YCollections
 **yk.jcommon.collections**
 
@@ -47,12 +50,8 @@ Gives result:
 * resulting code is looking like Xtend's or Scala's but with pure java
 * java8's .stream() I consider not usable
 
-## Changes
-
-###15.11.18
-  removed apache commons dependency
-
 ## mvn artifact
+
 ```xml
 <repository>
    <id>yk</id>
