@@ -62,8 +62,8 @@ Gives result:
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.121</version>
+    <version>0.122</version>
 </dependency>
 ```
-(current dev version is 0.122-SNAPSHOT)
+(current dev version is 0.123-SNAPSHOT)
 
