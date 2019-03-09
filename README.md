@@ -13,20 +13,22 @@ _Now, without apache commons dependency!_
 2. use YCollections
 3. if (IF) your profiler says you to - then refactor an algorithm with YCollections into ugly but efficient empiric code (fors, side-effects, etc)
 
-YCollections will suffice in most cases.
+They are just extensions of the standard collections - you can use YList everywhere where you use List. Same goes for YArrayList, YSet, YMap, etc.
+
+YCollections will suffice in most cases:
 1. all scripts
 2. 99.9% of an enterprise project
 3. 80% of a game-dev project
 
 It is better to stick with simple and elegant YCollections and optimize small percentage of places, than to suffer (even if you don't know it yet) with streams, and guava (I even not talking about standard collections initialization).
 
-_Why streams are bad._
+_Why streams are bad?_
 1. stream() and collect parts. In YCollections you don't need to collect. Though you too have to convert usual collection or array into YCollection (toYList(someList), al(someArray)), but you don't need to collect them after.
 2. verbosity
 3. you can't ask them to add something (me, you can ask)
 4. premature optimization, complex insides, etc.
 
-_Why Guava is bad.
+_Why Guava is bad?_
 1. ImmutableList.of - you can't static import that. In YCollections you just use al() or toYList() (static import from YArrayList.al() and YArrayList.toYList()) Which leads to elegant and concise code.
 
 
