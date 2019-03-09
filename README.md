@@ -44,7 +44,7 @@ Example 1
             .map(File::getName)                         //get name
             .filter(n -> n.startsWith("."))             //only invisible
             .sorted()                                   //sorted
-            .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
+            .toString(", ");                            //to print fine
     System.out.println(names);
 ```
 Example 2
