@@ -16,9 +16,10 @@ _Now, without apache commons dependency!_
 They are just extensions of the standard collections - you can use YList everywhere where you use List. Same goes for YArrayList, YSet, YMap, etc.
 
 YCollections will suffice in most cases:
-1. all scripts
-2. 99.9% of an enterprise project
-3. 80% of a game-dev project
+1. 99.9% of an enterprise project
+1. 80% of a game-dev project
+1. 100% of scripts
+1. 100% of tests
 
 It is better to stick with simple and elegant YCollections and optimize small percentage of places, than to suffer (even if you don't know it yet) with streams, and guava (I even not talking about standard collections initialization).
 
