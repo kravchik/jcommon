@@ -1,10 +1,37 @@
-jcommon
+# jcommon
+
+## MAKE JAVA GREAT AGAIN
+
 =======
+
 Common utils, abstractions, and tools that I use in my projects. They make Java pleasant.
 
 _There was more code here but it has been moved to [yincubator](https://github.com/kravchik/yincubator)_
 
 _Now, without apache commons dependency!_
+
+=======
+
+**How to MAKE JAVA GREAT AGAIN?**
+1. don't use streams or guava
+2. use YCollections
+3. if (IF) your profiler says you to - then refactor an algorithm with YCollections into ugly but efficient empiric code (fors, side-effects, etc)
+
+YCollections will suffice in most cases.
+1. all scripts
+2. 99.9% of an enterprise project
+3. 80% of a game-dev project
+
+It is better to stick with simple and elegant YCollections and optimize small percentage of places, than to suffer (even if you don't know it yet) with streams, and guava (I even not talking about standard collections initialization).
+
+_Why streams are bad._
+1. stream() and collect parts. In YCollections you don't need to collect. Though you too have to convert usual collection or array into YCollection (toYList(someList), al(someArray)), but you don't need to collect them after.
+2. verbosity
+3. you can't ask them to add something (me, you can ask)
+4. premature optimization, complex insides, etc.
+
+_Why Guava is bad.
+1. ImmutableList.of - you can't static import that. In YCollections you just use al() or toYList() (static import from YArrayList.al() and YArrayList.toYList()) Which leads to elegant and concise code.
 
 
 ## YCollections
