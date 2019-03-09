@@ -23,13 +23,13 @@ YCollections will suffice in most cases:
 It is better to stick with simple and elegant YCollections and optimize small percentage of places, than to suffer (even if you don't know it yet) with streams, and guava (I even not talking about standard collections initialization).
 
 _Why streams are bad?_
-1. stream() and collect parts. In YCollections you don't need to collect. Though you too have to convert usual collection or array into YCollection (toYList(someList), al(someArray)), but you don't need to collect them after.
+1. `stream()` and `collect` parts. In YCollections you don't need to collect. Though you too have to convert usual collection or array into YCollection (`toYList(someList)`, `al(someArray)`). _You can't imagine how nicer your scripts will look!_
 2. verbosity
 3. you can't ask them to add something (me, you can ask)
 4. premature optimization, complex insides, etc.
 
 _Why Guava is bad?_
-1. ImmutableList.of - you can't static import that. In YCollections you just use al() or toYList() (static import from YArrayList.al() and YArrayList.toYList()) Which leads to elegant and concise code.
+1. `ImmutableList.of` - you can't static import that. In YCollections you just use `al()` or `hm()` (static import from `YArrayList.al()` and `YHashMap.hm()`) Which leads to elegant and concise code. _You can't imagine how nicer your tests will look!_
 
 
 ## YCollections
