@@ -11,7 +11,7 @@ public class TestCollections {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         System.out.println(all.eachToEach(all)     //take pares of each to each
                 .map(p -> p                        //rework each pare
-                        .toSet()                   //convert to set to remove "alt alt" and similar
+                        .toSet()                   //  convert to set to remove "alt alt" and similar
                         .sorted()                  //  sort (yes, it is a LinkedHashSet inside)
                         .toString(", ")            //  make a string
                 )
@@ -21,7 +21,7 @@ public class TestCollections {
     }
 
     @Test
-    public void testShuffle() {
+    public void testEachToEach() {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         assertEquals("[[alt, ctrl], [alt, shift], [alt, super], [alt], [ctrl, shift], [ctrl, super], [ctrl], [shift, super], [shift], [super]]"
                 , all.eachToEach(all).map(p -> p.toSet().toList().sorted().toString()).toSet().toList().sorted().toString());

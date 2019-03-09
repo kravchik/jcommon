@@ -52,7 +52,7 @@ Example 2
     YList<String> all = al("shift", "ctrl", "alt", "super");
     System.out.println(all.eachToEach(all)     //take pares of each to each
             .map(p -> p                        //rework each pare
-                    .toSet()                   //convert to set to remove "alt alt" and similar
+                    .toSet()                   //  convert to set to remove "alt alt" and similar
                     .sorted()                  //  sort (yes, it is a LinkedHashSet inside)
                     .toString(", ")            //  make a string
             )
