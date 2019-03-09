@@ -9,21 +9,22 @@ public class TestCollections {
 
     public static void main(String[] args) {
         YList<String> all = al("shift", "ctrl", "alt", "super");
-        System.out.println(all.shuffle(all)
-                .map(p -> p
-                        .toSet()
-                        .sorted()
-                        .toString(", "))
-                .toSet()
-                .sorted()
-                .toString("\n"));
+        System.out.println(all.eachToEach(all)     //take pares of each to each
+                .map(p -> p                        //rework each pare
+                        .toSet()                   //convert to set to remove "alt alt" and similar
+                        .sorted()                  //  sort (yes, it is a LinkedHashSet inside)
+                        .toString(", ")            //  make a string
+                )
+                .toSet()                           //convert to set to remove duplicates ("alt shift", "shift alt")
+                .sorted()                          //sort
+                .toString("\n"));                  //make a result string
     }
 
     @Test
     public void testShuffle() {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         assertEquals("[[alt, ctrl], [alt, shift], [alt, super], [alt], [ctrl, shift], [ctrl, super], [ctrl], [shift, super], [shift], [super]]"
-                , all.shuffle(all).map(p -> p.toSet().toList().sorted().toString()).toSet().toList().sorted().toString());
+                , all.eachToEach(all).map(p -> p.toSet().toList().sorted().toString()).toSet().toList().sorted().toString());
     }
 
     @Test

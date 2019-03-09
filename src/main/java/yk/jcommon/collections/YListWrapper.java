@@ -4,7 +4,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YArrayList.toYList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,7 +60,7 @@ public class YListWrapper<T> implements YList<T> {
     }
 
     @Override
-    public YList<YList<T>> shuffle(YList<T> other) {
+    public YList<YList<T>> eachToEach(YList<T> other) {
         YList<YList<T>> result = al();
         for (T t : l) for (T o : other) result.add(al(t, o));
         return result;
