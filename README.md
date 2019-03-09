@@ -51,8 +51,10 @@ Example 2
 ```java
     YList<String> all = al("shift", "ctrl", "alt", "super");
     System.out.println(all.shuffle(all)
-            .map(p -> p.toSet().toList().sorted().toString())
-            .toSet().toList().sorted().toString("\n"));
+            .map(p -> p.toSet().sorted().toString())
+            .toSet()
+            .sorted()
+            .toString("\n"));
 ```
 Gives result:
 ```
