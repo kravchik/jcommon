@@ -27,6 +27,8 @@ public interface YList<T> extends YCollection<T>, List<T> {
     T get(int index);
 
     YList<T> filter(Predicate<? super T> predicate);
+
+    @SuppressWarnings("unchecked")
     @Override
     default <R extends T> YList<R> filterByClass(Class<R> clazz) {
         return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
@@ -81,7 +83,6 @@ public interface YList<T> extends YCollection<T>, List<T> {
     YList<T> without(T... t);
     YList<T> take(int count);
 
-    @SuppressWarnings("NullableProblems")
     YList<T> subList(int fromIndex, int toIndex);
     T last();
     YList<T> allMin(Comparator<? super T> comparator);
@@ -97,11 +98,11 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return result;
     }
 
-    default public YList<YList<T>> split(Object eq) {
+    default YList<YList<T>> split(Object eq) {
         return split(e -> Util.equalsWithNull(e, eq));
     }
 
-    default public YList<YList<T>> split(Predicate<T> isSplitter) {
+    default YList<YList<T>> split(Predicate<T> isSplitter) {
         YList<YList<T>> result = al();
         YList<T> cur = al();
         for (T l : this) {
@@ -160,13 +161,36 @@ public interface YList<T> extends YCollection<T>, List<T> {
     }
 
     @Override
-    default T max(Function<T, Comparable> evaluator) {
+    default <CMP extends Comparable<CMP>> T max(Function<T, CMP> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
-        T t2 = null;
+        T max = null;
+        CMP maxComparable = null;
         for (int i = 0; i < this.size(); i++) {
-            T t1 = this.get(i);
-            if (t2 == null || evaluator.apply(t1).compareTo(evaluator.apply(t2)) > 0) t2 = t1;
+            T t = this.get(i);
+            CMP nextComparable = evaluator.apply(t);
+            if (nextComparable == null) throw new RuntimeException("evaluator shouldn't return null values");
+            if (maxComparable == null || maxComparable.compareTo(nextComparable) < 0) {
+                max = t;
+                maxComparable = nextComparable;
+            }
         }
-        return t2;
+        return max;
+    }
+
+    @Override
+    default <CMP extends Comparable<CMP>> T min(Function<T, CMP> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
+        T min = null;
+        CMP minComparable = null;
+        for (int i = 0; i < this.size(); i++) {
+            T t = this.get(i);
+            CMP nextComparable = evaluator.apply(t);
+            if (nextComparable == null) throw new RuntimeException("evaluator shouldn't return null values");
+            if (minComparable == null || minComparable.compareTo(nextComparable) >= 0) {
+                min = t;
+                minComparable = nextComparable;
+            }
+        }
+        return min;
     }
 }

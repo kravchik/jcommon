@@ -177,7 +177,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     @Override
     public YList<T> take(int count) {
-        YList result = al();
+        YList<T> result = al();
         for (int i = 0; i < count; i++) {
             if (i >= size()) break;
             result.add(get(i));

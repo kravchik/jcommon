@@ -42,12 +42,14 @@ public class Tab {
         return tab;
     }
 
-    public void inc() {
+    public Tab inc() {
         tab += incer;
+        return this;
     }
 
-    public void dec() {
+    public Tab dec() {
         tab = tab.substring(0, tab.length() - incer.length());
+        return this;
     }
 
     @Override

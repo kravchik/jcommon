@@ -12,11 +12,16 @@ import static yk.jcommon.collections.YArrayList.toYList;
 import static yk.jcommon.collections.YHashMap.hm;
 import static yk.jcommon.collections.YHashSet.toYSet;
 
+//TODO tests and remove suppress UnusedDeclaration
 @SuppressWarnings("UnusedDeclaration")
 public interface YCollection<T> extends Collection<T> {
 
     YCollection<T> filter(Predicate<? super T> predicate);
-    <R extends T> YCollection<R> filterByClass(Class<R> clazz);
+
+    @SuppressWarnings("unchecked")
+    default <R extends T> YCollection<R> filterByClass(Class<R> clazz) {
+        return (YCollection<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
+    }
 
     default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
         YMap<K, YList<T>> result = hm();
@@ -50,13 +55,15 @@ public interface YCollection<T> extends Collection<T> {
             result.add(mapper.apply(i, it.next()));
         }
         return result;
-    };
+    }
+
     <R> YCollection<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
     default <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;
         for (T t : this) result = folder.apply(result, t);
         return result;
     }
+
     default T reduce(BiFunction<T, T, T> folder) {
         if (isEmpty()) return null;
         Iterator<T> i = iterator();
@@ -68,17 +75,24 @@ public interface YCollection<T> extends Collection<T> {
     default T car() {
         return iterator().next();
     }
+
     default T cadr() {
         Iterator<T> iterator = iterator();
         iterator.next();
         return iterator.next();
     }
+
     YCollection<T> cdr();
-    default T first() {return car();}
+
+    default T first() {
+        return car();
+    }
+
     default T first(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.test(t)) return t;
         return null;
     }
+
     default T last(Predicate<? super T> predicate) {
         T result = null;
         for (T t : this) if (predicate.test(t)) result = t;
@@ -88,13 +102,27 @@ public interface YCollection<T> extends Collection<T> {
     default T max() {
         return YCollections.maxFromCollection(this);
     }
+
     default T max(Comparator<? super T> comparator) {
         return YCollections.maxFromCollection(this, comparator);
     }
-    default T max(Function<T, Comparable> evaluator) {
-        return YCollections.maxFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
+
+    default <CMP extends Comparable<CMP>> T max(Function<T, CMP> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T max = null;
+        CMP maxComparable = null;
+        for (T t : this) {
+            CMP nextComparable = evaluator.apply(t);
+            if (nextComparable == null) throw new RuntimeException("evaluator shouldn't return null values");
+            if (maxComparable == null || maxComparable.compareTo(nextComparable) < 0) {
+                max = t;
+                maxComparable = nextComparable;
+            }
+        }
+        return max;
     }
-    default <R extends Comparable> R maxMap(Function<T, R> evaluator) {
+
+    default <R extends Comparable<R>> R maxMap(Function<T, R> evaluator) {
         R max = null;
         for (T t : this) {
             R candidate = evaluator.apply(t);
@@ -102,19 +130,34 @@ public interface YCollection<T> extends Collection<T> {
         }
         return max;
     }
+
     default T min() {
         return YCollections.minFromCollection(this);
     }
+
     default T min(Comparator<? super T> comparator) {
         return YCollections.minFromCollection(this, comparator);
     }
-    default T min(Function<T, Comparable> evaluator) {
-        return YCollections.minFromCollection(this, (t1, t2) -> evaluator.apply(t1).compareTo(evaluator.apply(t2)));
-    }
-    default <R extends Comparable> R minMap(Function<T, R> evaluator) {
-        R min = null;
+
+    default <CMP extends Comparable<CMP>> T min(Function<T, CMP> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
+        T min = null;
+        CMP minComparable = null;
         for (T t : this) {
-            R candidate = evaluator.apply(t);
+            CMP nextComparable = evaluator.apply(t);
+            if (nextComparable == null) throw new RuntimeException("evaluator shouldn't return null values");
+            if (minComparable == null || minComparable.compareTo(nextComparable) >= 0) {
+                min = t;
+                minComparable = nextComparable;
+            }
+        }
+        return min;
+    }
+
+    default <RES extends Comparable<RES>> RES minMap(Function<T, RES> evaluator) {
+        RES min = null;
+        for (T t : this) {
+            RES candidate = evaluator.apply(t);
             min = min == null || min.compareTo(candidate) > 0 ? candidate : min;
         }
         return min;
@@ -123,6 +166,7 @@ public interface YCollection<T> extends Collection<T> {
     default YSet<T> toSet() {
         return toYSet(this);
     }
+
     default YList<T> toList() {
         return toYList(this);
     }
@@ -153,26 +197,26 @@ public interface YCollection<T> extends Collection<T> {
 
     YCollection<T> take(int count);
 
-    default public int count(Predicate<? super T> predicate) {
+    default int count(Predicate<? super T> predicate) {
         int result = 0;
         for (T t : this) if (predicate.test(t)) result++;
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    default public boolean containsAll(T... tt) {
+    default boolean containsAll(T... tt) {
         for (T t : tt) if (!contains(t)) return false;
         return true;
     }
 
     @SuppressWarnings("unchecked")
-    default public boolean containsAny(Collection<? extends T> tt) {
+    default boolean containsAny(Collection<? extends T> tt) {
         for (T t : tt) if (contains(t)) return true;
         return false;
     }
 
     @SuppressWarnings("unchecked")
-    default public boolean containsAny(T... tt) {
+    default boolean containsAny(T... tt) {
         for (T t : tt) if (contains(t)) return true;
         return false;
     }
