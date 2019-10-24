@@ -1,10 +1,36 @@
-jcommon
-=======
+# jcommon
+
+## MAKE JAVA GREAT AGAIN
+
 Common utils, abstractions, and tools that I use in my projects. They make Java pleasant.
 
 _There was more code here but it has been moved to [yincubator](https://github.com/kravchik/yincubator)_
 
 _Now, without apache commons dependency!_
+
+**How to MAKE JAVA GREAT AGAIN?**
+1. don't use streams or guava
+2. use YCollections
+3. if (IF) your profiler says you to - then refactor an algorithm with YCollections into ugly but efficient empiric code (fors, side-effects, etc)
+
+They are just extensions of the standard collections - you can use YList everywhere where you use List. Same goes for YArrayList, YSet, YMap, etc.
+
+YCollections will suffice in most cases:
+1. 99.9% of an enterprise project
+1. 80% of a game-dev project
+1. 100% of scripts
+1. 100% of tests
+
+It is better to stick with simple and elegant YCollections and optimize small percentage of places, than to suffer (even if you don't know it yet) with streams, and guava (I even not talking about standard collections initialization).
+
+_Why streams are bad?_
+1. `stream()` and `collect` parts. In YCollections you don't need to collect. Though you too have to convert usual collection or array into YCollection (`toYList(someList)`, `al(someArray)`). _You can't imagine how nicer your scripts will look!_
+2. verbosity
+3. you can't ask them to add something (me, you can ask)
+4. premature optimization, complex insides, etc.
+
+_Why Guava is bad?_
+1. `ImmutableList.of` - you can't static import that. In YCollections you just use `al()` or `hm()` (static import from `YArrayList.al()` and `YHashMap.hm()`) Which leads to elegant and concise code. _You can't imagine how nicer your tests will look!_
 
 
 ## YCollections
@@ -19,28 +45,34 @@ Example 1
             .map(File::getName)                         //get name
             .filter(n -> n.startsWith("."))             //only invisible
             .sorted()                                   //sorted
-            .foldLeft("", (r, n) -> r + ", " + n);      //to print fine
+            .toString(", ");                            //to print fine
     System.out.println(names);
 ```
 Example 2
 ```java
     YList<String> all = al("shift", "ctrl", "alt", "super");
-    System.out.println(all.shuffle(all)
-            .map(p -> p.toSet().toList().sorted().toString())
-            .toSet().toList().sorted().toString("\n"));
+    System.out.println(all.eachToEach(all)     //take pares of each to each
+            .map(p -> p                        //rework each pare
+                    .toSet()                   //  convert to set to remove "alt alt" and similar
+                    .sorted()                  //  sort (yes, it is a LinkedHashSet inside)
+                    .toString(", ")            //  make a string
+            )
+            .toSet()                           //convert to set to remove duplicates ("alt shift", "shift alt")
+            .sorted()                          //sort
+            .toString("\n"));                  //make a result string
 ```
 Gives result:
 ```
-[alt, ctrl]
-[alt, shift]
-[alt, super]
-[alt]
-[ctrl, shift]
-[ctrl, super]
-[ctrl]
-[shift, super]
-[shift]
-[super]
+alt
+alt, ctrl
+alt, shift
+alt, super
+ctrl
+ctrl, shift
+ctrl, super
+shift
+shift, super
+super
 ```
 
 * each collection extends standard java collection, so you can use it whenever standard collection would else be used
@@ -61,8 +93,8 @@ Gives result:
 <dependency>
     <groupId>yk</groupId>
     <artifactId>jcommon</artifactId>
-    <version>0.121</version>
+    <version>0.122</version>
 </dependency>
 ```
-(current dev version is 0.122-SNAPSHOT)
+(current dev version is 0.123-SNAPSHOT)
 

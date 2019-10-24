@@ -186,7 +186,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public YList<YList<T>> shuffle(YList<T> other) {
+    public YList<YList<T>> eachToEach(YList<T> other) {
         YList<YList<T>> result = al();
         for (T t : this) for (T o : other) result.add(al(t, o));
         return result;

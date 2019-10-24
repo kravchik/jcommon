@@ -44,7 +44,7 @@ public class Psw {
         SecureRandom rnd = new SecureRandom();
         //SecureRandom rnd = SecureRandom.getInstanceStrong();// hangs on my system
         for (int i = 0; i < 5; i++) {
-            gen(rnd, 8, ".", classes);
+            gen(rnd, 16, "", classes);
             System.out.println();
         }
     }

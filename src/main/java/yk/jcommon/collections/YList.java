@@ -86,7 +86,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
     YList<T> subList(int fromIndex, int toIndex);
     T last();
     YList<T> allMin(Comparator<? super T> comparator);
-    YList<YList<T>> shuffle(YList<T> other);
+    YList<YList<T>> eachToEach(YList<T> other);
 
     default void forUniquePares(BiConsumer<T, T> bc) {
         for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) bc.accept(get(i), get(j));
