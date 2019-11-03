@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YArrayList.toYList;
@@ -86,6 +87,16 @@ public interface YCollection<T> extends Collection<T> {
 
     default T first() {
         return car();
+    }
+
+    default T firstOr(T t) {
+        if (isEmpty()) return t;
+        return first();
+    }
+
+    default T firstOrCalc(Supplier<T> supplier) {
+        if (isEmpty()) return supplier.get();
+        return first();
     }
 
     default T first(Predicate<? super T> predicate) {

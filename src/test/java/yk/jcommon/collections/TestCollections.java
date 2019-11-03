@@ -5,6 +5,7 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashSet.hs;
 
 public class TestCollections {
 
@@ -111,18 +112,49 @@ public class TestCollections {
         assertEquals((Integer) 4, c.with(4).min(i -> -i));
     }
 
+    private static void testCommon(YCollection<String> c) {
+        assertEquals("a", c.with("a", "b").firstOr(null));
+        assertEquals("a", c.with("a", "b").first());
+        assertEquals("b", c.with("b").firstOr("c"));
+        assertEquals("b", c.with("b").first());
+        assertEquals("c", c.with().firstOr("c"));
+        assertEquals(null, c.with().firstOr(null));
+        assertEquals("d", c.with().firstOrCalc(() -> "d"));
+        assertEquals("a", c.with("a").firstOrCalc(() -> "d"));
+        try {
+            c.with().first();
+            fail();
+        } catch (Exception ignore) {}
+    }
+
     @Test
     public void testList() {
-        testSort(YArrayList.al());
-        testMax(YArrayList.al());
-        testMin(YArrayList.al());
+        testSort(al());
+        testMax(al());
+        testMin(al());
+        testCommon(al());
+
+        assertEquals("b", al("a", "b").lastOr("c"));
+        assertEquals("b", al("a", "b").last());
+        assertEquals("b", al("b").lastOr("c"));
+        assertEquals("b", al("b").last());
+        assertEquals("c", al().lastOr("c"));
+        assertEquals(null, al().lastOr(null));
+
+        assertEquals("b", al("a", "b").lastOrCalc(() -> "c"));
+        assertEquals("c", al().lastOrCalc(() -> "c"));
+        try {
+            al().last();
+            fail();
+        } catch (Exception ignore) {}
     }
 
     @Test
     public void testSet() {
-        testSort(YHashSet.hs());
-        testMax(YHashSet.hs());
-        testMin(YHashSet.hs());
+        testSort(hs());
+        testMax(hs());
+        testMin(hs());
+        testCommon(hs());
     }
 
 }

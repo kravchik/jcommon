@@ -63,7 +63,8 @@ public class IO {
             throw new Error(e);
         }
     }
-    private static String readFile(FileReader fileReader) throws IOException {BufferedReader br = new BufferedReader(fileReader);
+    private static String readFile(FileReader fileReader) throws IOException {
+        BufferedReader br = new BufferedReader(fileReader);
         String l;
         StringBuilder sb = new StringBuilder();
         while((l = br.readLine()) != null) {
@@ -80,7 +81,8 @@ public class IO {
         }
     }
 
-    private static YList<String> readStrings(FileReader fileReader) throws IOException {BufferedReader br = new BufferedReader(fileReader);
+    private static YList<String> readStrings(FileReader fileReader) throws IOException {
+        BufferedReader br = new BufferedReader(fileReader);
         YList<String> result = al();
         String l;
         while((l = br.readLine()) != null) {

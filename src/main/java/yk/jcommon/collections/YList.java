@@ -10,6 +10,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static yk.jcommon.collections.YArrayList.al;
 
@@ -85,6 +86,17 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
     YList<T> subList(int fromIndex, int toIndex);
     T last();
+
+    default T lastOr(T t) {
+        if (isEmpty()) return t;
+        return last();
+    }
+
+    default T lastOrCalc(Supplier<T> supplier) {
+        if (isEmpty()) return supplier.get();
+        return last();
+    }
+
     YList<T> allMin(Comparator<? super T> comparator);
     YList<YList<T>> eachToEach(YList<T> other);
 
