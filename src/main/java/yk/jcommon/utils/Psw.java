@@ -63,7 +63,7 @@ public class Psw {
                 chars.add(allSymbols.charAt(index) + "");
 
             }
-        } while(classes.any(s1->!contains(chars, s1)));
+        } while(classes.isAny(s1->!contains(chars, s1)));
 
         System.out.print(toString(chars, separator));
 //        System.out.println();

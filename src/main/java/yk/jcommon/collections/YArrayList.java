@@ -15,16 +15,18 @@ import java.util.function.Predicate;
  * Time: 3:26 PM
  */
 public class YArrayList<T> extends ArrayList<T> implements YList<T> {
+    //TODO test
     @Override
-    public boolean any(Predicate<? super T> predicate) {
+    public boolean isAny(Predicate<? super T> predicate) {
         for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
             if (predicate.test(this.get(i))) return true;
         }
         return false;
     }
 
+    //TODO test
     @Override
-    public boolean all(Predicate<? super T> predicate) {
+    public boolean isAll(Predicate<? super T> predicate) {
         for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
             if (!predicate.test(this.get(i))) return false;
         }
@@ -38,12 +40,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         super(c);
     }
 
+    //TODO test
     public static <T> YArrayList<T> toYList(Collection<T> source) {
         YArrayList<T> result = new YArrayList<>();
         result.addAll(source);
         return result;
     }
 
+    //TODO test
     @SafeVarargs
     public static <T> YArrayList<T> al(T... tt) {
         YArrayList<T> result = new YArrayList<>();
@@ -51,16 +55,19 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public YArrayList<T> filter(Predicate<? super T> predicate) {
         return YCollections.filterList(this, predicate);
     }
 
+    //TODO test
     @Override
     public <R> YList<R> map(Function<? super T, ? extends R> mapper) {
         return YCollections.mapList(this, mapper);
     }
 
+    //TODO test
     @Override
     public <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         return YCollections.flatMapList(this, mapper);
@@ -93,6 +100,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return YCollections.minFromList(this, comparator);
     }
 
+    //TODO test
     @Override
     public YList<T> allMin(Comparator<? super T> comparator) {
         if (isEmpty()) return this;
@@ -109,11 +117,13 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public T car() {
         return get(0);
     }
 
+    //TODO test
     @Override
     public YArrayList<T> cdr() {
         return YCollections.cdr(this);
@@ -124,12 +134,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return get(size() - 1);
     }
 
+    //TODO test
     @SuppressWarnings("NullableProblems")
     @Override
     public YList<T> subList(int fromIndex, int toIndex) {
         return YCollections.subListFromList(this, fromIndex, toIndex);
     }
 
+    //TODO test
     @Override
     public YList<T> with(Collection<T> c) {
         YList<T> result = al();
@@ -138,6 +150,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public YList<T> with(T t) {
         YList<T> result = al();
@@ -146,6 +159,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @SafeVarargs
     @Override
     public final YList<T> with(T... tt) {
@@ -155,6 +169,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public YList<T> without(Collection<T> c) {
         YList<T> result = al();
@@ -162,6 +177,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public YList<T> without(T t) {
         YList<T> result = al();
@@ -169,12 +185,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @SafeVarargs
     @Override
     public final YList<T> without(T... tt) {
         return without(Arrays.asList(tt));
     }
 
+    //TODO test
     @Override
     public YList<T> take(int count) {
         YList<T> result = al();
@@ -192,6 +210,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     @Override
     public YList<T> reverse() {
         YList<T> result = al();
@@ -199,6 +218,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    //TODO test
     /**
      * Removes last component and sets it in place of required. It allows to make remove without array copy.
      */

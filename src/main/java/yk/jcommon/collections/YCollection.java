@@ -19,11 +19,13 @@ public interface YCollection<T> extends Collection<T> {
 
     YCollection<T> filter(Predicate<? super T> predicate);
 
+    //TODO test
     @SuppressWarnings("unchecked")
     default <R extends T> YCollection<R> filterByClass(Class<R> clazz) {
         return (YCollection<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
     }
 
+    //TODO test
     default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
         YMap<K, YList<T>> result = hm();
         for (T t : this) {
@@ -38,17 +40,21 @@ public interface YCollection<T> extends Collection<T> {
         return result;
     }
 
-    default boolean any(Predicate<? super T> predicate) {
+    //TODO test
+    default boolean isAny(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.test(t)) return true;
         return false;
     }
 
-    default boolean all(Predicate<? super T> predicate) {
+    //TODO test
+    default boolean isAll(Predicate<? super T> predicate) {
         for (T t : this) if (!predicate.test(t)) return false;
         return true;
     }
 
     <R> YCollection<R> map(Function<? super T, ? extends R> mapper);
+
+    //TODO test
     default <R> YCollection<R> mapWithIndex(BiFunction<Integer, ? super T, ? extends R> mapper) {
         Iterator<T> it = iterator();
         YCollection<R> result = al();
@@ -58,13 +64,16 @@ public interface YCollection<T> extends Collection<T> {
         return result;
     }
 
+    //TODO test
     <R> YCollection<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+
     default <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;
         for (T t : this) result = folder.apply(result, t);
         return result;
     }
 
+    //TODO test
     default T reduce(BiFunction<T, T, T> folder) {
         if (isEmpty()) return null;
         Iterator<T> i = iterator();
@@ -73,10 +82,12 @@ public interface YCollection<T> extends Collection<T> {
         return result;
     }
 
+    //TODO test
     default T car() {
         return iterator().next();
     }
 
+    //TODO test
     default T cadr() {
         Iterator<T> iterator = iterator();
         iterator.next();
@@ -99,11 +110,16 @@ public interface YCollection<T> extends Collection<T> {
         return first();
     }
 
+    //TODO test
     default T first(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.test(t)) return t;
         return null;
     }
 
+    //TODO firstOr(Predicate<? super T> predicate, T default)
+    //TODO lastOr(Predicate<? super T> predicate, T default)
+
+    //TODO test
     default T last(Predicate<? super T> predicate) {
         T result = null;
         for (T t : this) if (predicate.test(t)) result = t;
@@ -133,15 +149,6 @@ public interface YCollection<T> extends Collection<T> {
         return max;
     }
 
-    default <R extends Comparable<R>> R maxMap(Function<T, R> evaluator) {
-        R max = null;
-        for (T t : this) {
-            R candidate = evaluator.apply(t);
-            max = max == null || max.compareTo(candidate) < 0 ? candidate : max;
-        }
-        return max;
-    }
-
     default T min() {
         return YCollections.minFromCollection(this);
     }
@@ -165,15 +172,6 @@ public interface YCollection<T> extends Collection<T> {
         return min;
     }
 
-    default <RES extends Comparable<RES>> RES minMap(Function<T, RES> evaluator) {
-        RES min = null;
-        for (T t : this) {
-            RES candidate = evaluator.apply(t);
-            min = min == null || min.compareTo(candidate) > 0 ? candidate : min;
-        }
-        return min;
-    }
-
     default YSet<T> toSet() {
         return toYSet(this);
     }
@@ -183,11 +181,14 @@ public interface YCollection<T> extends Collection<T> {
     }
 
     YCollection<T> with(Collection<T> c);
+
     YCollection<T> with(T t);
+
     @SuppressWarnings("unchecked")
     YCollection<T> with(T... t);
 
     YCollection<T> without(Collection<T> c);
+
     YCollection<T> without(T t);
     @SuppressWarnings("unchecked")
     YCollection<T> without(T... t);
@@ -208,30 +209,35 @@ public interface YCollection<T> extends Collection<T> {
 
     YCollection<T> take(int count);
 
+    //TODO test
     default int count(Predicate<? super T> predicate) {
         int result = 0;
         for (T t : this) if (predicate.test(t)) result++;
         return result;
     }
 
+    //TODO test
     @SuppressWarnings("unchecked")
     default boolean containsAll(T... tt) {
         for (T t : tt) if (!contains(t)) return false;
         return true;
     }
 
+    //TODO test
     @SuppressWarnings("unchecked")
     default boolean containsAny(Collection<? extends T> tt) {
         for (T t : tt) if (contains(t)) return true;
         return false;
     }
 
+    //TODO test
     @SuppressWarnings("unchecked")
     default boolean containsAny(T... tt) {
         for (T t : tt) if (contains(t)) return true;
         return false;
     }
 
+    //TODO test
     default String toString(String infix) {
         StringBuilder sb = new StringBuilder("");
         boolean was = false;
@@ -243,6 +249,7 @@ public interface YCollection<T> extends Collection<T> {
         return sb.toString();
     }
 
+    //TODO test
     default String toStringSuffix(String suffix) {
         StringBuilder sb = new StringBuilder("");
         for (Object o : this) sb.append(o).append(suffix);
@@ -250,10 +257,12 @@ public interface YCollection<T> extends Collection<T> {
 
     }
 
+    //TODO test
     default String toStringInfix(String infix) {
         return toString(infix);
     }
 
+    //TODO test
     default String toStringPrefixInfix(String prefix, String infix) {
         boolean first = true;
         StringBuilder sb = new StringBuilder();
@@ -265,6 +274,7 @@ public interface YCollection<T> extends Collection<T> {
         return sb.toString();
     }
 
+    //TODO test
     default String toStringPrefixSuffix(String prefix, String suffix) {
         StringBuilder sb = new StringBuilder();
         for (Object o : this) {
@@ -273,25 +283,15 @@ public interface YCollection<T> extends Collection<T> {
         return sb.toString();
     }
 
+    //TODO test
     default <V> YMap<T, V> toMapKeys(Function<T, V> f) {
         YMap<T, V> result = hm();
         for (T k : this) result.put(k, f.apply(k));
         return result;
     }
 
-    default <V> YMap<T, V> mapKeys(Function<T, V> f) {
-        YMap<T, V> result = hm();
-        for (T k : this) result.put(k, f.apply(k));
-        return result;
-    }
-
+    //TODO test
     default boolean notEmpty() {
         return !isEmpty();
     }
-
-    default boolean contains(Function<T, Boolean> predicate) {
-        for (T t : this) if (predicate.apply(t)) return true;
-        return false;
-    }
-
 }

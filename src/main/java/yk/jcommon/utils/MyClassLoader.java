@@ -37,7 +37,7 @@ public class MyClassLoader extends URLClassLoader {
         }
         if (statedForReload) {
             if (names.contains(name)) return super.loadClass(name);
-            if (names.any(n -> name.startsWith(n + "$"))) return super.loadClass(name);//include child classes implicitly
+            if (names.isAny(n -> name.startsWith(n + "$"))) return super.loadClass(name);//include child classes implicitly
         }
         return parent.loadClass(name);
     }

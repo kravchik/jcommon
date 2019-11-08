@@ -30,7 +30,7 @@ public class TestCollections {
     }
 
     @Test
-    public void testFold() {
+    public void testReduce() {
         //System.out.println(al(2, 3, 4).fold(1, (a, b) -> a * b)); ahaha - internal compilator error
         assertEquals(9, (int)al(2, 3, 4).reduce(0, (a, b) -> a + b));
         assertEquals(24, (int)al(2, 3, 4).reduce(1, (a, b) -> a * b));
