@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -207,6 +208,18 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     public YList<YList<T>> eachToEach(YList<T> other) {
         YList<YList<T>> result = al();
         for (T t : this) for (T o : other) result.add(al(t, o));
+        return result;
+    }
+
+    @Override
+    public <O, R> YList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator) {
+        YList<R> result = new YArrayList<>();
+        for (int i = 0; i < this.size(); i++) {
+            T a = this.get(i);
+            for (int j = 0; j < other.size(); j++) {
+                result.add(combinator.apply(a, other.get(j)));
+            }
+        }
         return result;
     }
 

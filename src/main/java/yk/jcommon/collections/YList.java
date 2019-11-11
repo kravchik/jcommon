@@ -98,7 +98,16 @@ public interface YList<T> extends YCollection<T>, List<T> {
     }
 
     YList<T> allMin(Comparator<? super T> comparator);
+
     YList<YList<T>> eachToEach(YList<T> other);
+
+    default <O, R> YList<R> eachToEach(Collection<O> other, BiFunction<T, O, R> combinator) {
+        return YCollections.eachToEach(this, other, combinator);
+    }
+
+    default <O, R> YList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator) {
+        return YCollections.eachToEach(this, other, combinator);
+    }
 
     default void forUniquePares(BiConsumer<T, T> bc) {
         for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) bc.accept(get(i), get(j));

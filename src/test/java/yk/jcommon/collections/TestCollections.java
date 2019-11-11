@@ -2,6 +2,9 @@ package yk.jcommon.collections;
 
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.List;
+
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static yk.jcommon.collections.YArrayList.al;
@@ -27,6 +30,14 @@ public class TestCollections {
         YList<String> all = al("shift", "ctrl", "alt", "super");
         assertEquals("[[alt, ctrl], [alt, shift], [alt, super], [alt], [ctrl, shift], [ctrl, super], [ctrl], [shift, super], [shift], [super]]"
                 , all.eachToEach(all).map(p -> p.toSet().toList().sorted().toString()).toSet().toList().sorted().toString());
+
+        assertEquals(al(al("a", "c"), al("a", "d"), al("b", "c"), al("b", "d")), al("a", "b").eachToEach(al("c", "d")));
+
+        assertEquals(al("ac", "ad", "bc", "bd"), al("a", "b").eachToEach(al("c", "d"), (a, b) -> a + b));
+        assertEquals(al(), al("a", "b").eachToEach(al(), (a, b) -> a + b));
+        assertEquals(al(), al().eachToEach(al("c", "d"), (a, b) -> a + b));
+        assertEquals(al("ac", "ad", "bc", "bd"), ((YList<String>)al("a", "b")).eachToEach((Collection<String>)al("c", "d"), (a, b) -> a + b));
+        assertEquals(al("ac", "ad", "bc", "bd"), ((YList<String>)al("a", "b")).eachToEach((List<String>)al("c", "d"), (a, b) -> a + b));
     }
 
     @Test

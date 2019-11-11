@@ -1,6 +1,7 @@
 package yk.jcommon.collections;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -157,6 +158,16 @@ public class YCollections {
     static <T> YList<T> subListFromList(List<T> source, int fromIndex, int toIndex) {
         YList<T> result = YArrayList.al();
         for (int i = fromIndex; i < toIndex; i++) result.add(source.get(i));
+        return result;
+    }
+
+    public static <A, B, R> YList<R> eachToEach(Collection<A> aa, Collection<B> bb, BiFunction<A, B, R> combinator) {
+        YList<R> result = new YArrayList<>();
+        for (A a : aa) {
+            for (B b : bb) {
+                result.add(combinator.apply(a, b));
+            }
+        }
         return result;
     }
 
