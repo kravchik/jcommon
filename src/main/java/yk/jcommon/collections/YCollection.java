@@ -149,6 +149,22 @@ public interface YCollection<T> extends Collection<T> {
         return max;
     }
 
+    default T maxByFloat(FloatFunction<T> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T max = null;
+        float maxComparable = 0;
+        boolean found = false;
+        for (T t : this) {
+            float nextComparable = evaluator.apply(t);
+            if (!found || nextComparable > maxComparable) {
+                max = t;
+                maxComparable = nextComparable;
+            }
+            found = true;
+        }
+        return max;
+    }
+
     default T min() {
         return YCollections.minFromCollection(this);
     }
@@ -168,6 +184,22 @@ public interface YCollection<T> extends Collection<T> {
                 min = t;
                 minComparable = nextComparable;
             }
+        }
+        return min;
+    }
+
+    default T minByFloat(FloatFunction<T> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
+        T min = null;
+        float minComparable = 0;
+        boolean found = false;
+        for (T t : this) {
+            float nextComparable = evaluator.apply(t);
+            if (!found || nextComparable < minComparable) {
+                min = t;
+                minComparable = nextComparable;
+            }
+            found = true;
         }
         return min;
     }
@@ -293,5 +325,10 @@ public interface YCollection<T> extends Collection<T> {
     //TODO test
     default boolean notEmpty() {
         return !isEmpty();
+    }
+
+    default <V> V ifEmpty(V v, Function<YCollection<T>, V> Else) {
+        if (isEmpty()) return v;
+        return Else.apply(this);
     }
 }

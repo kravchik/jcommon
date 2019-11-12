@@ -36,8 +36,8 @@ public class TestCollections {
         assertEquals(al("ac", "ad", "bc", "bd"), al("a", "b").eachToEach(al("c", "d"), (a, b) -> a + b));
         assertEquals(al(), al("a", "b").eachToEach(al(), (a, b) -> a + b));
         assertEquals(al(), al().eachToEach(al("c", "d"), (a, b) -> a + b));
-        assertEquals(al("ac", "ad", "bc", "bd"), ((YList<String>)al("a", "b")).eachToEach((Collection<String>)al("c", "d"), (a, b) -> a + b));
-        assertEquals(al("ac", "ad", "bc", "bd"), ((YList<String>)al("a", "b")).eachToEach((List<String>)al("c", "d"), (a, b) -> a + b));
+        assertEquals(al("ac", "ad", "bc", "bd"), al("a", "b").eachToEach((Collection<String>)al("c", "d"), (a, b) -> a + b));
+        assertEquals(al("ac", "ad", "bc", "bd"), al("a", "b").eachToEach(al("c", "d"), (a, b) -> a + b));
     }
 
     @Test
@@ -47,6 +47,12 @@ public class TestCollections {
         assertEquals(24, (int)al(2, 3, 4).reduce(1, (a, b) -> a * b));
         YArrayList<Integer> l = al();
         assertEquals(1, (int) l.reduce(1, (a, b) -> a * b));
+    }
+
+    @Test
+    public void testIfEmpty() {
+        assertEquals("isEmpty", al().ifEmpty("isEmpty", (l) -> (String)l.first()));
+        assertEquals("a", al("a", "b").ifEmpty("isEmpty", (l) -> l.first()));
     }
 
     public static void testSort(YCollection<Integer> c) {
@@ -92,6 +98,16 @@ public class TestCollections {
         assertEquals((Integer) 1, c.with(1, 3, 4, 2).max(i -> -i));
         assertEquals((Integer) 1, c.with(1).max(i -> -i));
 
+        try {
+            c.maxByFloat(i -> -i);
+            fail();
+        } catch (Exception ignore) {}
+        assertEquals((Integer) 1, c.with(1, 2, 3, 4).maxByFloat(i -> -i));
+        assertEquals((Integer) 1, c.with(2, 1, 3, 4).maxByFloat(i -> -i));
+        assertEquals((Integer) 1, c.with(2, 3, 4, 1).maxByFloat(i -> -i));
+        assertEquals((Integer) 1, c.with(1, 3, 4, 2).maxByFloat(i -> -i));
+        assertEquals((Integer) 1, c.with(1).maxByFloat(i -> -i));
+
     }
 
     private static void testMin(YCollection<Integer> c) {
@@ -121,6 +137,15 @@ public class TestCollections {
         assertEquals((Integer) 4, c.with(1, 2, 4, 3).min(i -> -i));
         assertEquals((Integer) 4, c.with(4, 1, 2, 3).min(i -> -i));
         assertEquals((Integer) 4, c.with(4).min(i -> -i));
+
+        try {
+            c.minByFloat(i -> i);
+            fail();
+        } catch (Exception ignore) {}
+        assertEquals((Integer) 4, c.with(1, 2, 3, 4).minByFloat(i -> -i));
+        assertEquals((Integer) 4, c.with(1, 2, 4, 3).minByFloat(i -> -i));
+        assertEquals((Integer) 4, c.with(4, 1, 2, 3).minByFloat(i -> -i));
+        assertEquals((Integer) 4, c.with(4).minByFloat(i -> -i));
     }
 
     private static void testCommon(YCollection<String> c) {

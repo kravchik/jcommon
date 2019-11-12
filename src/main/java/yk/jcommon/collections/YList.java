@@ -198,6 +198,23 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return max;
     }
 
+    default T maxByFloat(FloatFunction<T> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
+        T max = null;
+        float maxComparable = 0;
+        boolean found = false;
+        for (int i = 0; i < this.size(); i++) {
+            T t = this.get(i);
+            float nextComparable = evaluator.apply(t);
+            if (!found || nextComparable > maxComparable) {
+                max = t;
+                maxComparable = nextComparable;
+            }
+            found = true;
+        }
+        return max;
+    }
+
     @Override
     default <CMP extends Comparable<CMP>> T min(Function<T, CMP> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
@@ -211,6 +228,23 @@ public interface YList<T> extends YCollection<T>, List<T> {
                 min = t;
                 minComparable = nextComparable;
             }
+        }
+        return min;
+    }
+
+    default T minByFloat(FloatFunction<T> evaluator) {
+        if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
+        T min = null;
+        float minComparable = 0;
+        boolean found = false;
+        for (int i = 0; i < this.size(); i++) {
+            T t = this.get(i);
+            float nextComparable = evaluator.apply(t);
+            if (!found || nextComparable < minComparable) {
+                min = t;
+                minComparable = nextComparable;
+            }
+            found = true;
         }
         return min;
     }
