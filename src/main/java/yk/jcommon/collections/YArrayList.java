@@ -1,10 +1,6 @@
 package yk.jcommon.collections;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -53,6 +49,12 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     public static <T> YArrayList<T> al(T... tt) {
         YArrayList<T> result = new YArrayList<>();
         for (int i = 0; i < tt.length; i++) result.add(tt[i]);
+        return result;
+    }
+
+    public static <T> YArrayList<T> times(int n, Function_T_int<T> generator) {
+        YArrayList<T> result = new YArrayList<>();
+        for (int i = 0; i < n; i++) result.add(generator.apply(i));
         return result;
     }
 

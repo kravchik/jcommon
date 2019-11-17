@@ -6,11 +6,7 @@ import yk.jcommon.utils.Util;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 import static yk.jcommon.collections.YArrayList.al;
 
@@ -198,7 +194,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return max;
     }
 
-    default T maxByFloat(FloatFunction<T> evaluator) {
+    default T maxByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
         T max = null;
         float maxComparable = 0;
@@ -232,7 +228,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return min;
     }
 
-    default T minByFloat(FloatFunction<T> evaluator) {
+    default T minByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
         T min = null;
         float minComparable = 0;

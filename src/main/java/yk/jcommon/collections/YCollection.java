@@ -149,7 +149,7 @@ public interface YCollection<T> extends Collection<T> {
         return max;
     }
 
-    default T maxByFloat(FloatFunction<T> evaluator) {
+    default T maxByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
         T max = null;
         float maxComparable = 0;
@@ -188,7 +188,7 @@ public interface YCollection<T> extends Collection<T> {
         return min;
     }
 
-    default T minByFloat(FloatFunction<T> evaluator) {
+    default T minByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
         T min = null;
         float minComparable = 0;
