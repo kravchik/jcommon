@@ -39,13 +39,11 @@ public interface YCollection<T> extends Collection<T> {
         return result;
     }
 
-    //TODO test
     default boolean isAny(Predicate<? super T> predicate) {
         for (T t : this) if (predicate.test(t)) return true;
         return false;
     }
 
-    //TODO test
     default boolean isAll(Predicate<? super T> predicate) {
         for (T t : this) if (!predicate.test(t)) return false;
         return true;

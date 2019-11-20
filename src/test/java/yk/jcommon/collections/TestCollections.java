@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YHashMap.hm;
@@ -168,6 +170,15 @@ public class TestCollections {
             c.with().first();
             fail();
         } catch (Exception ignore) {}
+
+        assertTrue(c.with("a", "b").isAny(s -> s.equals("a")));
+        assertFalse(c.with("a", "b").isAny(s -> s.equals("c")));
+        assertFalse(c.isAny(s -> s.equals("c")));
+
+        assertTrue(c.with("a", "b").isAll(s -> s.length() == 1));
+        assertFalse(c.with("a", "b", "cc").isAll(s -> s.length() == 1));
+        assertTrue(c.isAll(s -> s.length() == 1));
+
     }
 
     @Test
