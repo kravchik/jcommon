@@ -3,11 +3,11 @@ package yk.jcommon.collections;
 import org.junit.Test;
 
 import java.util.Collection;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static yk.jcommon.collections.YArrayList.al;
+import static yk.jcommon.collections.YHashMap.hm;
 import static yk.jcommon.collections.YHashSet.hs;
 
 public class TestCollections {
@@ -23,6 +23,13 @@ public class TestCollections {
                 .toSet()                           //convert to set to remove duplicates ("alt shift", "shift alt")
                 .sorted()                          //sort
                 .toString("\n"));                  //make a result string
+    }
+
+    @Test
+    public void testGroupBy() {
+        assertEquals(hm(), YArrayList.<String>al().groupBy(s -> s.length()));
+        assertEquals(hm(0, al("")), al("").groupBy(s -> s.length()));
+        assertEquals(hm(2, al("aa", "bb"), 1, al("b")), al("aa", "bb", "b").groupBy(s -> s.length()));
     }
 
     @Test
@@ -55,7 +62,7 @@ public class TestCollections {
         assertEquals("a", al("a", "b").ifEmpty("isEmpty", (l) -> l.first()));
     }
 
-    public static void testSort(YCollection<Integer> c) {
+    private static void testSort(YCollection<Integer> c) {
         assertEquals(al(1), c.with(1).sorted(v -> -v).toList());
         assertEquals(al(4, 3, 2, 1), c.with(1, 2, 3, 4).sorted(v -> -v).toList());
         assertEquals(al(), c.with().sorted(v -> -v).toList());
@@ -69,7 +76,7 @@ public class TestCollections {
         assertEquals(al(), c.with().sorted().toList());
     }
 
-    public static void testMax(YCollection<Integer> c) {
+    private static void testMax(YCollection<Integer> c) {
         try {
             c.max();
             fail();
