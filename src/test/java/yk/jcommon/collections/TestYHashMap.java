@@ -8,7 +8,7 @@ import static yk.jcommon.collections.YHashMap.hm;
 /**
  * Created by Yuri Kravchik on 20.12.2018
  */
-public class YHashMapTest {
+public class TestYHashMap {
 
     @Test
     public void testWith() {
