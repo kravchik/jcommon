@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.*;
 
-import static yk.jcommon.collections.YArrayList.al;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +15,8 @@ import static yk.jcommon.collections.YArrayList.al;
  * Date: 8/12/14
  * Time: 3:27 PM
  */
-@SuppressWarnings("UnusedDeclaration")
+//TODO remove defaults which return modifiable list
+@SuppressWarnings("ForLoopReplaceableByForEach")
 public interface YList<T> extends YCollection<T>, List<T> {
     //TODO nTimes
 
@@ -38,25 +38,6 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return get(1);
     }
 
-    default <K> YList<YList<T>> splitByDif(BiFunction<T, T, Boolean> splitter) {
-        T last = null;
-        YList<T> cur = null;
-        YList<YList<T>> result = al();
-        for (T t : this) {
-            if (cur == null) {
-                cur = al(t);
-                result.add(cur);
-            } else if (splitter.apply(last, t)) {
-                cur = al(t);
-                result.add(cur);
-            } else {
-                cur.add(t);
-            }
-            last = t;
-        }
-        return result;
-    }
-
     @Override
     default YList<T> toList() {
         return this;
@@ -66,12 +47,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
     YList<T> cdr();
     YList<T> with(Collection<T> c);
     YList<T> with(T t);
-    default YList<T> withAt(int index, T t) {
-        YList<T> result = al();
-        result.addAll(this);
-        result.set(index, t);
-        return result;
-    }
+    YList<T> withAt(int index, T t);
     @SuppressWarnings("unchecked")
     YList<T> with(T... t);
     YList<T> without(Collection<T> c);
@@ -95,50 +71,25 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
     YList<T> allMin(Comparator<? super T> comparator);
 
-    YList<YList<T>> eachToEach(YList<T> other);
+    YList<? extends YList<T>> eachToEach(YList<T> other);
 
-    default <O, R> YList<R> eachToEach(Collection<O> other, BiFunction<T, O, R> combinator) {
-        return YCollections.eachToEach(this, other, combinator);
-    }
+    <O, R> YList<R> eachToEach(Collection<O> other, BiFunction<T, O, R> combinator);
 
-    default <O, R> YList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator) {
-        return YCollections.eachToEach(this, other, combinator);
-    }
+    <O, R> YList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator);
 
     default void forUniquePares(BiConsumer<T, T> bc) {
         for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) bc.accept(get(i), get(j));
     }
 
-    default <R> YList<R> mapUniquePares(BiFunction<T, T, R> bf) {
-        YList<R> result = al();
-        for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) result.add(bf.apply(get(i), get(j)));
-        return result;
-    }
+    <R> YList<R> mapUniquePares(BiFunction<T, T, R> bf);
 
-    default YList<YList<T>> split(Object eq) {
+    default YList<? extends YList<T>> split(Object eq) {
         return split(e -> Util.equalsWithNull(e, eq));
     }
 
-    default YList<YList<T>> split(Predicate<T> isSplitter) {
-        YList<YList<T>> result = al();
-        YList<T> cur = al();
-        for (T l : this) {
-            if (isSplitter.test(l)) {
-                result.add(cur);
-                cur = al();
-            } else {
-                cur.add(l);
-            }
-        }
-        result.add(cur);
-        return result;
-    }
+    YList<? extends YList<T>> split(Predicate<T> isSplitter);
 
-    default YList<T> reverse() {
-        YList<T> result = al();
-        for (T t : this) result.add(0, t);
-        return result;
-    }
+    YList<T> reverse();
 
     default void forEachNeighbours(BiConsumer<T, T> consumer) {
         for (int i = 0; i < this.size(); i++) {

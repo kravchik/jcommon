@@ -5,6 +5,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YHashMap.hm;
+
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -50,6 +52,10 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    public static <T> YArrayList<T> al() {//to avoid creation of empty array if calling al(T... tt)
+        return new YArrayList<>();
+    }
+
     public static <T> YArrayList<T> times(int n, Function_T_int<T> generator) {
         YArrayList<T> result = new YArrayList<>();
         for (int i = 0; i < n; i++) result.add(generator.apply(i));
@@ -62,15 +68,30 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return YCollections.filterList(this, predicate);
     }
 
+    @Override
+    public <K> YMap<K, YArrayList<T>> groupBy(Function<T, K> grouper) {
+        YMap<K, YArrayList<T>> result = hm();
+        for (T t : this) {
+            K group = grouper.apply(t);
+            YArrayList<T> gg = result.get(group);
+            if (gg == null) {
+                gg = al();
+                result.put(group, gg);
+            }
+            gg.add(t);
+        }
+        return result;
+    }
+
     //TODO test
     @Override
-    public <R> YList<R> map(Function<? super T, ? extends R> mapper) {
+    public <R> YArrayList<R> map(Function<? super T, ? extends R> mapper) {
         return YCollections.mapList(this, mapper);
     }
 
     //TODO test
     @Override
-    public <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
+    public <R> YArrayList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper) {
         return YCollections.flatMapList(this, mapper);
     }
 
@@ -103,9 +124,9 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     //TODO test
     @Override
-    public YList<T> allMin(Comparator<? super T> comparator) {
+    public YArrayList<T> allMin(Comparator<? super T> comparator) {
         if (isEmpty()) return this;
-        YList<T> result = al();
+        YArrayList<T> result = al();
         T cur = null;
         for (T t : sorted(comparator)) {
             if (cur == null || comparator.compare(cur, t) == 0) {
@@ -138,14 +159,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     //TODO test
     @SuppressWarnings("NullableProblems")
     @Override
-    public YList<T> subList(int fromIndex, int toIndex) {
+    public YArrayList<T> subList(int fromIndex, int toIndex) {
         return YCollections.subListFromList(this, fromIndex, toIndex);
     }
 
     //TODO test
     @Override
-    public YList<T> with(Collection<T> c) {
-        YList<T> result = al();
+    public YArrayList<T> with(Collection<T> c) {
+        YArrayList<T> result = al();
         result.addAll(this);
         result.addAll(c);
         return result;
@@ -153,18 +174,25 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     //TODO test
     @Override
-    public YList<T> with(T t) {
-        YList<T> result = al();
+    public YArrayList<T> with(T t) {
+        YArrayList<T> result = al();
         result.addAll(this);
         result.add(t);
+        return result;
+    }
+
+    @Override
+    public YArrayList<T> withAt(int index, T t) {
+        YArrayList<T> result = toYList(this);
+        result.set(index, t);
         return result;
     }
 
     //TODO test
     @SafeVarargs
     @Override
-    public final YList<T> with(T... tt) {
-        YList<T> result = al();
+    public final YArrayList<T> with(T... tt) {
+        YArrayList<T> result = al();
         result.addAll(this);
         for (int i = 0; i < tt.length; i++) result.add(tt[i]);
         return result;
@@ -172,16 +200,16 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     //TODO test
     @Override
-    public YList<T> without(Collection<T> c) {
-        YList<T> result = al();
+    public YArrayList<T> without(Collection<T> c) {
+        YArrayList<T> result = al();
         for (T t : this) if (!c.contains(t)) result.add(t);
         return result;
     }
 
     //TODO test
     @Override
-    public YList<T> without(T t) {
-        YList<T> result = al();
+    public YArrayList<T> without(T t) {
+        YArrayList<T> result = al();
         for (T tt : this) if (tt != t) result.add(tt);
         return result;
     }
@@ -189,14 +217,14 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     //TODO test
     @SafeVarargs
     @Override
-    public final YList<T> without(T... tt) {
+    public final YArrayList<T> without(T... tt) {
         return without(Arrays.asList(tt));
     }
 
     //TODO test
     @Override
-    public YList<T> take(int count) {
-        YList<T> result = al();
+    public YArrayList<T> take(int count) {
+        YArrayList<T> result = al();
         for (int i = 0; i < count; i++) {
             if (i >= size()) break;
             result.add(get(i));
@@ -205,15 +233,20 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public YList<YList<T>> eachToEach(YList<T> other) {
-        YList<YList<T>> result = al();
+    public YArrayList<YArrayList<T>> eachToEach(YList<T> other) {
+        YArrayList<YArrayList<T>> result = al();
         for (T t : this) for (T o : other) result.add(al(t, o));
         return result;
     }
 
     @Override
-    public <O, R> YList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator) {
-        YList<R> result = new YArrayList<>();
+    public <O, R> YArrayList<R> eachToEach(Collection<O> other, BiFunction<T, O, R> combinator) {
+        return YCollections.eachToEach(this, other, combinator);
+    }
+
+    @Override
+    public <O, R> YArrayList<R> eachToEach(List<O> other, BiFunction<T, O, R> combinator) {
+        YArrayList<R> result = new YArrayList<>();
         for (int i = 0; i < this.size(); i++) {
             T a = this.get(i);
             for (int j = 0; j < other.size(); j++) {
@@ -223,10 +256,33 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
         return result;
     }
 
+    @Override
+    public <R> YArrayList<R> mapUniquePares(BiFunction<T, T, R> bf) {
+        YArrayList<R> result = al();
+        for (int i = 0; i < size()-1; i++) for (int j = i+1; j < size(); j++) result.add(bf.apply(get(i), get(j)));
+        return result;
+    }
+
+    @Override
+    public YArrayList<YArrayList<T>> split(Predicate<T> isSplitter) {
+        YArrayList<YArrayList<T>> result = al();
+        YArrayList<T> cur = al();
+        for (T l : this) {
+            if (isSplitter.test(l)) {
+                result.add(cur);
+                cur = al();
+            } else {
+                cur.add(l);
+            }
+        }
+        result.add(cur);
+        return result;
+    }
+
     //TODO test
     @Override
-    public YList<T> reverse() {
-        YList<T> result = al();
+    public YArrayList<T> reverse() {
+        YArrayList<T> result = al();
         for (int i = this.size() - 1; i >= 0; i--) result.add(get(i));
         return result;
     }

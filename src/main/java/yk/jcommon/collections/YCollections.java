@@ -29,7 +29,7 @@ public class YCollections {
         return result;
     }
 
-    static <T, R> YList<R> mapList(List<T> source, Function<? super T, ? extends R> mapper) {
+    static <T, R> YArrayList<R> mapList(List<T> source, Function<? super T, ? extends R> mapper) {
         YArrayList<R> result = new YArrayList();
         for (int i = 0, sourceSize = source.size(); i < sourceSize; i++) {
             result.add(mapper.apply(source.get(i)));
@@ -43,7 +43,7 @@ public class YCollections {
         return result;
     }
 
-    static <T, R> YList<R> flatMapList(List<T> source, Function<? super T, ? extends Collection<? extends R>> mapper) {
+    static <T, R> YArrayList<R> flatMapList(List<T> source, Function<? super T, ? extends Collection<? extends R>> mapper) {
         YArrayList<R> result = new YArrayList();
         for (int i = 0, sourceSize = source.size(); i < sourceSize; i++) {
             for (R r : mapper.apply(source.get(i))) result.add(r);
@@ -155,14 +155,14 @@ public class YCollections {
         return result;
     }
 
-    static <T> YList<T> subListFromList(List<T> source, int fromIndex, int toIndex) {
-        YList<T> result = YArrayList.al();
+    static <T> YArrayList<T> subListFromList(List<T> source, int fromIndex, int toIndex) {
+        YArrayList<T> result = YArrayList.al();
         for (int i = fromIndex; i < toIndex; i++) result.add(source.get(i));
         return result;
     }
 
-    public static <A, B, R> YList<R> eachToEach(Collection<A> aa, Collection<B> bb, BiFunction<A, B, R> combinator) {
-        YList<R> result = new YArrayList<>();
+    public static <A, B, R> YArrayList<R> eachToEach(Collection<A> aa, Collection<B> bb, BiFunction<A, B, R> combinator) {
+        YArrayList<R> result = new YArrayList<>();
         for (A a : aa) {
             for (B b : bb) {
                 result.add(combinator.apply(a, b));

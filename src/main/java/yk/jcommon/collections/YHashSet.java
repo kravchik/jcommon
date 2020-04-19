@@ -1,8 +1,12 @@
 package yk.jcommon.collections;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static yk.jcommon.collections.YHashMap.hm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,9 +29,28 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
         return result;
     }
 
+    public static <T> YHashSet<T> hs() {//to avoid creation of empty array if calling hs(T... tt)
+        return new YHashSet<>();
+    }
+
     @Override
     public YSet<T> filter(Predicate<? super T> predicate) {
         return YCollections.filterSet(this, predicate);
+    }
+
+    @Override
+    public <K> YMap<K, YHashSet<T>> groupBy(Function<T, K> grouper) {
+        YMap<K, YHashSet<T>> result = hm();
+        for (T t : this) {
+            K group = grouper.apply(t);
+            YHashSet<T> gg = result.get(group);
+            if (gg == null) {
+                gg = hs();
+                result.put(group, gg);
+            }
+            gg.add(t);
+        }
+        return result;
     }
 
     @Override

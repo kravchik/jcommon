@@ -67,8 +67,13 @@ public class IO {
         BufferedReader br = new BufferedReader(fileReader);
         String l;
         StringBuilder sb = new StringBuilder();
+        boolean first = true;
         while((l = br.readLine()) != null) {
-            sb.append(l).append("\n");
+            if (!first) {
+                sb.append("\n");
+            }
+            first = false;
+            sb.append(l);
         }
         return sb.toString();
     }

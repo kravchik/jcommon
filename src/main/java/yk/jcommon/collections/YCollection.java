@@ -25,7 +25,8 @@ public interface YCollection<T> extends Collection<T> {
         return (YCollection<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
     }
 
-    default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
+    //TODO remove? Because returns YArrayLists
+    default <K> YMap<K, ? extends YCollection<T>> groupBy(Function<T, K> grouper) {
         YMap<K, YList<T>> result = hm();
         for (T t : this) {
             K group = grouper.apply(t);
