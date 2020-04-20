@@ -1,7 +1,5 @@
 package yk.jcommon.collections;
 
-import yk.jcommon.utils.BadException;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,6 +7,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class YHashSetWrapper<T> implements YSet<T> {
+    private static RuntimeException cannotModify() {
+        return new RuntimeException("Cannot modify wrapper");
+    }
+
     private Set<T> original;
 
     public YHashSetWrapper(Set<T> original) {
@@ -99,12 +101,12 @@ public class YHashSetWrapper<T> implements YSet<T> {
 
     @Override
     public boolean add(T t) {
-        throw BadException.die("cannot modify wrapper");
+        throw cannotModify();
     }
 
     @Override
     public boolean remove(Object o) {
-        throw BadException.die("cannot modify wrapper");
+        throw cannotModify();
     }
 
     @Override
@@ -114,7 +116,7 @@ public class YHashSetWrapper<T> implements YSet<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        throw BadException.die("cannot modify wrapper");
+        throw cannotModify();
     }
 
     @Override
@@ -124,11 +126,11 @@ public class YHashSetWrapper<T> implements YSet<T> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        throw BadException.die("cannot modify wrapper");
+        throw cannotModify();
     }
 
     @Override
     public void clear() {
-        throw BadException.die("cannot modify wrapper");
+        throw cannotModify();
     }
 }

@@ -1,8 +1,5 @@
 package yk.jcommon.collections;
 
-import yk.jcommon.utils.MyMath;
-import yk.jcommon.utils.Util;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -84,7 +81,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
     <R> YList<R> mapUniquePares(BiFunction<T, T, R> bf);
 
     default YList<? extends YList<T>> split(Object eq) {
-        return split(e -> Util.equalsWithNull(e, eq));
+        return split(e -> e == null ? eq == null : e.equals(eq));
     }
 
     YList<? extends YList<T>> split(Predicate<T> isSplitter);
@@ -93,27 +90,27 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
     default void forEachNeighbours(BiConsumer<T, T> consumer) {
         for (int i = 0; i < this.size(); i++) {
-            T t1 = this.get(MyMath.module(i + 0, this.size()));
-            T t2 = this.get(MyMath.module(i + 1, this.size()));
+            T t1 = this.get((i + 0) % this.size());
+            T t2 = this.get((i + 1) % this.size());
             consumer.accept(t1, t2);
         }
     }
 
     default void forEachNeighbours(Consumer3<T, T, T> consumer) {
         for (int i = 0; i < this.size(); i++) {
-            T t1 = this.get(MyMath.module(i + 0, this.size()));
-            T t2 = this.get(MyMath.module(i + 1, this.size()));
-            T t3 = this.get(MyMath.module(i + 2, this.size()));
+            T t1 = this.get((i + 0) % this.size());
+            T t2 = this.get((i + 1) % this.size());
+            T t3 = this.get((i + 2) % this.size());
             consumer.accept(t1, t2, t3);
         }
     }
 
     default void forEachNeighbours(Consumer4<T, T, T, T> consumer) {
         for (int i = 0; i < this.size(); i++) {
-            T t1 = this.get(MyMath.module(i + 0, this.size()));
-            T t2 = this.get(MyMath.module(i + 1, this.size()));
-            T t3 = this.get(MyMath.module(i + 2, this.size()));
-            T t4 = this.get(MyMath.module(i + 3, this.size()));
+            T t1 = this.get((i + 0) % this.size());
+            T t2 = this.get((i + 1) % this.size());
+            T t3 = this.get((i + 2) % this.size());
+            T t4 = this.get((i + 3) % this.size());
             consumer.accept(t1, t2, t3, t4);
         }
     }
