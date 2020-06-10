@@ -1,6 +1,31 @@
 # jcommon
 
-## MAKE JAVA GREAT AGAIN
+
+_Let's say we want to filter a Map, and we have two options..._
+
+Option 1:
+```
+        sMap = sMap.entrySet().stream()
+                .filter(e -> e.getKey().startsWith("a"))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+```
+
+Option 2:
+```
+        yMap = yMap.filter((k, v) -> k.startsWith("a"));
+```
+
+If you'd prefer Option 2, you are welcome to continue reading.
+
+
+streams are ok if you have many steps, but bad for simple steps (and simple steps are more often)
+instantiation (vs standard, vs Collections, vs Guava) 
+everything extends usual collections (so accepted everywhere)
+everything is modifiable except of added methods
+examples of creating, filtering, mapping, sorting
+maps and sets are sorted (pros)
+ycollectiona are copying every time but...
+
 
 Common utils, abstractions, and tools that I use in my projects. They make Java pleasant.
 
