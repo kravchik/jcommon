@@ -5,8 +5,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YHashMap.hm;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -66,21 +64,6 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     @Override
     public YArrayList<T> filter(Predicate<? super T> predicate) {
         return YCollections.filterList(this, predicate);
-    }
-
-    @Override
-    public <K> YMap<K, YArrayList<T>> groupBy(Function<T, K> grouper) {
-        YMap<K, YArrayList<T>> result = hm();
-        for (T t : this) {
-            K group = grouper.apply(t);
-            YArrayList<T> gg = result.get(group);
-            if (gg == null) {
-                gg = al();
-                result.put(group, gg);
-            }
-            gg.add(t);
-        }
-        return result;
     }
 
     //TODO test

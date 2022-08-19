@@ -6,8 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YHashMap.hm;
-
 /**
  * Created with IntelliJ IDEA.
  * User: yuri
@@ -36,21 +34,6 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     @Override
     public YSet<T> filter(Predicate<? super T> predicate) {
         return YCollections.filterSet(this, predicate);
-    }
-
-    @Override
-    public <K> YMap<K, YHashSet<T>> groupBy(Function<T, K> grouper) {
-        YMap<K, YHashSet<T>> result = hm();
-        for (T t : this) {
-            K group = grouper.apply(t);
-            YHashSet<T> gg = result.get(group);
-            if (gg == null) {
-                gg = hs();
-                result.put(group, gg);
-            }
-            gg.add(t);
-        }
-        return result;
     }
 
     @Override
