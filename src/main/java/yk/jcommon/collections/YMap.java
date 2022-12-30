@@ -96,4 +96,8 @@ public interface YMap<K, V> extends Map<K, V> {
         return sb.toString();
     }
 
+    default YMap<K, V> assertSize(int s) {
+        if (size() != s) throw new RuntimeException("Expected size " + s + " but was " + size());
+        return this;
+    }
 }

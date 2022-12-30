@@ -7,11 +7,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class YHashSetWrapper<T> implements YSet<T> {
+    private final Set<T> original;
+
+    @Override
+    public YCollection<T> emptyInstance() {
+        throw new RuntimeException("Not implemented");
+    }
+
     private static RuntimeException cannotModify() {
         return new RuntimeException("Cannot modify wrapper");
     }
-
-    private Set<T> original;
 
     public YHashSetWrapper(Set<T> original) {
         this.original = original;
@@ -42,7 +47,7 @@ public class YHashSetWrapper<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> with(Collection<T> c) {
+    public YSet<T> withAll(Collection<T> c) {
         return YCollections.appendSet(original, c);
     }
 

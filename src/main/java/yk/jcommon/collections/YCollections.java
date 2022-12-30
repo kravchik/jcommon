@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YArrayList.toYList;
 
 /**
@@ -210,6 +211,12 @@ public class YCollections {
         return result;
     }
 
-
-
+    public static <T1, T2, T3> YList<T3> zip(YList<T1> a, YList<T2> b, BiFunction<T1, T2, T3> f) {
+        YList<T3> result = al();
+        for (int i = 0; i < a.size(); i++) {
+            if (b.size() <= i) break;
+            result.add(f.apply(a.get(i), b.get(i)));
+        }
+        return result;
+    }
 }

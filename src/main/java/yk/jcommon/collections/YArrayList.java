@@ -10,8 +10,15 @@ import java.util.function.Predicate;
  * User: yuri
  * Date: 8/12/14
  * Time: 3:26 PM
+ *
+ * TODO remove. YList should cover everything
  */
 public class YArrayList<T> extends ArrayList<T> implements YList<T> {
+    @Override
+    public YCollection<T> emptyInstance() {
+        return al();
+    }
+
     @Override
     public boolean isAny(Predicate<? super T> predicate) {
         for (int i = 0, thisSize = this.size(); i < thisSize; i++) {
@@ -52,6 +59,18 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     public static <T> YArrayList<T> al() {//to avoid creation of empty array if calling al(T... tt)
         return new YArrayList<>();
+    }
+
+    public static <T> YArrayList<T> allocate(int size) {
+        YArrayList<T> result = al();
+        for (int i = 0; i < size; i++) result.add(null);
+        return result;
+    }
+
+    public static <T> YArrayList<T> allocate(int size, Function_T_int<T> gen) {
+        YArrayList<T> result = al();
+        for (int i = 0; i < size; i++) result.add(gen.apply(i));
+        return result;
     }
 
     public static <T> YArrayList<T> times(int n, Function_T_int<T> generator) {
@@ -148,7 +167,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     //TODO test
     @Override
-    public YArrayList<T> with(Collection<T> c) {
+    public YArrayList<T> withAll(Collection<T> c) {
         YArrayList<T> result = al();
         result.addAll(this);
         result.addAll(c);
@@ -216,8 +235,8 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     }
 
     @Override
-    public YArrayList<YArrayList<T>> eachToEach(YList<T> other) {
-        YArrayList<YArrayList<T>> result = al();
+    public YList<YList<T>> eachToEach(YList<T> other) {
+        YList<YList<T>> result = al();
         for (T t : this) for (T o : other) result.add(al(t, o));
         return result;
     }

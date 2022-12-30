@@ -2,6 +2,7 @@ package yk.jcommon.collections;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
 
@@ -20,6 +21,10 @@ public interface YList<T> extends YCollection<T>, List<T> {
     @Override//TODO remove (currently needed for cs translator)
     T get(int index);
 
+    default T getOr(int index, T or) {
+        return index >= size() || index < 0 ? or : get(index);
+    }
+
     YList<T> filter(Predicate<? super T> predicate);
 
     @SuppressWarnings("unchecked")
@@ -29,6 +34,18 @@ public interface YList<T> extends YCollection<T>, List<T> {
     }
 
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
+
+    @Override
+    default <R> YList<R> mapWithIndex(BiFunction<Integer, ? super T, ? extends R> mapper) {
+        return (YList<R>) YCollection.super.mapWithIndex(mapper);
+    }
+
+    default void forWithIndex(BiConsumer<Integer, ? super T> mapper) {
+        Iterator<T> it = iterator();
+        int i = 0;
+        while(it.hasNext()) mapper.accept(i++, it.next());
+    }
+
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
     default T cadr() {
@@ -42,7 +59,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
 
     YList<T> cdr();
-    YList<T> with(Collection<T> c);
+    YList<T> withAll(Collection<T> c);
     YList<T> with(T t);
     YList<T> withAt(int index, T t);
     @SuppressWarnings("unchecked")
@@ -68,7 +85,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
 
     YList<T> allMin(Comparator<? super T> comparator);
 
-    YList<? extends YList<T>> eachToEach(YList<T> other);
+    YList<YList<T>> eachToEach(YList<T> other);
 
     <O, R> YList<R> eachToEach(Collection<O> other, BiFunction<T, O, R> combinator);
 
@@ -191,5 +208,31 @@ public interface YList<T> extends YCollection<T>, List<T> {
             found = true;
         }
         return min;
+    }
+
+    default <T2, T3> YList<T3> zipWith(YList<T2> b, BiFunction<T, T2, T3> f) {
+        return YCollections.zip(this, b, f);
+    }
+
+    default YList<T> assertSize(int s) {
+        if (size() != s) throw new RuntimeException("Expected size " + s + " but was " + size());
+        return this;
+    }
+
+    default YList<T> forThis(YListConsumer<T> c) {
+        c.accept(this);
+        return this;
+    }
+
+    default <T2> T2 mapThis(YListFunction<T, T2> f) {
+        return f.apply(this);
+    }
+
+    interface YListConsumer<T> {
+        void accept(YList<T> al);
+    }
+
+    interface YListFunction<T, T2> {
+        T2 apply(YList<T> al);
     }
 }

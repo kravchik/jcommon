@@ -6,10 +6,15 @@ import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static yk.jcommon.collections.YArrayList.*;
+import static yk.jcommon.collections.YArrayList.al;
 
 public class YCollectionWrapper<T> implements YCollection<T> {
     private Collection<T> collection;
+
+    @Override
+    public YCollection<T> emptyInstance() {
+        throw new RuntimeException("Not implemented");
+    }
 
     public YCollectionWrapper(Collection<T> collection) {
         this.collection = collection;
@@ -51,7 +56,7 @@ public class YCollectionWrapper<T> implements YCollection<T> {
     }
 
     @Override
-    public YList<T> with(Collection<T> c) {
+    public YList<T> withAll(Collection<T> c) {
         YList<T> result = al();
         result.addAll(this);
         result.addAll(c);

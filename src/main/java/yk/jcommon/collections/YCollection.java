@@ -17,6 +17,8 @@ import static yk.jcommon.collections.YHashSet.toYSet;
 @SuppressWarnings("UnusedDeclaration")
 public interface YCollection<T> extends Collection<T> {
 
+    YCollection<T> emptyInstance();
+
     YCollection<T> filter(Predicate<? super T> predicate);
 
     //TODO test
@@ -209,7 +211,7 @@ public interface YCollection<T> extends Collection<T> {
         return toYList(this);
     }
 
-    YCollection<T> with(Collection<T> c);
+    YCollection<T> withAll(Collection<T> c);
 
     YCollection<T> with(T t);
 
@@ -327,5 +329,10 @@ public interface YCollection<T> extends Collection<T> {
     default <V> V ifEmpty(V v, Function<YCollection<T>, V> Else) {
         if (isEmpty()) return v;
         return Else.apply(this);
+    }
+
+    default YCollection<T> assertSize(int s) {
+        if (size() != s) throw new RuntimeException("Expected size " + s + " but was " + size());
+        return this;
     }
 }

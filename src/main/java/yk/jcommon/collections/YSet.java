@@ -28,7 +28,7 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
         return this;
     }
 
-    YSet<T> with(Collection<T> c);
+    YSet<T> withAll(Collection<T> c);
     YSet<T> with(T t);
     @SuppressWarnings("unchecked")
     YSet<T> with(T... tt);
@@ -53,4 +53,10 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
         return result;
     }
 
+    default YSet<T> assertSize(int s) {
+        if (size() != s) {
+            throw new RuntimeException("Expected size " + s + " but was " + size());
+        }
+        return this;
+    }
 }

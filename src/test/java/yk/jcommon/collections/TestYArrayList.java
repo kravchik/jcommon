@@ -27,6 +27,14 @@ public class TestYArrayList {
         assertEquals(al("a", "b"), rf(al("a", "b", "c"), 2));
     }
 
+    @Test
+    public void testZipWith() {
+        assertEquals(al(), al().zipWith(al(), (a, b) -> null));
+        assertEquals(al(), al("a").zipWith(al(), (a, b) -> a + b));
+        assertEquals(al("ab"), al("a").zipWith(al("b"), (a, b) -> a + b));
+        assertEquals(al(), al().zipWith(al("b"), (a, b) -> a + b));
+    }
+
     private static <T> YArrayList<T> rf(YArrayList<T> src, int i) {
         T old = src.get(i);
         T t = src.removeFast(i);
