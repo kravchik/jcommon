@@ -17,7 +17,8 @@ public interface YMap<K, V> extends Map<K, V> {
     //TODO notContainsKey()
     YMap<K, V> filter(BiPredicate<? super K, ? super V> predicate);
     <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
-    <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper);
+    <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper);
+    <V2> YMap<K, V2> mapValues(Function<? super V, V2> mapper);
 
     Tuple<K, V> car();
     YMap<K, V> cdr();

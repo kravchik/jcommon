@@ -66,10 +66,19 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
-    public <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {
+    public <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper) {
         YMap<K, V2> result = hm();
         for (Map.Entry<K, V> entry : this.entrySet()) {
             result.put(entry.getKey(), mapper.apply(entry.getKey(), entry.getValue()));
+        }
+        return result;
+    }
+
+    @Override
+    public <V2> YMap<K, V2> mapValues(Function<? super V, V2> mapper) {
+        YMap<K, V2> result = hm();
+        for (Map.Entry<K, V> entry : this.entrySet()) {
+            result.put(entry.getKey(), mapper.apply(entry.getValue()));
         }
         return result;
     }
