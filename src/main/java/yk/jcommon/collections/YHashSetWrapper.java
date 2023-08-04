@@ -65,7 +65,7 @@ public class YHashSetWrapper<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> without(Collection<T> tt) {
+    public YSet<T> withoutAll(Collection<T> tt) {
         return YCollections.subSet(original, tt);
     }
 

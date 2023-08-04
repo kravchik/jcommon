@@ -80,7 +80,7 @@ public class YCollectionWrapper<T> implements YCollection<T> {
     }
 
     @Override
-    public YList<T> without(Collection<T> c) {
+    public YList<T> withoutAll(Collection<T> c) {
         YList<T> result = al();
         for (T t : this) if (!c.contains(t)) result.add(t);
         return result;
@@ -96,7 +96,7 @@ public class YCollectionWrapper<T> implements YCollection<T> {
     @SafeVarargs
     @Override
     public final YList<T> without(T... tt) {
-        return without(Arrays.asList(tt));
+        return withoutAll(Arrays.asList(tt));
     }
 
     @Override

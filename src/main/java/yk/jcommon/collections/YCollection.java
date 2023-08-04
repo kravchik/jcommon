@@ -218,7 +218,7 @@ public interface YCollection<T> extends Collection<T> {
     @SuppressWarnings("unchecked")
     YCollection<T> with(T... t);
 
-    YCollection<T> without(Collection<T> c);
+    YCollection<T> withoutAll(Collection<T> c);
 
     YCollection<T> without(T t);
     @SuppressWarnings("unchecked")

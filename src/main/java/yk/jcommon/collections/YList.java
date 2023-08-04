@@ -25,6 +25,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return index >= size() || index < 0 ? or : get(index);
     }
 
+    @Override
     YList<T> filter(Predicate<? super T> predicate);
 
     @SuppressWarnings("unchecked")
@@ -33,6 +34,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
     }
 
+    @Override
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
 
     @Override
@@ -40,14 +42,25 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return (YList<R>) YCollection.super.mapWithIndex(mapper);
     }
 
-    default void forWithIndex(BiConsumer<Integer, ? super T> mapper) {
-        Iterator<T> it = iterator();
-        int i = 0;
-        while(it.hasNext()) mapper.accept(i++, it.next());
+    /**
+     * The same as 'forEach', but returns 'this' so can continue using the instasnce.
+     */
+    default YList<T> forEachFun(Consumer<T> consumer) {
+        for (T t : this) consumer.accept(t);
+        return this;
     }
 
+    default YList<T> forWithIndex(BiConsumer<Integer, ? super T> consumer) {
+        Iterator<T> it = iterator();
+        int i = 0;
+        while(it.hasNext()) consumer.accept(i++, it.next());
+        return this;
+    }
+
+    @Override
     <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
 
+    @Override
     default T cadr() {
         return get(1);
     }
@@ -58,18 +71,27 @@ public interface YList<T> extends YCollection<T>, List<T> {
     }
 
 
+    @Override
     YList<T> cdr();
+    @Override
     YList<T> withAll(Collection<T> c);
+    @Override
     YList<T> with(T t);
     YList<T> withAt(int index, T t);
+    @Override
     @SuppressWarnings("unchecked")
     YList<T> with(T... t);
-    YList<T> without(Collection<T> c);
+    @Override
+    YList<T> withoutAll(Collection<T> c);
+    @Override
     YList<T> without(T t);
+    @Override
     @SuppressWarnings("unchecked")
     YList<T> without(T... t);
+    @Override
     YList<T> take(int count);
 
+    @Override
     YList<T> subList(int fromIndex, int toIndex);
     T last();
 
@@ -159,6 +181,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return max;
     }
 
+    @Override
     default T maxByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get max on empty collection");
         T max = null;
@@ -214,6 +237,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return YCollections.zip(this, b, f);
     }
 
+    @Override
     default YList<T> assertSize(int s) {
         if (size() != s) throw new RuntimeException("Expected size " + s + " but was " + size());
         return this;

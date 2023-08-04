@@ -67,7 +67,7 @@ public class YHashSet<T> extends LinkedHashSet<T> implements YSet<T> {
     }
 
     @Override
-    public YSet<T> without(Collection<T> tt) {
+    public YSet<T> withoutAll(Collection<T> tt) {
         return YCollections.subSet(this, tt);
     }
 

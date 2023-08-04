@@ -15,12 +15,17 @@ import static yk.jcommon.collections.YHashSet.hs;
  * Time: 8:53 PM
  */
 public interface YSet<T> extends YCollection<T>, Set<T> {
+    @Override
     YSet<T> filter(Predicate<? super T> predicate);
+    @Override
     default <R extends T> YSet<R> filterByClass(Class<R> clazz) {
         return (YSet<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
     }
+    @Override
     <R> YSet<R> map(Function<? super T, ? extends R> mapper);
+    @Override
     <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+    @Override
     YSet<T> cdr();
 
     @Override
@@ -28,15 +33,21 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
         return this;
     }
 
+    @Override
     YSet<T> withAll(Collection<T> c);
+    @Override
     YSet<T> with(T t);
+    @Override
     @SuppressWarnings("unchecked")
     YSet<T> with(T... tt);
-    YSet<T> without(Collection<T> tt);
+    @Override
+    YSet<T> withoutAll(Collection<T> tt);
+    @Override
     YSet<T> without(T t);
+    @Override
     @SuppressWarnings("unchecked")
     default YSet<T> without(T... tt) {
-        return without(hs(tt));
+        return withoutAll(hs(tt));
     }
 
     default YSet<T> intersection(YSet<T> other) {
@@ -53,6 +64,7 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
         return result;
     }
 
+    @Override
     default YSet<T> assertSize(int s) {
         if (size() != s) {
             throw new RuntimeException("Expected size " + s + " but was " + size());

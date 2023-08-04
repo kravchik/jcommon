@@ -202,7 +202,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
 
     //TODO test
     @Override
-    public YArrayList<T> without(Collection<T> c) {
+    public YArrayList<T> withoutAll(Collection<T> c) {
         YArrayList<T> result = al();
         for (T t : this) if (!c.contains(t)) result.add(t);
         return result;
@@ -220,7 +220,7 @@ public class YArrayList<T> extends ArrayList<T> implements YList<T> {
     @SafeVarargs
     @Override
     public final YArrayList<T> without(T... tt) {
-        return without(Arrays.asList(tt));
+        return withoutAll(Arrays.asList(tt));
     }
 
     //TODO test
