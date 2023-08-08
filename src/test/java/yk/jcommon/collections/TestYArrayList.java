@@ -12,6 +12,14 @@ import static yk.jcommon.collections.YArrayList.times;
 public class TestYArrayList {
 
     @Test
+    public void testGetOr() {
+        assertEquals("hello", al().getOr(0, "hello"));
+        assertEquals("world", al("world").getOr(0, "hello"));
+        assertEquals("hello", al("world").getOr(-1, "hello"));
+        assertEquals("hello", al("world").getOr(1, "hello"));
+    }
+
+    @Test
     public void testTimes() {
         assertEquals(al(), times(-1, i -> "_" + i));//maybe it is better to throw an exception
         assertEquals(al(), times(0, i -> "_" + i));

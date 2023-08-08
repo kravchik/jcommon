@@ -66,6 +66,24 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
     }
 
     @Override
+    public <K2, V2> YMap<K2, V2> map(Function<? super K, K2> keyMapper, Function<? super V, V2> valueMapper) {
+        YMap<K2, V2> result = hm();
+        for (Map.Entry<K, V> entry : this.entrySet()) {
+            result.put(keyMapper.apply(entry.getKey()), valueMapper.apply(entry.getValue()));
+        }
+        return result;
+    }
+
+    @Override
+    public <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, K2> keyMapper, BiFunction<? super K, ? super V, V2> valueMapper) {
+        YMap<K2, V2> result = hm();
+        for (Map.Entry<K, V> entry : this.entrySet()) {
+            result.put(keyMapper.apply(entry.getKey(), entry.getValue()), valueMapper.apply(entry.getKey(), entry.getValue()));
+        }
+        return result;
+    }
+
+    @Override
     public <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper) {
         YMap<K, V2> result = hm();
         for (Map.Entry<K, V> entry : this.entrySet()) {
@@ -83,22 +101,26 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public Tuple<K, V> car() {
         Map.Entry<K, V> next = entrySet().iterator().next();
         return new Tuple<>(next.getKey(), next.getValue());
     }
 
+    //TODO test
     @Override
     public YMap<K, V> cdr() {
         return without(car().a);
     }
 
+    //TODO test
     @Override
     public Tuple<K, V> first() {
         return car();
     }
 
+    //TODO test
     @Override
     public Tuple<K, V> last() {
         K key = null;
@@ -106,6 +128,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return key == null ? null : new Tuple(key, get(key));
     }
 
+    //TODO test
     @Override
     public Tuple<K, V> max(BiFunction<K, V, Float> evaluator) {
         float maxValue = Float.NEGATIVE_INFINITY;
@@ -120,6 +143,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return new Tuple<>(maxKey, get(maxKey));
     }
 
+    //TODO test
     @Override
     public V maxValue(Function<V, Float> evaluator) {
         float maxValue = Float.NEGATIVE_INFINITY;
@@ -134,6 +158,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return mv;
     }
 
+    //TODO test
     @Override
     public Tuple<K, V> min(BiFunction<K, V, Float> evaluator) {
         float minValue = Float.MAX_VALUE;
@@ -148,6 +173,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return new Tuple<>(minKey, get(minKey));
     }
 
+    //TODO test
     @Override
     public V minValue(Function<V, Float> evaluator) {
         float minValue = Float.MAX_VALUE;
@@ -162,18 +188,21 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return mv;
     }
 
+    //TODO test
     @Override
     public boolean isAll(BiPredicate<K, V> predicate) {
         for (Map.Entry<K, V> entry : super.entrySet()) if (!predicate.test(entry.getKey(), entry.getValue())) return false;
         return true;
     }
 
+    //TODO test
     @Override
     public boolean isAny(BiPredicate<K, V> predicate) {
         for (Map.Entry<K, V> entry : super.entrySet()) if (predicate.test(entry.getKey(), entry.getValue())) return true;
         return false;
     }
 
+    //TODO test
     @Override
     public V getOr(K key, V cur) {
         V result = get(key);
@@ -190,6 +219,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return new YCollectionWrapper<>(super.values());
     }
 
+    //TODO test
     @Override
     public YMap<K, V> with(K k, V v) {
         YMap<K, V> result = hm();
@@ -198,6 +228,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> with(K k, V v, Object... other) {
         YMap<K, V> result = hm();
@@ -206,6 +237,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> with(Map<K, V> kv) {
         YMap<K, V> result = hm();
@@ -214,6 +246,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> without(K pKey) {
         YMap<K, V> result = new YHashMap<>();
@@ -222,6 +255,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> without(Collection<K> keys) {
         YMap<K, V> result = toYMap(this);
@@ -229,6 +263,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> sorted(Comparator<Map.Entry<K, V>> comparator) {
         YMap<K, V> result = hm();
@@ -236,6 +271,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> sortedBy(BiFunction<K, V, Comparable> evaluator) {
         List<Temp<K, V>> temp = al();
@@ -246,6 +282,7 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
+    //TODO test
     @Override
     public YMap<K, V> take(int n) {
         YMap<K, V> result = hm();

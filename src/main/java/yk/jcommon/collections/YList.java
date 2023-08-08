@@ -2,7 +2,6 @@ package yk.jcommon.collections;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
 
@@ -28,12 +27,6 @@ public interface YList<T> extends YCollection<T>, List<T> {
     @Override
     YList<T> filter(Predicate<? super T> predicate);
 
-    @SuppressWarnings("unchecked")
-    @Override
-    default <R extends T> YList<R> filterByClass(Class<R> clazz) {
-        return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-
     @Override
     <R> YList<R> map(Function<? super T, ? extends R> mapper);
 
@@ -42,23 +35,29 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return (YList<R>) YCollection.super.mapWithIndex(mapper);
     }
 
+    @Override
+    <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+
     /**
      * The same as 'forEach', but returns 'this' so can continue using the instasnce.
      */
+    @Override
     default YList<T> forEachFun(Consumer<T> consumer) {
         for (T t : this) consumer.accept(t);
         return this;
     }
 
-    default YList<T> forWithIndex(BiConsumer<Integer, ? super T> consumer) {
-        Iterator<T> it = iterator();
-        int i = 0;
-        while(it.hasNext()) consumer.accept(i++, it.next());
+    default <T2> YList<T> forZip(YList<T2> b, BiConsumer<T, T2> f) {
+        if (size() != b.size()) throw new RuntimeException("Expected the same size");
+        for (int i = 0; i < this.size(); i++) f.accept(this.get(i), b.get(i));
         return this;
     }
 
     @Override
-    <R> YList<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+    default YList<T> forWithIndex(BiConsumer<Integer, ? super T> consumer) {
+        for (int i = 0; i < size(); i++) consumer.accept(i, get(i));
+        return this;
+    }
 
     @Override
     default T cadr() {
@@ -216,6 +215,7 @@ public interface YList<T> extends YCollection<T>, List<T> {
         return min;
     }
 
+    @Override
     default T minByFloat(Function_float_T<T> evaluator) {
         if (isEmpty()) throw new RuntimeException("can't get min on empty collection");
         T min = null;

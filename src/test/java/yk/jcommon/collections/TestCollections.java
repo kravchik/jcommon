@@ -5,9 +5,7 @@ import org.junit.Test;
 import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YHashMap.hm;
 import static yk.jcommon.collections.YHashSet.hs;
@@ -158,6 +156,10 @@ public class TestCollections {
     }
 
     private static void testCommon(YCollection<String> c) {
+        assertEquals(c, c.filter(x -> true));
+        assertEquals(c, c.with("2").filter(x -> !x.equals("2")));
+        assertEquals(c.emptyInstance().with("1"), c.with("1").filter(x -> x.equals("1")));
+
         assertEquals("a", c.with("a", "b").firstOr(null));
         assertEquals("a", c.with("a", "b").first());
         assertEquals("b", c.with("b").firstOr("c"));
@@ -181,12 +183,39 @@ public class TestCollections {
 
     }
 
+    private static void testForZip(YCollection<String> c) {
+        {
+            YList<String> sideEffects = al();
+            YCollection<String> aa = c.with("a1", "a2");
+            YCollection<String> bb = c.with("b1", "b2");
+            assertSame(aa, aa.forZip(bb, (a, b) -> sideEffects.addAll(al(a, b))));
+            assertEquals(al("a1", "b1", "a2", "b2"), sideEffects);
+        }
+        {
+            YList<String> sideEffects = al();
+            YCollection<String> aa = c.emptyInstance();
+            YCollection<String> bb = c.emptyInstance();
+            assertSame(aa, aa.forZip(bb, (a, b) -> sideEffects.addAll(al(a, b))));
+            assertEquals(al(), sideEffects);
+        }
+        {
+            YList<String> sideEffects = al();
+            YCollection<String> aa = c.with("a1");
+            YCollection<String> bb = c.emptyInstance();
+            try {
+                aa.forZip(bb, (a, b) -> sideEffects.addAll(al(a, b)));
+                fail();
+            } catch (RuntimeException ignore){}
+        }
+    }
+
     @Test
     public void testList() {
         testSort(al());
         testMax(al());
         testMin(al());
         testCommon(al());
+        testForZip(al());
 
         assertEquals("b", al("a", "b").lastOr("c"));
         assertEquals("b", al("a", "b").last());
@@ -209,6 +238,7 @@ public class TestCollections {
         testMax(hs());
         testMin(hs());
         testCommon(hs());
+        testForZip(hs());
     }
 
 }

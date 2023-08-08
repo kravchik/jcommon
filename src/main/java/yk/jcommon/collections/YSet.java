@@ -18,10 +18,6 @@ public interface YSet<T> extends YCollection<T>, Set<T> {
     @Override
     YSet<T> filter(Predicate<? super T> predicate);
     @Override
-    default <R extends T> YSet<R> filterByClass(Class<R> clazz) {
-        return (YSet<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-    @Override
     <R> YSet<R> map(Function<? super T, ? extends R> mapper);
     @Override
     <R> YSet<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);

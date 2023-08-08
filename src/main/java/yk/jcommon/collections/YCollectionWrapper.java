@@ -28,11 +28,6 @@ public class YCollectionWrapper<T> implements YCollection<T> {
     }
 
     @Override
-    public <R extends T> YCollection<R> filterByClass(Class<R> clazz) {
-        return (YList<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
-
-    @Override
     public <R> YList<R> map(Function<? super T, ? extends R> mapper) {
         YList<R> result = al();
         for (T t : this) result.add(mapper.apply(t));

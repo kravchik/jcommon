@@ -3,10 +3,7 @@ package yk.jcommon.collections;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YArrayList.toYList;
@@ -20,12 +17,6 @@ public interface YCollection<T> extends Collection<T> {
     YCollection<T> emptyInstance();
 
     YCollection<T> filter(Predicate<? super T> predicate);
-
-    //TODO test
-    @SuppressWarnings("unchecked")
-    default <R extends T> YCollection<R> filterByClass(Class<R> clazz) {
-        return (YCollection<R>) filter(el -> clazz.isAssignableFrom(el.getClass()));
-    }
 
     default <K> YMap<K, YList<T>> groupBy(Function<T, K> grouper) {
         YMap<K, YList<T>> result = hm();
@@ -65,6 +56,33 @@ public interface YCollection<T> extends Collection<T> {
 
     //TODO test
     <R> YCollection<R> flatMap(Function<? super T, ? extends Collection<? extends R>> mapper);
+
+    /**
+     * The same as 'forEach', but returns 'this' so can continue using the instasnce.
+     */
+    default YCollection<T> forEachFun(Consumer<T> consumer) {
+        for (T t : this) consumer.accept(t);
+        return this;
+    }
+
+    //TODO test
+    default <T2> YCollection<T> forZip(YCollection<T2> b, BiConsumer<T, T2> f) {
+        Iterator<T> i1 = this.iterator();
+        Iterator<T2> i2 = b.iterator();
+        while(true) {
+            if (i1.hasNext() != i2.hasNext()) throw new RuntimeException("Expected the same size");
+            if (!i1.hasNext()) break;
+            f.accept(i1.next(), i2.next());
+        }
+        return this;
+    }
+
+    default YCollection<T> forWithIndex(BiConsumer<Integer, ? super T> consumer) {
+        Iterator<T> it = iterator();
+        int i = 0;
+        while(it.hasNext()) consumer.accept(i++, it.next());
+        return this;
+    }
 
     default <R> R reduce(R first, BiFunction<R, T, R> folder) {
         R result = first;

@@ -20,6 +20,8 @@ public interface YMap<K, V> extends Map<K, V> {
     default <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {
         return mapValues(mapper);
     }
+    <K2, V2> YMap<K2, V2> map(Function<? super K, K2> keyMapper, Function<? super V, V2> valueMapper);
+    <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, K2> keyMapper, BiFunction<? super K, ? super V, V2> valueMapper);
     <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper);
     <V2> YMap<K, V2> mapValues(Function<? super V, V2> mapper);
 
