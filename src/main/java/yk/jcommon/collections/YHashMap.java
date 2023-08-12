@@ -15,15 +15,6 @@ import static yk.jcommon.collections.YArrayList.toYList;
  * Time: 11:50 PM
  */
 public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
-
-
-    //public static YHashMap map(Object... oo) {
-    //    YHashMap result = new YHashMap();
-    //    for (int i = 0; i < oo.length; i+=2) result.put(oo[i], oo[i+1]);
-    //    return result;
-    //}
-
-
     public YHashMap() {
     }
 
@@ -83,26 +74,23 @@ public class YHashMap<K, V> extends LinkedHashMap<K, V> implements YMap<K, V> {
         return result;
     }
 
-    //TODO test
     @Override
     public Tuple<K, V> car() {
+        if (isEmpty()) return null;
         Map.Entry<K, V> next = entrySet().iterator().next();
         return new Tuple<>(next.getKey(), next.getValue());
     }
 
-    //TODO test
     @Override
     public YMap<K, V> cdr() {
         return without(car().a);
     }
 
-    //TODO test
     @Override
     public Tuple<K, V> first() {
         return car();
     }
 
-    //TODO test
     @Override
     public Tuple<K, V> last() {
         K key = null;

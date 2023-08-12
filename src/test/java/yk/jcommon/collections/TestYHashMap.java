@@ -3,13 +3,25 @@ package yk.jcommon.collections;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static yk.jcommon.collections.YArrayList.al;
 import static yk.jcommon.collections.YHashMap.hm;
+import static yk.jcommon.collections.YHashMap.toYMap;
 
 /**
  * Created by Yuri Kravchik on 20.12.2018
  */
 public class TestYHashMap {
+
+    @Test
+    public void testConstructors() {
+        assertEquals(hm(), new YHashMap());
+        assertEquals(hm(), new YHashMap(hm()));
+        assertEquals(hm("1", "2"), new YHashMap(hm("1", "2")));
+
+        assertEquals(hm(), toYMap(hm()));
+        assertEquals(hm("1", "2"), toYMap(hm("1", "2")));
+    }
 
     @Test
     public void testFilter() {
@@ -52,6 +64,18 @@ public class TestYHashMap {
 
         assertEquals(hm("2", 2), hm(1, 2).mapKeys((k, v) -> v+""));
         assertEquals(hm("1", 2), hm(1, 2).mapKeys(k -> k+""));
+    }
+
+    @Test
+    public void testCar() {
+        assertNull(hm().car());
+        assertEquals(new Tuple(1, 2), hm(1, 2).car());
+        assertEquals(new Tuple(1, 2), hm(1, 2).first());
+        assertEquals(new Tuple(1, 2), hm(1, 2).last());
+        assertEquals(new Tuple(3, 4), hm(1, 2, 3, 4).last());
+        assertNull(hm().last());
+        assertEquals(hm(), hm(1, 2).cdr());
+        assertEquals(hm(3, 4), hm(1, 2, 3, 4).cdr());
     }
 
     @Test
