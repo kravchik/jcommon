@@ -46,6 +46,15 @@ public class TestYHashMap {
     }
 
     @Test
+    public void testMapKeys() {
+        assertEquals(hm(), hm().mapKeys((k, v) -> k+""));
+        assertEquals(hm(), hm().mapKeys(v -> v+""));
+
+        assertEquals(hm("2", 2), hm(1, 2).mapKeys((k, v) -> v+""));
+        assertEquals(hm("1", 2), hm(1, 2).mapKeys(k -> k+""));
+    }
+
+    @Test
     public void testWith() {
         assertEquals(hm(1, 2, 3, 4), hm(1, 2).with(3, 4));
         assertEquals(hm(1, 2, 3, 4, 5, 6), hm(1, 2).with(3, 4, 5, 6));

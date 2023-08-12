@@ -14,16 +14,24 @@ import java.util.function.Function;
  * Time: 10:34 PM
  */
 public interface YMap<K, V> extends Map<K, V> {
+    Function PASS = o -> o;
+    BiFunction PASS_FIRST = (o, o2) -> o;
+    BiFunction PASS_SECOND = (o, o2) -> o2;
+
     //TODO notContainsKey()
     YMap<K, V> filter(BiPredicate<? super K, ? super V> predicate);
     <V2> YList<V2> mapToList(BiFunction<? super K, ? super V, V2> mapper);
-    default <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {
-        return mapValues(mapper);
-    }
+
     <K2, V2> YMap<K2, V2> map(Function<? super K, K2> keyMapper, Function<? super V, V2> valueMapper);
     <K2, V2> YMap<K2, V2> map(BiFunction<? super K, ? super V, K2> keyMapper, BiFunction<? super K, ? super V, V2> valueMapper);
-    <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper);
-    <V2> YMap<K, V2> mapValues(Function<? super V, V2> mapper);
+    @Deprecated //use mapValues instead
+    default <V2> YMap<K, V2> map(Function<? super V, V2> mapper) {return mapValues(mapper);}
+    @Deprecated //use mapValues instead
+    default <V2> YMap<K, V2> map(BiFunction<? super K, ? super V, V2> mapper) {return mapValues(mapper);}
+    default <K2> YMap<K2, V> mapKeys(BiFunction<? super K, ? super V, K2> mapper) {return map(mapper, PASS_SECOND);}
+    default <K2> YMap<K2, V> mapKeys(Function<? super K, K2> mapper) {return map(mapper, PASS);}
+    default <V2> YMap<K, V2> mapValues(BiFunction<? super K, ? super V, V2> mapper) {return map(PASS_FIRST, mapper);}
+    default <V2> YMap<K, V2> mapValues(Function<? super V, V2> mapper) {return map(PASS, mapper);}
 
     Tuple<K, V> car();
     YMap<K, V> cdr();
