@@ -1,5 +1,6 @@
-# jcommon
+# MIGRATED to [ycollections](https://github.com/kravchik/ycollections)
 
+# jcommon
 
 _Let's say we want to filter a Map, and we have two options..._
 
